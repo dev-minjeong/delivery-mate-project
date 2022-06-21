@@ -1,7 +1,43 @@
+/* 
+import React, { Component } from 'react';
 import './App.css';
 import axios from 'axios';
-import { useState } from 'react';
-import { useEffect } from 'react';
+
+class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      host: '',
+    };
+  }
+
+  componentDidMount() {
+    this._getHost();
+  }
+
+  _getHost = async () => {
+    const res = await axios.get('/api/host');
+    this.setState({ host: res.data.host });
+  };
+
+  render() {
+    return (
+      <div className='App'>
+        <h3>
+          {' '}
+          Welcome to <u> {this.state.host} </u> Blog!{' '}
+        </h3>
+      </div>
+    );
+  }
+}
+
+export default App;
+ */
+
+import './App.css';
+import axios from 'axios';
+import { useState, useEffect } from 'react';
 
 function App() {
   const [host, setHost] = useState('');
@@ -18,7 +54,7 @@ function App() {
   return (
     <div className='App'>
       <h2>
-        Hello <u>{host}</u>
+        Hello ~ <u>{host} !!</u>
       </h2>
     </div>
   );
