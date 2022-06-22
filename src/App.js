@@ -38,17 +38,24 @@ export default App;
 import './App.css';
 import axios from 'axios';
 import { useState, useEffect } from 'react';
+import { async } from 'q';
 
 function App() {
   const [host, setHost] = useState('');
 
   useEffect(() => {
     _getHost();
+    _dbTest();
   }, []);
 
   const _getHost = async () => {
     const res = await axios.get('/api/host');
     setHost(res.data.host);
+  };
+
+  const _dbTest = async () => {
+    const res = await axios.get('/api/test');
+    console.log(res.data);
   };
 
   return (

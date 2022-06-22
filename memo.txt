@@ -1,1 +1,3 @@
 axios는 react fetch 대용
+
+Sequelize 는 node.js 기반의 ORM -> 데이터베이스 깔끔하게 관리 가능
