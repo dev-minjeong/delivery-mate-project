@@ -3,9 +3,9 @@
 
 module.exports = (sequelize, DataTypes) => {
   return sequelize.define(
-    'teacher',
+    'class',
     {
-      name: {
+      className: {
         type: DataTypes.STRING(50),
         allowNull: true,
       },
