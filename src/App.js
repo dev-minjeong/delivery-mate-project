@@ -38,7 +38,6 @@ export default App;
 import './App.css';
 import axios from 'axios';
 import { useState, useEffect } from 'react';
-import { async } from 'q';
 
 function App() {
   const [host, setHost] = useState('');
@@ -46,6 +45,7 @@ function App() {
   useEffect(() => {
     _getHost();
     _dbTest();
+    _addData();
   }, []);
 
   const _getHost = async () => {
@@ -56,6 +56,16 @@ function App() {
   const _dbTest = async () => {
     const res = await axios.get('/api/test');
     console.log(res.data);
+  };
+
+  const _addData = async (e) => {
+    console.log(
+      await axios('/add/data', {
+        method: 'POST',
+        data: { test: 'Complete!' },
+        headers: new Headers(),
+      })
+    );
   };
 
   return (
