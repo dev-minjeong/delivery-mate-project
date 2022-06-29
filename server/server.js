@@ -18,8 +18,21 @@ const {
   Teacher,
   Sequelize: { Op },
 } = require('./models');
-sequelize.query('SET NAMES utf8');
-
+sequelize.query('SET NAMES utf8;');
+// Teacher 테이블을 서버에서 읽어올 수 있게 함
+app.post('/add/data', (req, res) => {
+  console.log(req.body);
+  Teacher.create({
+    name: req.body.data,
+  })
+    .then((result) => {
+      res.send(result);
+    })
+    .catch((err) => {
+      console.log(err);
+      throw err;
+    });
+});
 // 포트 할당하기
 const PORT = process.env.PORT || 5000;
 

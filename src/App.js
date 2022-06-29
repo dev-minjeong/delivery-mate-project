@@ -41,6 +41,7 @@ import { useState, useEffect } from 'react';
 
 function App() {
   const [host, setHost] = useState('');
+  const [name, setName] = useState('');
 
   useEffect(() => {
     _getHost();
@@ -58,14 +59,22 @@ function App() {
     console.log(res.data);
   };
 
+  // 데이터 추가
   const _addData = async (e) => {
-    console.log(
-      await axios('/add/data', {
-        method: 'POST',
-        data: { test: 'Complete!' },
-        headers: new Headers(),
-      })
-    );
+    e.preventDefault();
+
+    const res = await axios('/add/data', {
+      method: 'POST',
+      data: { data: name },
+      headers: new Headers(),
+    });
+    if (res.data) {
+      alert('데이터 추가!');
+      return window.location.reload();
+    }
+  };
+  const _nameUpdate = (e) => {
+    setName(e.target.value);
   };
 
   return (
@@ -73,6 +82,10 @@ function App() {
       <h2>
         Hello ~ <u>{host} !!</u>
       </h2>
+      <form method='POST' onSubmit={_addData}>
+        <input type='text' maxLength='10' onChange={(e) => _nameUpdate(e)} />
+        <input type='submit' value='Add' />
+      </form>
     </div>
   );
 }
