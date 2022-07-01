@@ -19,6 +19,7 @@ const {
   Sequelize: { Op },
 } = require('./models');
 sequelize.query('SET NAMES utf8;');
+
 // Teacher 테이블을 서버에서 읽어올 수 있게 함
 app.post('/add/data', (req, res) => {
   console.log(req.body);
@@ -33,6 +34,53 @@ app.post('/add/data', (req, res) => {
       throw err;
     });
 });
+
+app.get('/get/data', (req, res) => {
+  // findAll - 여러 데이터 조회, Array형태로 데이터 보냄 -> map 정상적 작동
+  Teacher.findAll({
+    // 특정 데이터 조회 시 사용
+    // where: { name: 'kmj' },
+    // 여러 조건 설정 - id가 1이거나  name이 minjeong인 조건
+    // 'Op.or'은 'Sequelized'에서 'OR연산자'를 사용해 데이터 조회하는 메소드
+    // where: { [Op.or]: [{ id: 1 }, { name: 'minjeong' }] },
+  })
+    // findOne - 하나의 데이터 조회, Object 형태로 데이터 전송 -> map 사용시 오류
+    /* 
+  Teacher.findOne({
+    where: { id: 4 },
+  })
+   */
+    .then((result) => {
+      res.send(result);
+    })
+    .catch((err) => {
+      throw err;
+    });
+});
+
+// 데이터 변경
+app.post('/modify/data', (req, res) => {
+  Teacher.update(
+    { name: req.body.modify.name },
+    {
+      where: { id: req.body.modify.id },
+    }
+    // 여러개의 데이터 값 변경
+    /* 
+    { name: 'minj' },
+    {
+      where: { [Op.or]: [{ id: 1 }, { name: 'ming' }] },
+    }
+     */
+  )
+    .then((result) => {
+      res.send(result);
+    })
+    .catch((err) => {
+      throw err;
+    });
+});
+
 // 포트 할당하기
 const PORT = process.env.PORT || 5000;
 

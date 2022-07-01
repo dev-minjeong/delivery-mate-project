@@ -1,43 +1,8 @@
-/* 
-import React, { Component } from 'react';
-import './App.css';
-import axios from 'axios';
-
-class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      host: '',
-    };
-  }
-
-  componentDidMount() {
-    this._getHost();
-  }
-
-  _getHost = async () => {
-    const res = await axios.get('/api/host');
-    this.setState({ host: res.data.host });
-  };
-
-  render() {
-    return (
-      <div className='App'>
-        <h3>
-          {' '}
-          Welcome to <u> {this.state.host} </u> Blog!{' '}
-        </h3>
-      </div>
-    );
-  }
-}
-
-export default App;
- */
-
 import './App.css';
 import axios from 'axios';
 import { useState, useEffect } from 'react';
+import React from 'react';
+import { async } from 'q';
 
 function App() {
   // const [host, setHost] = useState('');
@@ -65,10 +30,11 @@ function App() {
   // 데이터 추가
   const _addData = async (e) => {
     e.preventDefault();
+    const nameInput = name;
 
     const res = await axios('/add/data', {
       method: 'POST',
-      data: { data: name },
+      data: { data: nameInput },
       headers: new Headers(),
     });
     if (res.data) {
@@ -80,6 +46,7 @@ function App() {
     setName(e.target.value);
   };
 
+  // 데이터 받아오기
   const _getData = async () => {
     const res = await axios.get('/get/data');
     if (res.data[0] === undefined) {
@@ -91,10 +58,33 @@ function App() {
     setList(res.data);
   };
 
+  // 데이터 수정
+  const _modifyData = async (el) => {
+    const modify = prompt(`${el.name} 을 어떤 이름으로 변경하겠습니까?`);
+
+    if (modify !== null) {
+      const body = {
+        name: modify,
+        id: el.id,
+      };
+      const res = await axios('/modify/data', {
+        method: 'POST',
+        data: { modify: body },
+        headers: new Headers(),
+      });
+      if (res.data) {
+        alert(`데이터 수정!`);
+        return window.location.reload();
+      }
+    }
+  };
+
+  const dataList = list;
+
   return (
     <div className='App'>
       <h2>
-        Hello ~ <u>mj😛 !!</u>
+        Hello ~ <u>mj😛!!</u>
       </h2>
       <form method='POST' onSubmit={_addData}>
         <input type='text' maxLength='10' onChange={(e) => _nameUpdate(e)} />
@@ -123,21 +113,27 @@ function App() {
             <div>Other</div>
           </div>
         </div>
-        {list.length !== 0
-          ? list.map((el, key) => {
+        {dataList.length !== 0
+          ? dataList.map((el, key) => {
               return (
                 <div
                   key={key}
                   style={{
                     display: 'grid',
                     lineHeight: '40px',
-                    gridTemplateColumns: '32% 35%',
+                    gridTemplateColumns: '32% 35% 30%',
                     width: '50%',
                     marginLeft: '25%',
                   }}
                 >
                   <div>{el.id}</div>
                   <div>{el.name}</div>
+                  <div
+                    style={{ color: '#ababab' }}
+                    onClick={() => _modifyData(el)}
+                  >
+                    Modify
+                  </div>
                 </div>
               );
             })
