@@ -1,3 +1,14 @@
 axios는 react fetch 대용
 
 Sequelize 는 node.js 기반의 ORM -> 데이터베이스 깔끔하게 관리 가능
+
+MVC (Model, View, Controller) - 프로젝트 구성요소를 나누는 패턴
+* Model 
+  - Controller에게 받은 요청에 따라 데이터 관리.
+  - 데이터는 다시 Controller에게 전송.
+* Controller
+  - Client로부터 요청을 받아 데이터 가져올 시 Model에게 해당 데이터 요청.
+  - Model에게 받은 데이터는 View에게 전송 (조건에 맞게 전달 가능).  
+  - Client, Model, View 모두 접근 가능.
+* View
+  - Controller로부터 받은 데이터를 Client로 전송해 결과 나타냄.
