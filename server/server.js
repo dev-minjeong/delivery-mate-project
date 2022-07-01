@@ -8,6 +8,8 @@ const sequelize = require('./models').sequelize;
 const bodyParser = require('body-parser');
 
 sequelize.sync();
+// Sequelize 이용해 모든 테이블 초기화 하는 기능 -> 조심히 써야함
+// sequelize.sync({ force: true })
 
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -76,6 +78,18 @@ app.post('/modify/data', (req, res) => {
     .then((result) => {
       res.send(result);
     })
+    .catch((err) => {
+      throw err;
+    });
+});
+
+app.post('/delete/data', (req, res) => {
+  console.log(req.body.delete);
+  // destroy는 Sequelize를 이용해 데이터 삭제하는 메소드
+  Teacher.destroy({
+    where: { id: req.body.delete.id },
+  })
+    .then(res.sendStatus(200))
     .catch((err) => {
       throw err;
     });

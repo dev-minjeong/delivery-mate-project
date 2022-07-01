@@ -60,7 +60,7 @@ function App() {
 
   // 데이터 수정
   const _modifyData = async (el) => {
-    const modify = prompt(`${el.name} 을 어떤 이름으로 변경하겠습니까?`);
+    const modify = prompt(`${el.name}을 무엇으로 변경하겠습니까?`);
 
     if (modify !== null) {
       const body = {
@@ -74,6 +74,23 @@ function App() {
       });
       if (res.data) {
         alert(`데이터 수정!`);
+        return window.location.reload();
+      }
+    }
+  };
+
+  // 데이터 삭제
+  const _deleteData = async (el) => {
+    const remove = window.confirm(`${el.name}을 삭제하시겠습니까?`);
+    if (remove) {
+      const body = { id: el.id };
+      const res = await axios('/delete/data', {
+        method: 'POST',
+        data: { delete: body },
+        headers: new Headers(),
+      });
+      if (res.data) {
+        alert(`데이터 삭제!`);
         return window.location.reload();
       }
     }
@@ -121,7 +138,7 @@ function App() {
                   style={{
                     display: 'grid',
                     lineHeight: '40px',
-                    gridTemplateColumns: '32% 35% 30%',
+                    gridTemplateColumns: '32% 35% 20% 0%',
                     width: '50%',
                     marginLeft: '25%',
                   }}
@@ -133,6 +150,12 @@ function App() {
                     onClick={() => _modifyData(el)}
                   >
                     Modify
+                  </div>
+                  <div
+                    style={{ color: '#ababab' }}
+                    onClick={() => _deleteData(el)}
+                  >
+                    Delete
                   </div>
                 </div>
               );
