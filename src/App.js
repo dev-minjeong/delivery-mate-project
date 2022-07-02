@@ -1,8 +1,10 @@
 import './App.css';
 import axios from 'axios';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Component } from 'react';
 import React from 'react';
-import { async } from 'q';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+
+import { Home, Test } from './inc';
 
 function App() {
   // const [host, setHost] = useState('');
@@ -100,7 +102,13 @@ function App() {
 
   return (
     <div className='App'>
-      <h2>
+      <BrowserRouter basename={process.env.PUBLIC_URL}>
+        <Routes>
+          <Route path='/' element={<Home />}></Route>
+          <Route path='/test' element={<Test />}></Route>
+        </Routes>
+      </BrowserRouter>
+      {/* <h2>
         Hello ~ <u>mj😛!!</u>
       </h2>
       <form method='POST' onSubmit={_addData}>
@@ -161,7 +169,7 @@ function App() {
               );
             })
           : null}
-      </div>
+      </div> */}
     </div>
   );
 }
