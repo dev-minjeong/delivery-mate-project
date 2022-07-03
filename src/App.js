@@ -2,7 +2,7 @@ import './App.css';
 import axios from 'axios';
 import { useState, useEffect, Component } from 'react';
 import React from 'react';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Route, Routes, Link } from 'react-router-dom';
 
 import { Home, Test } from './inc';
 
@@ -106,7 +106,16 @@ function App() {
         <Routes>
           <Route path='/' element={<Home />}></Route>
           <Route path='/test' element={<Test />}></Route>
+          <Route path='/test/:data' element={<Test />}></Route>
         </Routes>
+        <ul>
+          <li>
+            <Link to='/'>Home</Link>
+          </li>
+          <li>
+            <Link to='/test'>Test</Link>
+          </li>
+        </ul>
       </BrowserRouter>
       {/* <h2>
         Hello ~ <u>mj😛!!</u>
