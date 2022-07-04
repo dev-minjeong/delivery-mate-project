@@ -28,6 +28,67 @@
   color: #61dafb;
 }
 
+.header {
+  display: grid;
+  grid-template-columns: 33% 33% auto;
+  border-bottom: solid 1px #ababab;
+}
+
+.btn_cursor {
+  cursor: pointer;
+}
+
+.link-title {
+  color: black;
+  text-decoration: none;
+}
+
+/* 로그인 */
+.login-title {
+  border-bottom: solid 1px #ababab;
+
+  margin: 0;
+  padding: 20px;
+}
+.login-div {
+  display: flex;
+  flex-direction: column;
+}
+.login-input {
+  margin-top: 20px;
+  padding: 0;
+}
+
+.login-input p {
+  font-weight: bold;
+  margin: 0;
+}
+
+.login-input input {
+  width: 92%;
+}
+
+.login-div {
+  text-align: left;
+  padding-left: 20px;
+}
+
+.login-submit {
+  display: flex;
+  align-items: center;
+  margin-top: 30px;
+  justify-content: center;
+}
+
+.login-submit div {
+  text-align: center;
+  margin-right: 20px;
+}
+
+.login-submit div input {
+  cursor: pointer;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);

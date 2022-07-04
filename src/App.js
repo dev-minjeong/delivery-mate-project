@@ -4,20 +4,22 @@ import { useState, useEffect, Component } from 'react';
 import React from 'react';
 import { BrowserRouter, Route, Routes, Link } from 'react-router-dom';
 
-import { Home, Test } from './inc';
+import { Home, Test, Header } from './inc';
 
 function App() {
   // const [host, setHost] = useState('');
-  const [name, setName] = useState('');
-  const [list, setList] = useState([]);
-  const [update, setUpdate] = useState(false);
+  // const [name, setName] = useState('');
+  // const [list, setList] = useState([]);
+  // const [update, setUpdate] = useState(false);
 
+  /* 
   useEffect(() => {
     // _getHost();
     // _dbTest();
     // _addData();
     _getData();
   }, []);
+   */
   /* 
   const _getHost = async () => {
     const res = await axios.get('/api/host');
@@ -30,6 +32,7 @@ function App() {
   };
  */
   // 데이터 추가
+  /* 
   const _addData = async (e) => {
     e.preventDefault();
     const nameInput = name;
@@ -47,8 +50,9 @@ function App() {
   const _nameUpdate = (e) => {
     setName(e.target.value);
   };
-
+ */
   // 데이터 받아오기
+  /* 
   const _getData = async () => {
     const res = await axios.get('/get/data');
     if (res.data[0] === undefined) {
@@ -59,8 +63,9 @@ function App() {
     }
     setList(res.data);
   };
-
-  // 데이터 수정
+ */
+  // 데이터
+  /* 
   const _modifyData = async (el) => {
     const modify = prompt(`${el.name}을 무엇으로 변경하겠습니까?`);
 
@@ -80,8 +85,9 @@ function App() {
       }
     }
   };
-
+ */
   // 데이터 삭제
+  /* 
   const _deleteData = async (el) => {
     const remove = window.confirm(`${el.name}을 삭제하시겠습니까?`);
     if (remove) {
@@ -99,9 +105,11 @@ function App() {
   };
 
   const dataList = list;
-
+ */
   return (
     <div className='App'>
+      <Header></Header>
+      {/* 
       <BrowserRouter basename={process.env.PUBLIC_URL}>
         <Routes>
           <Route path='/' element={<Home />}></Route>
@@ -118,6 +126,7 @@ function App() {
           </li>
         </ul>
       </BrowserRouter>
+       */}
       {/* <h2>
         Hello ~ <u>mj😛!!</u>
       </h2>
