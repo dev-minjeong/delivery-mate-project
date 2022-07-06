@@ -12,6 +12,8 @@ sequelize.query('SET NAMES utf8;');
 
 module.exports = {
   api: {
+    sendPw
+    /*
     getData: (callback) => {
       // findAll - 여러 데이터 조회, Array형태로 데이터 보냄 -> map 정상적 작동
       // where - 특정 데이터 조회 시 사용
@@ -24,6 +26,7 @@ module.exports = {
       /* Teacher.findOne({
           where: { id: 4 },
       }) */
+/* 
       Teacher.findAll()
         .then((result) => {
           callback(result);
@@ -50,10 +53,12 @@ module.exports = {
           name: body.modify.name,
         },
         { where: { id: body.modify.id } }
+         */
         // 여러개의 데이터 값 변경
         /* { name: 'minj' },
             { where: { [Op.or]: [{ id: 1 }, { name: 'ming' }] }} 
         */
+       /* 
       )
         .then((result) => {
           callback(result);
@@ -70,7 +75,7 @@ module.exports = {
         .then(callback(true))
         .catch((err) => {
           throw err;
-        });
+        }); */
     },
   },
 };

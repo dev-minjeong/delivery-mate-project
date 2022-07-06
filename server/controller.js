@@ -7,9 +7,17 @@ AWS.config.loadFromPath(
   path.join(__dirname, 'config', 'awsConfig.json')
 );
 
-// 모듈화 및 외부 접근 가능
 module.exports = {
-  // needs: () => upload,
+  api: {
+    sendPw: (req, res) => {
+      console.log(req.body);
+    },
+  },
+};
+
+// 모듈화 및 외부 접근 가능
+/* 
+module.exports = {
   api: {
     getData: (req, res) => {
       model.api.getData((data) => {
@@ -44,3 +52,4 @@ module.exports = {
     },
   },
 };
+ */

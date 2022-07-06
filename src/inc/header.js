@@ -1,6 +1,7 @@
 import { Route, Link, Routes } from 'react-router-dom';
 import React from 'react';
 import { useState, useEffect } from 'react';
+import axios from 'axios';
 import '../App.css';
 
 import Modal from 'react-awesome-modal';
@@ -9,6 +10,7 @@ function Header() {
   const [visible, setVisible] = useState(false);
   const [id, setId] = useState('');
   const [passWord, setPassWord] = useState('');
+  const [data, setData] = useState('');
 
   const openModal = () => {
     setVisible(true);
@@ -24,10 +26,17 @@ function Header() {
     const pwValue = document.getElementsByName('password')[0].value;
     setPassWord(pwValue);
   };
-
-  useEffect(() => {
-    console.log(`아이디: ${id} 비밀번호: ${passWord}`);
-  });
+  const selectUserData = async (e) => {
+    const userData = data;
+    const res = await axios('/send/pw', {
+      method: 'POST',
+      data: userData,
+      headers: new Headers(),
+    });
+    if (res.data) {
+      console.log(res.data);
+    }
+  };
 
   return (
     <div className='header'>
@@ -72,7 +81,11 @@ function Header() {
                 </div>
                 <div className='login-submit'>
                   <div>
-                    <input type='button' value='로그인'></input>
+                    <input
+                      type='button'
+                      value='로그인'
+                      onClick={() => selectUserData()}
+                    ></input>
                   </div>
                   <div>
                     <input
