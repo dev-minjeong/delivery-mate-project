@@ -16,3 +16,5 @@ MVC (Model, View, Controller) - 프로젝트 구성요소를 나누는 패턴
 query-string 라이브러리를 사용해 url로 넘기는 data를 객체형태로 받을 수 있음
 
 react-awsome-modal 을 사용해 리액트 모달 적용 가능
+
+sha256 모듈로 비밀번호 hash 작업 가능
