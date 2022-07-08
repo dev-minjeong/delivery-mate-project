@@ -15,7 +15,7 @@ let sequelize = new Sequelize(
   {
     define: {
       charset: 'utf8',
-      collate: 'utf8_bin',
+      collate: 'utf8_general_ci',
     },
   }
 );
@@ -31,8 +31,13 @@ db.sequelize
     console.log('unable to connection to the database', err);
   });
 
-db.Teacher = require('./teacher')(sequelize, Sequelize);
-db.Class = require('./class')(sequelize, Sequelize);
+db.Admin = require('./admin')(sequelize, Sequelize);
+
+db.secret = '(9*)5$&!3%^0%^@@2$1!#5@2!4';
+module.exports = db;
+
+// db.Teacher = require('./teacher')(sequelize, Sequelize);
+// db.Class = require('./class')(sequelize, Sequelize);
 
 /** 1대 1 관계 (Teacher(source모델) : Class(target모델)) - hasOne
  * 두개의 테이블이 하나의 foreignKey로 연결된 관계
@@ -52,6 +57,7 @@ db.Class.belongsTo(db.Teacher, {
 /** N대 M관계 (Teachers : Classes) - belongsToMany
  * 두개의 테이블에 여러개의 foreignKey로 이루어진 관계
  */
+/* 
 db.Teacher.belongsToMany(db.Class, {
   through: 'schedule',
   foreignKey: 'teacher_id',
@@ -60,6 +66,4 @@ db.Class.belongsToMany(db.Teacher, {
   through: 'schedule',
   foreignKey: 'class_id',
 });
-
-db.secret = '(9*)5$&!3%^0%^@@2$1!#5@2!4';
-module.exports = db;
+ */
