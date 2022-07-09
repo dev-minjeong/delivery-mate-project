@@ -1,6 +1,6 @@
 import './App.css';
-import axios from 'axios';
-import { useState, useEffect, Component } from 'react';
+// import axios from 'axios';
+// import { useState, useEffect, Component } from 'react';
 import React from 'react';
 import { BrowserRouter, Route, Routes, Link } from 'react-router-dom';
 
@@ -108,25 +108,13 @@ function App() {
  */
   return (
     <div className='App'>
-      <Header></Header>
-      {/* 
       <BrowserRouter basename={process.env.PUBLIC_URL}>
+        <Header></Header>
         <Routes>
           <Route path='/' element={<Home />}></Route>
-          <Route path='/test/:name/:age' element={<Test />}></Route>
-          <Route path='/test/:name' element={<Test />}></Route>
-          <Route path='/test' element={<Test />}></Route>
         </Routes>
-        <ul>
-          <li>
-            <Link to='/'>Home</Link>
-          </li>
-          <li>
-            <Link to='/test'>Test</Link>
-          </li>
-        </ul>
       </BrowserRouter>
-       */}
+
       {/* <h2>
         Hello ~ <u>mj😛!!</u>
       </h2>
