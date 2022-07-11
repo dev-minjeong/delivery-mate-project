@@ -20,7 +20,7 @@ app.use(bodyParser.json());
 app.use('/', router);
 
 // 포트 할당하기
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5001;
 
 // 서버 응답 출력
 
