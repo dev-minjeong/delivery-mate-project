@@ -1,4 +1,4 @@
-import { Route, Link, Routes } from 'react-router-dom';
+import { Route, Routes, Link } from 'react-router-dom';
 import React from 'react';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
@@ -26,13 +26,24 @@ function Header() {
     const pwValue = document.getElementsByName('password')[0].value;
     setPassWord(pwValue);
   };
+
   const selectUserData = async (e) => {
-    const userData = data;
+    const idTrim = id.trim();
+    const pwTrim = passWord.trim();
+
+    if (idTrim === '') {
+      return alert('아이디를 입력하세요');
+    } else if (pwTrim === '') {
+      return alert('비밀번호를 입력해주세요');
+    }
+
+    const obj = { id: idTrim, password: pwTrim };
     const res = await axios('/send/pw', {
       method: 'POST',
-      data: userData,
+      data: obj,
       headers: new Headers(),
     });
+
     if (res.data) {
       console.log(res.data);
     }
@@ -42,10 +53,6 @@ function Header() {
     <div className='header'>
       <div></div>
       <div className='logo'>
-        <Routes>
-          <Route path='/'></Route>
-        </Routes>
-
         <Link className='link-title' to='/'>
           <h3>Delivery Mate App</h3>
         </Link>
