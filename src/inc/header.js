@@ -62,6 +62,13 @@ function Header() {
     }
   };
 
+  const logout = () => {
+    if (window.confirm('로그아웃 하시겠습니까?')) {
+      sessionStorage.removeItem('login');
+      setLogin(false);
+    }
+  };
+
   return (
     <div className='header'>
       <div></div>
@@ -72,7 +79,9 @@ function Header() {
       </div>
       <div className='login'>
         {login ? (
-          <h5 className='btn-cursor'>관리자 로그아웃</h5>
+          <h5 className='btn-cursor' onClick={() => logout()}>
+            관리자 로그아웃
+          </h5>
         ) : (
           <h5 className='btn-cursor' onClick={() => openModal()}>
             관리자 로그인
