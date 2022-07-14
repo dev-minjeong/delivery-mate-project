@@ -17,6 +17,14 @@ module.exports = {
       const body = req.body;
       const hash = hashing.enc(body.id, body.password, salt);
 
+      model.api.searchInfo(body, hash, (result) => {
+        if (result[0]) {
+          res.send('로그인 성공!');
+        } else {
+          res.send('로그인 실패!');
+        }
+      });
+
       console.log(`1. salt 합한 값 : ${body.id}${body.password}${salt}`);
       console.log(`2. salt 값 : ${salt}`);
       console.log(`3. hash 결과 : ${hash}`);

@@ -10,6 +10,23 @@ const {
 } = require('./models');
 sequelize.query('SET NAMES utf8;');
 
+module.exports = {
+  api: {
+    searchInfo: (body, hash, callback) => {
+      Admin.findAll({
+        where: { [Op.and]: [{ user_id: body.id, password: hash }] }, // user_id와 password의 조건문들이 모두 일치 시 실행
+      })
+        .then((data) => {
+          // 아이디와 비번이 일치 시 실행
+          callback(data);
+        })
+        .catch((err) => {
+          throw err;
+        });
+    },
+  },
+};
+
 /*
 module.exports = {
   api: {
