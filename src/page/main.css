@@ -7,3 +7,46 @@
   border-left: 2px solid black;
   border-right: 2px solid black;
 }
+/* center section */
+.write {
+  padding: 20px;
+  padding-left: 30px;
+}
+.write div {
+  margin: 30px 0 0 0;
+}
+#title input {
+  width: 91%;
+  padding-bottom: 20px;
+  border: none;
+  font-size: 22px;
+  border-bottom: solid 1px #ababab;
+  font-weight: bold;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+#contents textarea {
+  width: 91%;
+  resize: none;
+  border: none;
+  height: 300px;
+  font-size: 15px;
+  font-family: Arial, Helvetica, sans-serif;
+}
+#title input:focus,
+#contents textarea:focus {
+  outline: none;
+}
+/* right section */
+#post-submit {
+  text-align: center;
+  margin-top: 20px;
+}
+#post-submit button {
+  width: 120px;
+  padding: 5px;
+  border-radius: 5px;
+  border: 1px solid #ababab;
+  cursor: pointer;
+  background-color: white;
+}

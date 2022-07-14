@@ -1,5 +1,6 @@
 import { Routes, Route, Link } from 'react-router-dom';
 import { Home, Write } from './index.js';
+import { RightWrite } from './right/index.js';
 
 import './main.css';
 
@@ -16,7 +17,9 @@ function Main() {
         </Routes>
       </div>
       <div id='main-right'>
-        <h3>Right Side</h3>
+        <Routes>
+          <Route path='/write' element={<RightWrite />}></Route>
+        </Routes>
       </div>
     </div>
   );

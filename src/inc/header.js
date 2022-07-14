@@ -80,7 +80,7 @@ function Header() {
       <div className='write'>
         {login ? (
           <h5>
-            <Link to='/write'>글쓰기</Link>
+            <Link to='/write'>게시글 작성</Link>
           </h5>
         ) : null}
       </div>
