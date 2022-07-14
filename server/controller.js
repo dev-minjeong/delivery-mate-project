@@ -18,11 +18,15 @@ module.exports = {
       const hash = hashing.enc(body.id, body.password, salt);
 
       model.api.searchInfo(body, hash, (result) => {
+        let obj = {};
         if (result[0]) {
-          res.send('로그인 성공!');
+          obj['suc'] = true;
+          obj['msg'] = '로그인 성공!';
         } else {
-          res.send('로그인 실패!');
+          obj['suc'] = false;
+          obj['msg'] = '로그인 실패!';
         }
+        res.send(obj);
       });
 
       console.log(`1. salt 합한 값 : ${body.id}${body.password}${salt}`);

@@ -10,7 +10,14 @@ function Header() {
   const [visible, setVisible] = useState(false);
   const [id, setId] = useState('');
   const [passWord, setPassWord] = useState('');
-  const [data, setData] = useState('');
+  const [login, setLogin] = useState(false);
+  // const [data, setData] = useState('');
+
+  useEffect(() => {
+    if (sessionStorage.login) {
+      setLogin(true);
+    }
+  }, []);
 
   const openModal = () => {
     setVisible(true);
@@ -45,20 +52,32 @@ function Header() {
     });
 
     if (res.data) {
-      console.log(res.data);
+      console.log(res.data.msg);
+
+      if (res.data.suc) {
+        sessionStorage.setItem('login', true);
+        setLogin(true);
+        closeModal();
+      }
     }
   };
 
   return (
     <div className='header'>
       <div></div>
-      <div className='logo'>
+      <div className='logo btn-cusor'>
         <Link className='link-title' to='/'>
           <h3>Delivery Mate App</h3>
         </Link>
       </div>
       <div className='login'>
-        <h5 onClick={() => openModal()}>로그인</h5>
+        {login ? (
+          <h5 className='btn-cursor'>관리자 로그아웃</h5>
+        ) : (
+          <h5 className='btn-cursor' onClick={() => openModal()}>
+            관리자 로그인
+          </h5>
+        )}
         <Modal
           visible={visible}
           width='400'

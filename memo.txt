@@ -18,3 +18,9 @@ query-string 라이브러리를 사용해 url로 넘기는 data를 객체형태�
 react-awsome-modal 을 사용해 리액트 모달 적용 가능
 
 sha256 모듈로 비밀번호 hash 작업 가능
+
+localStorage와 sessionStorage
+localStorage - 사용자가 추가한 데이터를 직접적으로 삭제 안할 경우 
+               웹 브라우저 종료해도 해당 값 그대로 유지
+sessionStorage - 사용자가 추가한 데이터를 삭제하지 않아도 웹 브라우저 
+                 종료와 동시에 해당 데이터 삭제됨
