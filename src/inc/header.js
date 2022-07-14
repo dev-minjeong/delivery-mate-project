@@ -58,6 +58,12 @@ function Header() {
         sessionStorage.setItem('login', true);
         setLogin(true);
         closeModal();
+
+        return alert(`안녕하세요 ${idTrim}님!`);
+      } else {
+        return alert(
+          '아이디 및 비밀번호가 일치히지 않습니다. 다시 입력해주세요!'
+        );
       }
     }
   };
@@ -95,7 +101,7 @@ function Header() {
           onClickAway={() => closeModal()}
         >
           <div>
-            <h4 className='login login-title'>로그인</h4>
+            <h4 className='login login-title'>관리자 로그인</h4>
             <form>
               <div className='login-div'>
                 <div className='login-input'>
@@ -109,7 +115,7 @@ function Header() {
                 <div className='login-input'>
                   <p>비밀번호</p>
                   <input
-                    type='text'
+                    type='password'
                     name='password'
                     onChange={() => changePW()}
                   ></input>
