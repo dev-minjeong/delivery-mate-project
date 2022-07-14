@@ -4,7 +4,8 @@ import './App.css';
 import React from 'react';
 import { BrowserRouter, Route, Routes, Link } from 'react-router-dom';
 
-import { Home, Test, Header } from './inc';
+import { Header } from './inc';
+import { Main } from './page/index.js';
 
 function App() {
   // const [host, setHost] = useState('');
@@ -110,9 +111,7 @@ function App() {
     <div className='App'>
       <BrowserRouter basename={process.env.PUBLIC_URL}>
         <Header></Header>
-        <Routes>
-          <Route path='/' element={<Home />}></Route>
-        </Routes>
+        <Main></Main>
       </BrowserRouter>
 
       {/* <h2>

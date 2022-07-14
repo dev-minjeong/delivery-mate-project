@@ -77,7 +77,13 @@ function Header() {
 
   return (
     <div className='header'>
-      <div></div>
+      <div className='write'>
+        {login ? (
+          <h5>
+            <Link to='/write'>글쓰기</Link>
+          </h5>
+        ) : null}
+      </div>
       <div className='logo btn-cusor'>
         <Link className='link-title' to='/'>
           <h3>Delivery Mate App</h3>

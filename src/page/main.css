@@ -1,0 +1,9 @@
+/* 메인 구역 */
+.main {
+  display: flex;
+  justify-content: space-between;
+}
+#main-center {
+  border-left: 2px solid black;
+  border-right: 2px solid black;
+}
