@@ -29,12 +29,12 @@
 }
 
 .header {
-  display: grid;
-  grid-template-columns: 33% 33% auto;
+  display: flex;
+  justify-content: space-around;
   border-bottom: solid 1px #ababab;
 }
 
-.btn_cursor {
+.btn-cursor {
   cursor: pointer;
 }
 
@@ -43,7 +43,7 @@
   text-decoration: none;
 }
 
-/* 로그인 */
+/* 로그인 구역 */
 .login-title {
   border-bottom: solid 1px #ababab;
 
