@@ -34,6 +34,11 @@ module.exports = {
       console.log(`3. hash 결과 : ${hash}`);
     },
   },
+  add: {
+    board: (req, res) => {
+      console.log(req.body);
+    },
+  },
 };
 
 // 모듈화 및 외부 접근 가능
