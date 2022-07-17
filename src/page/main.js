@@ -1,5 +1,5 @@
 import { Routes, Route, Link } from 'react-router-dom';
-import { Home, Write } from './index.js';
+import { Home, Write, List } from './index.js';
 import { RightWrite } from './right/index.js';
 
 import './main.css';
@@ -12,7 +12,7 @@ function Main() {
       </div>
       <div id='main-center'>
         <Routes>
-          <Route path='/' element={<Home />}></Route>
+          <Route path='/' element={<List />}></Route>
           <Route path='/write' element={<Write />}></Route>
         </Routes>
       </div>

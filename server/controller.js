@@ -5,8 +5,6 @@ const salt = require(path.join(__dirname, 'config', 'db.json')).salt;
 
 const hashing = require(path.join(__dirname, 'config', 'hashing.js'));
 
-
-
 // const AWS = require('aws-sdk');
 // AWS.config.loadFromPath(
 // loadFromPath로 json파일을 path모듈로 연결
@@ -39,11 +37,20 @@ module.exports = {
     board: (req, res) => {
       const body = req.body;
 
-      model.add.board(body, result => {
-        if(result) {
+      model.add.board(body, (result) => {
+        if (result) {
           res.send(true);
         }
-      })
+      });
+    },
+  },
+  get: {
+    board: (req, res) => {
+      model.get.board((result) => {
+        if (result) {
+          res.send(result);
+        }
+      });
     },
   },
 };

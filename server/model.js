@@ -41,6 +41,17 @@ module.exports = {
         });
     },
   },
+  get: {
+    board: (callback) => {
+      Board.findAll()
+        .then((data) => {
+          callback(data);
+        })
+        .catch((err) => {
+          throw err;
+        });
+    },
+  },
 };
 
 /*
