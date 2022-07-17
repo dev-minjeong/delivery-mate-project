@@ -5,6 +5,8 @@ const salt = require(path.join(__dirname, 'config', 'db.json')).salt;
 
 const hashing = require(path.join(__dirname, 'config', 'hashing.js'));
 
+
+
 // const AWS = require('aws-sdk');
 // AWS.config.loadFromPath(
 // loadFromPath로 json파일을 path모듈로 연결
@@ -28,15 +30,20 @@ module.exports = {
         }
         res.send(obj);
       });
-
-      console.log(`1. salt 합한 값 : ${body.id}${body.password}${salt}`);
-      console.log(`2. salt 값 : ${salt}`);
-      console.log(`3. hash 결과 : ${hash}`);
+      // console.log(`1. salt 합한 값 : ${body.id}${body.password}${salt}`);
+      // console.log(`2. salt 값 : ${salt}`);
+      // console.log(`3. hash 결과 : ${hash}`);
     },
   },
   add: {
     board: (req, res) => {
-      console.log(req.body);
+      const body = req.body;
+
+      model.add.board(body, result => {
+        if(result) {
+          res.send(true);
+        }
+      })
     },
   },
 };
