@@ -3,9 +3,16 @@
   display: flex;
   justify-content: space-between;
 }
+#main-left {
+  flex-basis: 20%;
+}
 #main-center {
   border-left: 2px solid black;
   border-right: 2px solid black;
+  flex-basis: 60%;
+}
+#main-right {
+  flex-basis: 20%;
 }
 /* center section */
 .write {
@@ -49,4 +56,40 @@
   border: 1px solid #ababab;
   cursor: pointer;
   background-color: white;
+}
+
+/* 게시판 리스트 */
+.list {
+  padding: 20px;
+  min-height: 300px;
+  margin: 0 15px;
+}
+.list-title {
+  border-bottom: 1px solid #ababab;
+  color: #ababab;
+}
+
+.list-box {
+  display: flex;
+}
+.list-box div {
+  padding: 10px;
+}
+.list-data {
+  line-height: 30px;
+}
+.list-title div:nth-child(1),
+.list-data div:nth-child(1) {
+  flex-basis: 70%;
+}
+.list-title div:nth-child(2),
+.list-data div:nth-child(2) {
+  flex-basis: 15%;
+}
+.list-title div:nth-child(3),
+.list-data div:nth-child(3) {
+  flex-basis: 15%;
+}
+.list-data .acenter {
+  text-align: center;
 }
