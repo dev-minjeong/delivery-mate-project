@@ -62,7 +62,6 @@
 .list {
   padding: 20px;
   min-height: 300px;
-  margin: 0 15px;
 }
 .list-title {
   border-bottom: 1px solid #ababab;
@@ -92,19 +91,50 @@
 .list-data .acenter {
   text-align: center;
 }
+.not-data {
+  margin: 10px 0;
+  color: #ababab;
+  text-align: center;
+}
 
 /* 게시판 페이징 */
 .paging-div {
   display: flex;
   margin-top: 10px;
+  justify-content: space-between;
 }
 .paging-div div {
   padding: 15px;
   text-align: center;
+}
+.paging-div ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
 .page-num {
   list-style: none;
   display: inline-block;
   cursor: pointer;
   margin-right: 15px;
+}
+.paging-div div:nth-child(1) {
+  flex-basis: 15%;
+}
+.paging-div div:nth-child(2) {
+  flex-basis: 70%;
+}
+.paging-div div:nth-child(3) {
+  flex-basis: 15%;
+}
+
+/* 검색창 */
+.search-input {
+  padding: 2px;
+  margin-right: 10px;
+  min-width: 50px;
+}
+.search-submit {
+  position: absolute;
+  cursor: pointer;
 }

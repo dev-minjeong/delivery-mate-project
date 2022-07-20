@@ -2,13 +2,17 @@ import React from 'react';
 import axios from 'axios';
 
 import './main.css';
+import { Search } from './index.js';
+
 import { useState, useEffect } from 'react';
+import queryString from 'query-string';
 
 function List() {
   const [data, setData] = useState([]);
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
   const [allPage, setAllPage] = useState([]);
+  const [search, setSearch] = useState('');
 
   useEffect(() => {
     getListData();
@@ -16,15 +20,26 @@ function List() {
   }, []);
 
   const getListData = async () => {
+    let search = queryString.parse(window.location.search);
+    console.log(window);
+    if (search) {
+      search = search.search;
+    }
+    console.log(search);
+
     // Board 테이블 데이터 전체 수
-    const total_cnt = await axios('/get/board_cnt');
-    console.log(total_cnt.data.cnt);
+    const total_cnt = await axios('/get/board_cnt', {
+      method: 'POST',
+      headers: new Headers(),
+      data: { search: search },
+    });
+    // console.log(total_cnt.data.cnt);
 
     // 데이터 불러오기
     const total_list = await axios('/get/board', {
       method: 'POST',
       headers: new Headers(),
-      data: { limit: limit, page: settingPage() },
+      data: { limit: limit, page: settingPage(), search: search },
     });
 
     // 전체 페이지 수 구하기
@@ -33,10 +48,11 @@ function List() {
     for (let i = 1; i <= Math.ceil(total_cnt.data.cnt / limit); i++) {
       page_arr.push(i);
     }
-    console.log(page_arr);
+    // console.log(page_arr);
 
     setData(total_list);
     setAllPage(page_arr);
+    setSearch(search);
   };
 
   const changePage = (el) => {
@@ -54,7 +70,7 @@ function List() {
     setPage(1);
     return 1;
   };
-  console.log(data);
+  // console.log(data);
   const list = data.data;
   return (
     <div className='list'>
@@ -63,17 +79,25 @@ function List() {
         <div>조회수</div>
         <div className='acenter'>날짜</div>
       </div>
-      {list
-        ? list.map((el, key) => {
-            return (
-              <div className='list-data list-box' key={key}>
-                <div>{el.title}</div>
-                <div></div>
-                <div className='acenter'>{el.date.slice(0, 10)}</div>
-              </div>
-            );
-          })
-        : null}
+      {list && list.length > 0 ? (
+        list.map((el, key) => {
+          return (
+            <div className='list-data list-box' key={key}>
+              <div>{el.title}</div>
+              <div></div>
+              <div className='acenter'>{el.date.slice(0, 10)}</div>
+            </div>
+          );
+        })
+      ) : (
+        <div className='not-data acenter'>
+          {search !== '' ? (
+            <div>{`'${search}'에 대한 `}검색 결과가 없습니다</div>
+          ) : (
+            <div>게시글이 없습니다</div>
+          )}
+        </div>
+      )}
       <div className='paging-div'>
         <div></div>
         <div>
@@ -96,6 +120,7 @@ function List() {
                 })
               : null}
           </ul>
+          <Search search={search}></Search>
         </div>
         <div></div>
       </div>
