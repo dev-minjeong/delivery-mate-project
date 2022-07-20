@@ -68,7 +68,6 @@
   border-bottom: 1px solid #ababab;
   color: #ababab;
 }
-
 .list-box {
   display: flex;
 }
@@ -92,4 +91,20 @@
 }
 .list-data .acenter {
   text-align: center;
+}
+
+/* 게시판 페이징 */
+.paging-div {
+  display: flex;
+  margin-top: 10px;
+}
+.paging-div div {
+  padding: 15px;
+  text-align: center;
+}
+.page-num {
+  list-style: none;
+  display: inline-block;
+  cursor: pointer;
+  margin-right: 15px;
 }
