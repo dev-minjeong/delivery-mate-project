@@ -6,6 +6,7 @@ import { Search } from './index.js';
 
 import { useState, useEffect } from 'react';
 import queryString from 'query-string';
+import { Link } from 'react-router-dom';
 
 function List() {
   const [data, setData] = useState([]);
@@ -81,9 +82,12 @@ function List() {
       </div>
       {list && list.length > 0 ? (
         list.map((el, key) => {
+          const view_url = '/view/' + el.board_id;
           return (
             <div className='list-data list-box' key={key}>
-              <div>{el.title}</div>
+              <div>
+                <Link to={view_url}>{el.title}</Link>
+              </div>
               <div></div>
               <div className='acenter'>{el.date.slice(0, 10)}</div>
             </div>

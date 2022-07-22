@@ -10,4 +10,6 @@ router.post('/get/board', controller.get.board);
 
 router.post('/get/board_cnt', controller.get.board_cnt);
 
+router.post('/get/board_data', controller.get.board_data);
+
 module.exports = router;

@@ -1,5 +1,5 @@
-import { Routes, Route, Link } from 'react-router-dom';
-import { Home, Write, List } from './index.js';
+import { Routes, Route } from 'react-router-dom';
+import { Write, List, View } from './index.js';
 import { RightWrite } from './right/index.js';
 
 import './main.css';
@@ -14,6 +14,7 @@ function Main() {
         <Routes>
           <Route path='/' element={<List />}></Route>
           <Route path='/write' element={<Write />}></Route>
+          <Route path='/view/:data' element={<View />}></Route>
         </Routes>
       </div>
       <div id='main-right'>

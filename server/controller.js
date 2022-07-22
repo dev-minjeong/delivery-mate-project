@@ -62,6 +62,14 @@ module.exports = {
         res.send(result);
       });
     },
+    board_data: (req, res) => {
+      const body = req.body;
+
+      model.get.board_data(body, (data) => {
+        const result = { data: data };
+        res.send(result);
+      });
+    },
   },
 };
 
