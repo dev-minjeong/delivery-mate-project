@@ -25,8 +25,8 @@ function List() {
     console.log(window);
     if (search) {
       search = search.search;
+      console.log(search);
     }
-    console.log(search);
 
     // Board 테이블 데이터 전체 수
     const total_cnt = await axios('/get/board_cnt', {
