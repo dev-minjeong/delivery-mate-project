@@ -138,3 +138,21 @@
   position: absolute;
   cursor: pointer;
 }
+
+/* 게시판 상세페이지 */
+.date-box {
+  text-align: right;
+  font-size: 13px;
+  color: #ababab;
+  margin: 0 10px 10px 0;
+}
+.top-title #title-txt {
+  border: none;
+  padding-bottom: 0px;
+}
+.top-title {
+  border-bottom: 1px solid #ababab;
+}
+#content-txt {
+  border: none;
+}
