@@ -22,7 +22,7 @@ function List() {
 
   const getListData = async () => {
     let search = queryString.parse(window.location.search);
-    console.log(window);
+    // console.log(window);
     if (search) {
       search = search.search;
       console.log(search);
@@ -49,8 +49,6 @@ function List() {
     for (let i = 1; i <= Math.ceil(total_cnt.data.cnt / limit); i++) {
       page_arr.push(i);
     }
-    // console.log(page_arr);
-
     setData(total_list);
     setAllPage(page_arr);
     setSearch(search);
@@ -89,7 +87,7 @@ function List() {
                 <Link to={view_url}>{el.title}</Link>
               </div>
               <div></div>
-              <div className='acenter'>{el.date.slice(0, 10)}</div>
+              <div className='acenter'>{el.date?.slice(0, 10)}</div>
             </div>
           );
         })

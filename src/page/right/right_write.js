@@ -20,7 +20,6 @@ function RightWrite() {
     });
     if (res.data) {
       alert('글이 게시되었습니다');
-      console.log();
       return window.location.replace('/');
     }
   };

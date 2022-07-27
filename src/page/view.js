@@ -10,12 +10,13 @@ const View = () => {
   const [date, setDate] = useState('');
 
   useEffect(() => {
-    gettingData();
+    const board_id = board_data.data;
+    gettingData(board_id);
+    addViewCnt(board_id);
   }, []);
 
   // 리스트 데이터 조회
-  const gettingData = async () => {
-    const board_id = board_data.data;
+  const gettingData = async (board_id) => {
     const getData = await axios('/get/board_data', {
       method: 'POST',
       headers: new Headers(),
@@ -30,6 +31,15 @@ const View = () => {
     setData(getData.data);
     setDate(date);
     // return { data: setData(getData), date: setDate(date) };
+  };
+
+  // 조회수 카운트
+  const addViewCnt = async (board_id) => {
+    const addView = await axios('/update/view_cnt', {
+      method: 'POST',
+      headers: new Headers(),
+      data: { id: board_id },
+    });
   };
 
   return (

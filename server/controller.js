@@ -20,7 +20,7 @@ module.exports = {
       model.api.searchInfo(body, hash, (result) => {
         let obj = {};
         if (result[0]) {
-          obj['suc'] = true;
+          obj['suc'] = result[0].dataValues;
           obj['msg'] = '로그인 성공!';
         } else {
           obj['suc'] = false;
@@ -66,8 +66,20 @@ module.exports = {
       const body = req.body;
 
       model.get.board_data(body, (data) => {
+        // res.send(data);
         const result = { data: data };
         res.send(result);
+      });
+    },
+  },
+  update: {
+    view_cnt: (req, res) => {
+      const body = req.body;
+
+      model.update.view_cnt(body, (result) => {
+        if (result) {
+          res.send(true);
+        }
       });
     },
   },

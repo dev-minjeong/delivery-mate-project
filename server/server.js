@@ -3,11 +3,13 @@ const express = require('express');
 const app = express();
 // route.js에 접근
 const router = require('./route');
+// cors 다른 포트 설정 에러 예방
 
 // sequelize 연동하기
 const sequelize = require('./models').sequelize;
 // 클라이언트가 보내는 데이터 읽기 위한 모듈
 const bodyParser = require('body-parser');
+// 쿠키 기능 적용
 
 sequelize.sync();
 // Sequelize 이용해 모든 테이블 초기화 하는 기능 -> 조심히 써야함

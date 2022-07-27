@@ -3,6 +3,7 @@
 // sequelize 연동하기
 const sequelize = require('./models').sequelize;
 
+const { data } = require('browserslist');
 // Teacher 테이블을 서버로 가져와 읽을 수 있도록 함
 const {
   Admin,
@@ -32,7 +33,24 @@ module.exports = {
         title: body.title,
         contents: body.contents,
         date: new Date(),
+        view_cnt: 0,
       })
+        .then((data) => {
+          callback(true);
+        })
+        .catch((err) => {
+          throw err;
+        });
+    },
+  },
+  update: {
+    view_cnt: (body, callback) => {
+      Board.update(
+        { view_cnt: sequelize.literal('view_cnt + 1') },
+        {
+          where: { board_id: body.id },
+        }
+      )
         .then((data) => {
           callback(true);
         })
