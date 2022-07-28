@@ -1,6 +1,7 @@
 import { Routes, Route } from 'react-router-dom';
 import { Write, List, View } from './index.js';
 import { RightWrite } from './right/index.js';
+import { Category } from './left/index.js';
 
 import './main.css';
 
@@ -8,7 +9,9 @@ function Main() {
   return (
     <div className='main'>
       <div id='main-left'>
-        <h3>Left Side</h3>
+        <Routes>
+          <Route path='/' element={<Category />}></Route>
+        </Routes>
       </div>
       <div id='main-center'>
         <Routes>

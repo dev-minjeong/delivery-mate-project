@@ -156,3 +156,20 @@
 #content-txt {
   border: none;
 }
+
+/* left - 카테고리 메뉴 */
+.category {
+  padding: 20px 0;
+}
+.category ul {
+  margin: 0;
+  padding: 0;
+  line-height: 30px;
+}
+.category ul li {
+  list-style: none;
+}
+.category ul li u {
+  text-decoration: none;
+  cursor: pointer;
+}

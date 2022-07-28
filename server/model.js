@@ -8,6 +8,7 @@ const { data } = require('browserslist');
 const {
   Admin,
   Board,
+  Category,
   Sequelize: { Op },
 } = require('./models');
 sequelize.query('SET NAMES utf8;');
@@ -110,6 +111,15 @@ module.exports = {
       Board.findAll({
         where: { board_id: body.id },
       })
+        .then((result) => {
+          callback(result);
+        })
+        .catch((err) => {
+          throw err;
+        });
+    },
+    category: (callback) => {
+      Category.findAll()
         .then((result) => {
           callback(result);
         })

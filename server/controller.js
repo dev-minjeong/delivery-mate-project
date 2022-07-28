@@ -71,6 +71,11 @@ module.exports = {
         res.send(result);
       });
     },
+    category: (req, res) => {
+      model.get.category((data) => {
+        res.send(data);
+      });
+    },
   },
   update: {
     view_cnt: (req, res) => {
