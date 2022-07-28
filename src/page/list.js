@@ -86,7 +86,7 @@ function List() {
               <div>
                 <Link to={view_url}>{el.title}</Link>
               </div>
-              <div></div>
+              <div className='views'>{el.view_cnt}</div>
               <div className='acenter'>{el.date?.slice(0, 10)}</div>
             </div>
           );
