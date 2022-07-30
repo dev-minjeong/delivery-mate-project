@@ -75,6 +75,7 @@ module.exports = {
           contents: {
             [Op.like]: search,
           },
+          koreanFood_id: body.category,
         },
         limit: body.page * body.limit,
         offset: (body.page - 1) * body.limit,
@@ -102,6 +103,7 @@ module.exports = {
           contents: {
             [Op.like]: search,
           },
+          koreanFood_id: body.category,
         },
       }).then((result) => {
         callback(result);

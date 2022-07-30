@@ -8,7 +8,7 @@ import { useState, useEffect } from 'react';
 import queryString from 'query-string';
 import { Link } from 'react-router-dom';
 
-function List() {
+const List = (props) => {
   const [data, setData] = useState([]);
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
@@ -21,8 +21,11 @@ function List() {
   }, []);
 
   const getListData = async () => {
+    let { category } = props;
+    if (sessionStorage.getItem('category')) {
+      category = sessionStorage.getItem('category');
+    }
     let search = queryString.parse(window.location.search);
-    // console.log(window);
     if (search) {
       search = search.search;
       console.log(search);
@@ -32,7 +35,7 @@ function List() {
     const total_cnt = await axios('/get/board_cnt', {
       method: 'POST',
       headers: new Headers(),
-      data: { search: search },
+      data: { search: search, category: category },
     });
     // console.log(total_cnt.data.cnt);
 
@@ -40,7 +43,12 @@ function List() {
     const total_list = await axios('/get/board', {
       method: 'POST',
       headers: new Headers(),
-      data: { limit: limit, page: settingPage(), search: search },
+      data: {
+        limit: limit,
+        page: settingPage(),
+        search: search,
+        category: category,
+      },
     });
 
     // 전체 페이지 수 구하기
@@ -128,6 +136,6 @@ function List() {
       </div>
     </div>
   );
-}
+};
 
 export default List;
