@@ -2,7 +2,7 @@ import { Routes, Route } from 'react-router-dom';
 import { Write, List, View } from './index.js';
 import { RightWrite } from './right/index.js';
 import { Category } from './left/index.js';
-import { useState, Component } from 'react';
+import { useState } from 'react';
 
 import './main.css';
 
@@ -13,7 +13,9 @@ function Main() {
     setCategory(target);
     sessionStorage.setItem('category', target);
   };
-  const withPrps = (Element, props) => {
+  category === null || console.log(category);
+
+  const withProps = (Element, props) => {
     return function (matchProps) {
       return <Element {...props} {...matchProps} />;
     };
@@ -29,17 +31,12 @@ function Main() {
           ></Route>
         </Routes>
       </div>
-      <div>
+      <div id='main-center'>
         <Routes>
           <Route
             path='/'
-            element={withPrps(List, { category: category })}
+            element={withProps(List, { category: category })}
           ></Route>
-        </Routes>
-      </div>
-      <div id='main-center'>
-        <Routes>
-          <Route path='/' element={<List />}></Route>
           <Route path='/write' element={<Write />}></Route>
           <Route path='/view/:data' element={<View />}></Route>
         </Routes>
