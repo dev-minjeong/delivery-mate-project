@@ -6,18 +6,11 @@ import '../App.css';
 
 import Modal from 'react-awesome-modal';
 
-function Header() {
+const Header = (login, handleLogin, handleLogout) => {
   const [visible, setVisible] = useState(false);
   const [id, setId] = useState('');
   const [passWord, setPassWord] = useState('');
-  const [login, setLogin] = useState(false);
   // const [data, setData] = useState('');
-
-  useEffect(() => {
-    if (sessionStorage.login) {
-      setLogin(true);
-    }
-  }, []);
 
   const openModal = () => {
     setVisible(true);
@@ -55,8 +48,7 @@ function Header() {
       console.log(res.data.msg);
 
       if (res.data.suc) {
-        sessionStorage.setItem('login', true);
-        setLogin(true);
+        handleLogin();
         closeModal();
 
         return alert(`안녕하세요 ${idTrim}님!`);
@@ -70,11 +62,9 @@ function Header() {
 
   const logout = () => {
     if (window.confirm('로그아웃 하시겠습니까?')) {
-      sessionStorage.removeItem('login');
-      setLogin(false);
+      handleLogout();
     }
   };
-
   return (
     <div className='header'>
       <div className='write'>
@@ -149,5 +139,5 @@ function Header() {
       </div>
     </div>
   );
-}
+};
 export default Header;

@@ -6,7 +6,7 @@ import { useState, Component } from 'react';
 
 import './main.css';
 
-function Main() {
+const Main = (login) => {
   const [category, setCategory] = useState('');
 
   const changeCategory = (target) => {
@@ -28,7 +28,7 @@ function Main() {
         <Routes>
           <Route
             path='/'
-            element={<Category changeCategory={changeCategory} />}
+            element={<Category changeCategory={changeCategory} login={login} />}
           ></Route>
         </Routes>
       </div>
@@ -49,5 +49,5 @@ function Main() {
       </div>
     </div>
   );
-}
+};
 export default Main;
