@@ -12,9 +12,9 @@ function Category({ changeCategory }) {
 
   const getCategoryData = async () => {
     const getData = await axios('/get/category');
-
     setCategory(getData.data);
   };
+
   return (
     <div className='category'>
       <ul>

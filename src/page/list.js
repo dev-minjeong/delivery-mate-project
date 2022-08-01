@@ -28,7 +28,6 @@ const List = (props) => {
     let search = queryString.parse(window.location.search);
     if (search) {
       search = search.search;
-      console.log(search);
     }
 
     // Board 테이블 데이터 전체 수
@@ -77,7 +76,6 @@ const List = (props) => {
     setPage(1);
     return 1;
   };
-  // console.log(data);
   const list = data.data;
   return (
     <div className='list'>

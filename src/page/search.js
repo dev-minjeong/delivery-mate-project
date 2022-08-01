@@ -1,6 +1,6 @@
 import './main.css';
 
-function Search(props) {
+const Search = (props) => {
   const { search } = props;
   if (search) {
     document.getElementsByName('search')[0].value = search;
@@ -19,6 +19,6 @@ function Search(props) {
       </form>
     </div>
   );
-}
+};
 
 export default Search;

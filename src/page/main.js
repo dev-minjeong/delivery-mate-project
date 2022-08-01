@@ -2,7 +2,7 @@ import { Routes, Route } from 'react-router-dom';
 import { Write, List, View } from './index.js';
 import { RightWrite } from './right/index.js';
 import { Category } from './left/index.js';
-import { useState } from 'react';
+import { useState, Component } from 'react';
 
 import './main.css';
 
@@ -15,11 +15,12 @@ function Main() {
   };
   category === null || console.log(category);
 
-  const withProps = (Element, props) => {
+  const withProps = (Component, props) => {
     return function (matchProps) {
-      return <Element {...props} {...matchProps} />;
+      return <Component {...props} {...matchProps} />;
     };
   };
+  const WithPropsList = withProps(List, { category: category });
 
   return (
     <div className='main'>
@@ -33,10 +34,10 @@ function Main() {
       </div>
       <div id='main-center'>
         <Routes>
-          <Route
-            path='/'
-            element={withProps(List, { category: category })}
-          ></Route>
+          {/* <Route path='/' element={<List />}></Route> */}
+          <Route path='/' element={<WithPropsList />}></Route>
+        </Routes>
+        <Routes>
           <Route path='/write' element={<Write />}></Route>
           <Route path='/view/:data' element={<View />}></Route>
         </Routes>
