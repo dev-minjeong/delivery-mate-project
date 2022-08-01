@@ -2,6 +2,7 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 
 import '../main.css';
+import { Link } from 'react-router-dom';
 
 function Category({ changeCategory }) {
   const [category, setCategory] = useState([]);
@@ -19,14 +20,18 @@ function Category({ changeCategory }) {
     <div className='category'>
       <ul>
         <li>
-          <u onClick={() => changeCategory('')}>전체보기</u>
+          <Link to='/' onClick={() => changeCategory('')}>
+            전체보기
+          </Link>
           <hr></hr>
         </li>
         {category.length > 0
           ? category.map((el, key) => {
               return (
                 <li key={key}>
-                  <u onClick={() => changeCategory(el.id)}>{el.name}</u>
+                  <Link to='/' onClick={() => changeCategory(el.id)}>
+                    {el.name}
+                  </Link>
                 </li>
               );
             })
