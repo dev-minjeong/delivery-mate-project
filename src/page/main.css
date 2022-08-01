@@ -169,7 +169,12 @@
 .category ul li {
   list-style: none;
 }
-.category ul li u {
+.category ul li a {
+  list-style: none;
+  color: black;
   text-decoration: none;
-  cursor: pointer;
+}
+.category ul li .pre-food {
+  font-weight: bold;
+  color: indianred;
 }

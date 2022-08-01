@@ -37,11 +37,11 @@ db.Category = require('./category')(sequelize, Sequelize);
 
 // 1대 M관계
 db.Category.hasMany(db.Board, {
-  foreignKey: 'koreanFood_id',
+  foreignKey: 'food_id',
   sourceKey: 'id',
 });
 db.Board.belongsTo(db.Category, {
-  foreignKey: 'koreanFood_id',
+  foreignKey: 'food_id',
   targetKey: 'id',
 });
 

@@ -16,11 +16,20 @@ function Category({ changeCategory }) {
     setCategory(getData.data);
   };
 
+  let pre_food = '';
+  if (sessionStorage.getItem('category')) {
+    pre_food = Number(sessionStorage.getItem('category'));
+  }
+
   return (
     <div className='category'>
       <ul>
         <li>
-          <Link to='/' onClick={() => changeCategory('')}>
+          <Link
+            to='/'
+            className={pre_food === '' ? 'pre-food' : null}
+            onClick={() => changeCategory('')}
+          >
             전체보기
           </Link>
           <hr></hr>
@@ -29,7 +38,11 @@ function Category({ changeCategory }) {
           ? category.map((el, key) => {
               return (
                 <li key={key}>
-                  <Link to='/' onClick={() => changeCategory(el.id)}>
+                  <Link
+                    to='/'
+                    className={pre_food === el.id ? 'pre-food' : null}
+                    onClick={() => changeCategory(el.id)}
+                  >
                     {el.name}
                   </Link>
                 </li>

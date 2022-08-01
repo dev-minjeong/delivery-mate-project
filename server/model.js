@@ -35,6 +35,7 @@ module.exports = {
         contents: body.contents,
         date: new Date(),
         view_cnt: 0,
+        food_id: 0,
       })
         .then((data) => {
           callback(true);
@@ -75,7 +76,7 @@ module.exports = {
           contents: {
             [Op.like]: search,
           },
-          koreanFood_id: body.category,
+          food_id: body.category,
         },
         limit: body.page * body.limit,
         offset: (body.page - 1) * body.limit,
@@ -103,7 +104,7 @@ module.exports = {
           contents: {
             [Op.like]: search,
           },
-          koreanFood_id: body.category,
+          food_id: body.category,
         },
       }).then((result) => {
         callback(result);
