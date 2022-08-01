@@ -178,3 +178,28 @@
   font-weight: bold;
   color: indianred;
 }
+.category-edit {
+  position: relative;
+  margin: 10px 0px 0px 15px;
+  padding: 1px 7px;
+  border-radius: 4px;
+  color: #ababab;
+  background-color: #fff;
+  border-color: #ababab;
+  cursor: pointer;
+}
+.edit-category {
+  display: flex;
+  padding: 8px;
+}
+.remove-btn {
+  position: relative;
+  width: 20px;
+  border: none;
+  background-color: transparent;
+  margin-right: 5px;
+  cursor: pointer;
+}
+.input-edit {
+  width: 70%;
+}

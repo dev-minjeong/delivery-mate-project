@@ -6,11 +6,18 @@ import '../App.css';
 
 import Modal from 'react-awesome-modal';
 
-const Header = (login, handleLogin, handleLogout) => {
+const Header = ({ login, handleLogin, handleLogout }) => {
   const [visible, setVisible] = useState(false);
   const [id, setId] = useState('');
   const [passWord, setPassWord] = useState('');
+  // const [login, setLogin] = useState(false);
   // const [data, setData] = useState('');
+
+  // useEffect(() => {
+  //   if (sessionStorage.login) {
+  //     setLogin(true);
+  //   }
+  // }, []);
 
   const openModal = () => {
     setVisible(true);
@@ -34,7 +41,7 @@ const Header = (login, handleLogin, handleLogout) => {
     if (idTrim === '') {
       return alert('아이디를 입력하세요');
     } else if (pwTrim === '') {
-      return alert('비밀번호를 입력해주세요');
+      return alert('비밀번호를 입력하세요');
     }
 
     const obj = { id: idTrim, password: pwTrim };
@@ -45,9 +52,9 @@ const Header = (login, handleLogin, handleLogout) => {
     });
 
     if (res.data) {
-      console.log(res.data.msg);
-
       if (res.data.suc) {
+        // sessionStorage.setItem('login', true);
+        // setLogin(true);
         handleLogin();
         closeModal();
 
@@ -62,6 +69,8 @@ const Header = (login, handleLogin, handleLogout) => {
 
   const logout = () => {
     if (window.confirm('로그아웃 하시겠습니까?')) {
+      // sessionStorage.removeItem('login');
+      // setLogin(false);
       handleLogout();
     }
   };

@@ -34,7 +34,6 @@ const Main = (login) => {
       </div>
       <div id='main-center'>
         <Routes>
-          {/* <Route path='/' element={<List />}></Route> */}
           <Route path='/' element={<WithPropsList />}></Route>
         </Routes>
         <Routes>
