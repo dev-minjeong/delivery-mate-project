@@ -111,6 +111,17 @@ module.exports = {
       }
     },
   },
+  delete: {
+    category: (req, res) => {
+      const body = req.body;
+
+      model.delete.category(body, (result) => {
+        if (result) {
+          res.send(result);
+        }
+      });
+    },
+  },
 };
 
 // 모듈화 및 외부 접근 가능

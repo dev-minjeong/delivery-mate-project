@@ -36,6 +36,20 @@ function Category({ changeCategory, login }) {
     }
   };
 
+  const removeCategory = async (category) => {
+    if (window.confirm(`"${category.name}" 카테고리를 삭제하시겠습니까?`)) {
+      const remove = await axios('/delete/category', {
+        method: 'POST',
+        data: category,
+        headers: new Headers(),
+      });
+      if (remove) {
+        alert(`"${category.name}" 카테고리가 삭제되었습니다`);
+        getCategoryData();
+      }
+    }
+  };
+
   let pre_food = '';
   if (sessionStorage.getItem('category')) {
     pre_food = Number(sessionStorage.getItem('category'));
@@ -89,7 +103,12 @@ function Category({ changeCategory, login }) {
               } else {
                 return (
                   <li className='edit-category' key={key}>
-                    <button className='remove-btn'>X</button>
+                    <button
+                      className='remove-btn'
+                      onClick={() => removeCategory(el)}
+                    >
+                      X
+                    </button>
                     <input
                       type='text'
                       maxLength='20'

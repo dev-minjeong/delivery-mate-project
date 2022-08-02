@@ -76,6 +76,26 @@ module.exports = {
         });
     },
   },
+  delete: {
+    category: (body, callback) => {
+      Category.destroy({
+        where: { id: body.id },
+      }).then(() => {
+        Board.update(
+          { food_id: 0 },
+          {
+            where: { food_id: body.id },
+          }
+        )
+          .then(() => {
+            callback(true);
+          })
+          .catch((err) => {
+            throw err;
+          });
+      });
+    },
+  },
   get: {
     board: (body, callback) => {
       let search = '%%';
