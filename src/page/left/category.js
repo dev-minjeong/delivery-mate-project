@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 
 import '../main.css';
 import { Link } from 'react-router-dom';
+import { async } from 'q';
 
 function Category({ changeCategory, login }) {
   const [category, setCategory] = useState([]);
@@ -15,6 +16,24 @@ function Category({ changeCategory, login }) {
   const getCategoryData = async () => {
     const getData = await axios('/get/category');
     setCategory(getData.data);
+  };
+
+  const addCategory = async () => {
+    let categoryName = window.prompt('추가할 카테고리를 입력하세요');
+    categoryName = categoryName.trim();
+
+    if (categoryName !== '' && categoryName.length > 0) {
+      const add = await axios('/add/category', {
+        method: 'POST',
+        data: { name: categoryName },
+        headers: new Headers(),
+      });
+      // console.log(add.data.msg);
+      alert(add.data.msg);
+      getCategoryData();
+    } else {
+      return alert('추가할 카테고리를 입력하세요');
+    }
   };
 
   let pre_food = '';
@@ -47,6 +66,7 @@ function Category({ changeCategory, login }) {
                 type='button'
                 value='Add'
                 className='category-edit'
+                onClick={() => addCategory()}
               ></input>
             )
           ) : null}

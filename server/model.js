@@ -44,6 +44,21 @@ module.exports = {
           throw err;
         });
     },
+    category: (body, callback) => {
+      Category.count({
+        where: { name: body.name },
+      }).then((cnt) => {
+        if (cnt > 0) {
+          callback(false);
+        } else {
+          Category.create({
+            name: body.name,
+          }).then(() => {
+            callback(true);
+          });
+        }
+      });
+    },
   },
   update: {
     view_cnt: (body, callback) => {

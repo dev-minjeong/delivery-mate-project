@@ -43,6 +43,21 @@ module.exports = {
         }
       });
     },
+    category: (req, res) => {
+      const body = req.body;
+
+      model.add.category(body, (result) => {
+        let obj = {};
+        if (result) {
+          obj['suc'] = true;
+          obj['msg'] = '카테고리 생성!';
+        } else {
+          obj['suc'] = false;
+          obj['msg'] = '이미 존재하는 카테고리 입니다';
+        }
+        res.send(obj);
+      });
+    },
   },
   get: {
     board: (req, res) => {
