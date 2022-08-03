@@ -20,19 +20,21 @@ function Category({ changeCategory, login }) {
 
   const addCategory = async () => {
     let categoryName = window.prompt('추가할 카테고리를 입력하세요');
-    categoryName = categoryName.trim();
+    if (categoryName) {
+      categoryName = categoryName.trim();
 
-    if (categoryName !== '' && categoryName.length > 0) {
-      const add = await axios('/add/category', {
-        method: 'POST',
-        data: { name: categoryName },
-        headers: new Headers(),
-      });
-      // console.log(add.data.msg);
-      alert(add.data.msg);
-      getCategoryData();
-    } else {
-      return alert('추가할 카테고리를 입력하세요');
+      if (categoryName !== '' && categoryName.length > 0) {
+        const add = await axios('/add/category', {
+          method: 'POST',
+          data: { name: categoryName },
+          headers: new Headers(),
+        });
+        // console.log(add.data.msg);
+        alert(add.data.msg);
+        getCategoryData();
+      } else {
+        return alert('추가할 카테고리를 입력하세요');
+      }
     }
   };
 
@@ -47,6 +49,34 @@ function Category({ changeCategory, login }) {
         alert(`"${category.name}" 카테고리가 삭제되었습니다`);
         getCategoryData();
       }
+    }
+  };
+
+  const modifyCategory = async (category) => {
+    let modifyName = document.getElementsByName('modify_' + category.id)[0]
+      .value;
+    modifyName = modifyName.trim();
+
+    if (modifyName !== '' && modifyName.length > 0) {
+      if (category.name === modifyName) {
+        return alert('수정 시 다른 카테고리 명으로 입력하세요');
+      }
+      if (
+        window.confirm(
+          `"${category.name}"카테고리를 "${modifyName}"카테고리로 수정하시겠습니까?`
+        )
+      ) {
+        const data = { id: category.id, name: modifyName };
+        const modify = await axios('/modify/category', {
+          method: 'POST',
+          data: data,
+          headers: new Headers(),
+        });
+        alert(modify.data.msg);
+        getCategoryData();
+      }
+    } else {
+      return alert('카테고리 이름을 최소 1글자 이상 입력하세요');
     }
   };
 
@@ -107,14 +137,21 @@ function Category({ changeCategory, login }) {
                       className='remove-btn'
                       onClick={() => removeCategory(el)}
                     >
-                      X
+                      ❌
                     </button>
                     <input
                       type='text'
                       maxLength='20'
                       className='input-edit'
+                      name={'modify_' + el.id}
                       defaultValue={el.name}
                     ></input>
+                    <button
+                      className='modify-btn'
+                      onClick={() => modifyCategory(el)}
+                    >
+                      ⭕
+                    </button>
                   </li>
                 );
               }
