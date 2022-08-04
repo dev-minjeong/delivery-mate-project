@@ -57,12 +57,13 @@ const View = () => {
             <div className='date-box'>{date}</div>
           </div>
           <div>
-            <textarea
+            <div
               id='content-txt'
+              dangerouslySetInnerHTML={{ __html: data.data[0].contents }}
               name='contents'
               defaultValue={data.data[0].contents}
               readOnly
-            ></textarea>
+            ></div>
           </div>
         </div>
       ) : null}
