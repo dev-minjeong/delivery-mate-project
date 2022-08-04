@@ -1,12 +1,12 @@
 import { Ckeditor } from './../inc/index.js';
-function Write() {
+function Write({ getContents, contents }) {
   return (
     <div className='write'>
       <div id='title'>
         <input type='text' name='title' placeholder='제목'></input>
       </div>
       <div id='contents'>
-        <Ckeditor></Ckeditor>
+        <Ckeditor getContents={getContents} contents={contents}></Ckeditor>
       </div>
     </div>
   );

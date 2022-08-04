@@ -5,7 +5,7 @@ import '../main.css';
 import { Link } from 'react-router-dom';
 import { async } from 'q';
 
-function Category({ changeCategory, login }) {
+function Category({ changeCategory, login, changeState }) {
   const [category, setCategory] = useState([]);
   const [edit, setEdit] = useState(false);
 

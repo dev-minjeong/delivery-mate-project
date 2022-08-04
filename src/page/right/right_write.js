@@ -2,10 +2,10 @@ import axios from 'axios';
 
 import '../main.css';
 
-function RightWrite() {
+function RightWrite(props) {
   const submitBoard = async () => {
     const title = document.getElementsByName('title')[0].value.trim();
-    const contents = document.getElementsByName('contents')[0].value.trim();
+    const contents = props.contents;
 
     if (title === '') {
       return alert('제목을 입력하세요');
