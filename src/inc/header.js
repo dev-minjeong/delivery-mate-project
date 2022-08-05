@@ -89,15 +89,21 @@ const Header = ({ login, handleLogin, handleLogout }) => {
         </Link>
       </div>
       <div className='login'>
-        {login ? (
-          <h5 className='btn-cursor' onClick={() => logout()}>
-            관리자 로그아웃
-          </h5>
-        ) : (
-          <h5 className='btn-cursor' onClick={() => openModal()}>
-            관리자 로그인
-          </h5>
-        )}
+        <ul className='login-list'>
+          {login ? (
+            <li className='btn-cursor' onClick={() => logout()}>
+              관리자 로그아웃
+            </li>
+          ) : (
+            <li className='btn-cursor' onClick={() => openModal()}>
+              관리자 로그인
+            </li>
+          )}
+          <li>
+            <Link to='/signup'>회원가입</Link>
+          </li>
+        </ul>
+
         <Modal
           visible={visible}
           width='400'
@@ -105,7 +111,7 @@ const Header = ({ login, handleLogin, handleLogout }) => {
           effect='fadeInDown'
           onClickAway={() => closeModal()}
         >
-          <div>
+          <div className='acenter'>
             <h4 className='login login-title'>관리자 로그인</h4>
             <form>
               <div className='login-div'>
