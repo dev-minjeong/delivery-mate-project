@@ -283,3 +283,16 @@ input[name='signup-submit'] {
   margin-top: 30px;
   align-items: center;
 }
+.signup .email {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-items: center;
+}
+.signup .email select {
+  width: 100px;
+}
+input[name='signup-email-write'] {
+  width: 100px;
+  margin-left: 130px;
+}

@@ -1,6 +1,17 @@
 import './main.css';
+import { useState } from 'react';
 
 function SignUp() {
+  const [emailWriter, setEmailWriter] = useState(false);
+  const changeEmailSelect = () => {
+    const select = document.getElementsByName('signup-email-select')[0].value;
+
+    if (select === 'write') {
+      setEmailWriter(true);
+    } else {
+      setEmailWriter(false);
+    }
+  };
   return (
     <div>
       <div className='signup'>
@@ -28,14 +39,23 @@ function SignUp() {
             <input type='text' maxLength='1' name='signup-sex' /> ******
           </div>
         </div>
-        <div>
+        <div className='email'>
           <h5>이메일</h5>
-          <input type='text' maxLength='15' name='signup-email' />@
-          <select name='signup-email-select'>
-            <option value='gmail.com'>gmail.com</option>
-            <option value='naver.com'>naver.com</option>
-            <option value='write'>직접입력</option>
-          </select>
+          <div>
+            <input type='text' maxLength='15' name='signup-email' />@
+            <select
+              name='signup-email-select'
+              onChange={() => changeEmailSelect()}
+            >
+              <option value='gmail.com'>gmail.com</option>
+              <option value='naver.com'>naver.com</option>
+              <option value='write'>직접입력</option>
+            </select>
+          </div>
+
+          {emailWriter ? (
+            <input type='text' name='signup-email-write' maxLength='20'></input>
+          ) : null}
         </div>
         {/* <div id='signup-section'> </div> */}
       </div>
