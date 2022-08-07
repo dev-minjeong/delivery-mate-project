@@ -235,3 +235,51 @@ button {
   border: none;
   background-color: transparent;
 }
+
+/* 회원가입 */
+.signup {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 280px;
+}
+.signup-title {
+  color: #ababab;
+  margin-top: 20px;
+}
+.signup div {
+  margin-top: 20px;
+}
+.signup div h5 {
+  text-align: center;
+}
+.signup div input {
+  padding: 3px;
+}
+.signup .signup-bday {
+  display: flex;
+  flex-direction: column;
+}
+.signup-bday div input:first-child {
+  width: 75px;
+}
+.signup-bday div input:last-child {
+  width: 10px;
+}
+input[name='signup-email'] {
+  width: 100px;
+}
+.signup-submit {
+  display: flex;
+}
+input[name='signup-submit'] {
+  padding: 5px 10px;
+  border-radius: 2px;
+  border: 1px solid #ababab;
+  background-color: white;
+  cursor: pointer;
+  width: 90px;
+  margin: auto;
+  margin-top: 30px;
+  align-items: center;
+}
