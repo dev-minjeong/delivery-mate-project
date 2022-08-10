@@ -58,6 +58,10 @@ module.exports = {
         res.send(obj);
       });
     },
+    user: (req, res) => {
+      const body = req.body;
+      console.log(body);
+    },
   },
   get: {
     board: (req, res) => {

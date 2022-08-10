@@ -242,13 +242,17 @@ button {
   flex-direction: column;
   align-items: center;
   min-width: 280px;
+  padding: 5px;
 }
-.signup-title {
-  color: #ababab;
+#signup-title {
+  color: #454545;
   margin-top: 20px;
 }
 .signup div {
-  margin-top: 20px;
+  margin-top: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 .signup div h5 {
   text-align: center;
@@ -258,7 +262,9 @@ button {
 }
 .signup .signup-bday {
   display: flex;
-  flex-direction: column;
+}
+.signup-bday div {
+  flex-direction: row;
 }
 .signup-bday div input:first-child {
   width: 75px;
@@ -268,6 +274,9 @@ button {
 }
 input[name='signup-email'] {
   width: 100px;
+}
+.email div {
+  flex-direction: row;
 }
 .signup-submit {
   display: flex;
@@ -295,4 +304,8 @@ input[name='signup-submit'] {
 input[name='signup-email-write'] {
   width: 100px;
   margin-left: 130px;
+}
+.signup .input-warn {
+  font-size: 10px;
+  color: red;
 }
