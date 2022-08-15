@@ -79,6 +79,12 @@ function SignUp() {
       headers: new Headers(),
       data: data,
     });
+    if (!addUser.data) {
+      return alert('이미 존재하는 아이디 입니다');
+    } else {
+      alert(`${name}님 회원가입이 완료되었습니다!`);
+      return (window.location.href = '/');
+    }
   };
   const inputChange = (name) => {
     const change = document.getElementsByName(name)[0].value.length;

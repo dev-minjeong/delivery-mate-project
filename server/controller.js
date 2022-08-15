@@ -5,6 +5,11 @@ const salt = require(path.join(__dirname, 'config', 'db.json')).salt;
 
 const hashing = require(path.join(__dirname, 'config', 'hashing.js'));
 
+const moment = require('moment');
+require('moment-timezone');
+moment.tz.setDefault('Asia/Seoul');
+const now_date = moment().format('YYYY-MM-DD HH:mm:ss');
+
 // const AWS = require('aws-sdk');
 // AWS.config.loadFromPath(
 // loadFromPath로 json파일을 path모듈로 연결
@@ -60,7 +65,11 @@ module.exports = {
     },
     user: (req, res) => {
       const body = req.body;
-      console.log(body);
+      const hash_pw = hashing.enc(body.id, body.password, salt);
+
+      model.add.user(body, hash_pw, now_date, (result) => {
+        res.send(result);
+      });
     },
   },
   get: {
@@ -112,6 +121,8 @@ module.exports = {
             res.send(true);
           }
         });
+      } else {
+        res.send(false);
       }
     },
   },

@@ -3,12 +3,12 @@
 // sequelize 연동하기
 const sequelize = require('./models').sequelize;
 
-const { data } = require('browserslist');
 // Teacher 테이블을 서버로 가져와 읽을 수 있도록 함
 const {
   Admin,
   Board,
   Category,
+  User,
   Sequelize: { Op },
 } = require('./models');
 sequelize.query('SET NAMES utf8;');
@@ -25,6 +25,7 @@ module.exports = {
         })
         .catch((err) => {
           throw err;
+          // console.log(err.data);
         });
     },
   },
@@ -42,6 +43,7 @@ module.exports = {
         })
         .catch((err) => {
           throw err;
+          // console.log(err.data);
         });
     },
     category: (body, callback) => {
@@ -59,6 +61,27 @@ module.exports = {
         }
       });
     },
+    user: (body, hash_pw, now_date, callback) => {
+      //   // 아이디 존재 유무 확인
+      User.count({
+        where: { id: body.id },
+      }).then((cnt) => {
+        if (cnt > 0) {
+          callback(false);
+        } else {
+          User.create({
+            admin: 'N',
+            id: body.id,
+            password: hash_pw,
+            name: body.name,
+            birthday: body.birthday,
+            sex: body.sex,
+            email: body.email,
+            signup_date: now_date,
+          }).then(() => callback(true));
+        }
+      });
+    },
   },
   update: {
     view_cnt: (body, callback) => {
@@ -73,6 +96,7 @@ module.exports = {
         })
         .catch((err) => {
           throw err;
+          // console.log(err.data);
         });
     },
   },
@@ -92,6 +116,7 @@ module.exports = {
           })
           .catch((err) => {
             throw err;
+            // console.log(err);
           });
       });
     },
@@ -115,6 +140,7 @@ module.exports = {
             })
             .catch((err) => {
               throw err;
+              // console.log(err);
             });
         }
       });
@@ -147,6 +173,7 @@ module.exports = {
         })
         .catch((err) => {
           throw err;
+          // console.log(err.data);
         });
     },
     board_cnt: (body, callback) => {
@@ -168,6 +195,9 @@ module.exports = {
       }).then((result) => {
         callback(result);
       });
+      // .catch((err) => {
+      //   console.log(err.result);
+      // });
     },
     board_data: (body, callback) => {
       Board.findAll({
@@ -178,6 +208,7 @@ module.exports = {
         })
         .catch((err) => {
           throw err;
+          // console.log(err.result);
         });
     },
     category: (callback) => {
@@ -187,6 +218,7 @@ module.exports = {
         })
         .catch((err) => {
           throw err;
+          // console.log(err.result);
         });
     },
   },

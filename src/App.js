@@ -1,8 +1,8 @@
 import './App.css';
 // import axios from 'axios';
-import { useState, useEffect, Component } from 'react';
+import { useState, useEffect } from 'react';
 import React from 'react';
-import { BrowserRouter, Route, Routes, Link } from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 import { Header } from './inc';
 import { Main } from './page/index.js';

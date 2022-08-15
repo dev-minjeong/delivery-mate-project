@@ -6,6 +6,7 @@ router.post('/send/pw', controller.api.sendPw);
 
 router.post('/add/board', controller.add.board);
 router.post('/add/category', controller.add.category);
+router.post('/add/user', controller.add.user);
 
 router.post('/update/view_cnt', controller.update.view_cnt);
 
