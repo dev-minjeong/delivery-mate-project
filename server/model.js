@@ -5,7 +5,6 @@ const sequelize = require('./models').sequelize;
 
 // Teacher 테이블을 서버로 가져와 읽을 수 있도록 함
 const {
-  Admin,
   Board,
   Category,
   User,
@@ -16,8 +15,8 @@ sequelize.query('SET NAMES utf8;');
 module.exports = {
   api: {
     searchInfo: (body, hash, callback) => {
-      Admin.findAll({
-        where: { [Op.and]: [{ user_id: body.id, password: hash }] }, // user_id와 password의 조건문들이 모두 일치 시 실행
+      User.findAll({
+        where: { [Op.and]: [{ id: body.id, password: hash }] }, // user_id와 password의 조건문들이 모두 일치 시 실행
       })
         .then((data) => {
           // 아이디와 비번이 일치 시 실행
