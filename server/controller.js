@@ -10,6 +10,8 @@ require('moment-timezone');
 moment.tz.setDefault('Asia/Seoul');
 const now_date = moment().format('YYYY-MM-DD HH:mm:ss');
 
+const user_ip = require('ip');
+
 // const AWS = require('aws-sdk');
 // AWS.config.loadFromPath(
 // loadFromPath로 json파일을 path모듈로 연결
@@ -27,15 +29,13 @@ module.exports = {
         if (result[0]) {
           obj['suc'] = result[0].dataValues;
           obj['msg'] = '로그인 성공!';
+          obj['ip'] = user_ip.address();
         } else {
           obj['suc'] = false;
           obj['msg'] = '로그인 실패!';
         }
         res.send(obj);
       });
-      // console.log(`1. salt 합한 값 : ${body.id}${body.password}${salt}`);
-      // console.log(`2. salt 값 : ${salt}`);
-      // console.log(`3. hash 결과 : ${hash}`);
     },
   },
   add: {
