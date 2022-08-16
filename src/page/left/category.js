@@ -3,9 +3,8 @@ import { useEffect, useState } from 'react';
 
 import '../main.css';
 import { Link } from 'react-router-dom';
-import { async } from 'q';
 
-function Category({ changeCategory, login, changeState }) {
+function Category({ changeCategory, login, changeState, admin, userIp }) {
   const [category, setCategory] = useState([]);
   const [edit, setEdit] = useState(false);
 
@@ -15,6 +14,7 @@ function Category({ changeCategory, login, changeState }) {
 
   const getCategoryData = async () => {
     const getData = await axios('/get/category');
+
     setCategory(getData.data);
   };
 
@@ -84,7 +84,7 @@ function Category({ changeCategory, login, changeState }) {
   if (sessionStorage.getItem('category')) {
     pre_food = Number(sessionStorage.getItem('category'));
   }
-  const currLogin = login.login;
+  // const login = login.login;
 
   return (
     <div className='category'>
@@ -97,7 +97,7 @@ function Category({ changeCategory, login, changeState }) {
           >
             전체보기
           </Link>
-          {currLogin ? (
+          {login && admin === 'Y' ? (
             !edit ? (
               <input
                 type='button'

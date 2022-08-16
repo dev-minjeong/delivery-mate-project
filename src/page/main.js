@@ -6,7 +6,7 @@ import { useState, Component } from 'react';
 
 import './main.css';
 
-const Main = (login) => {
+const Main = ({ login, admin, userIp }) => {
   const [category, setCategory] = useState('');
   const [change_Category, setChange_Category] = useState(false);
   const [contents, setContents] = useState('');
@@ -48,6 +48,8 @@ const Main = (login) => {
                 changeCategory={changeCategory}
                 login={login}
                 changeState={changeState}
+                admin={admin}
+                userIp={userIp}
               />
             }
           ></Route>

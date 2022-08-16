@@ -10,8 +10,6 @@ const Header = ({ login, handleLogin, handleLogout }) => {
   const [visible, setVisible] = useState(false);
   const [id, setId] = useState('');
   const [passWord, setPassWord] = useState('');
-  // const [login, setLogin] = useState(false);
-  // const [data, setData] = useState('');
 
   // useEffect(() => {
   //   if (sessionStorage.login) {
@@ -55,9 +53,8 @@ const Header = ({ login, handleLogin, handleLogout }) => {
       if (res.data.suc) {
         // sessionStorage.setItem('login', true);
         // setLogin(true);
-        handleLogin();
+        handleLogin(res.data);
         closeModal();
-
         return alert(`안녕하세요 ${idTrim}님!`);
       } else {
         return alert(
@@ -92,16 +89,18 @@ const Header = ({ login, handleLogin, handleLogout }) => {
         <ul className='login-list'>
           {login ? (
             <li className='btn-cursor' onClick={() => logout()}>
-              관리자 로그아웃
+              로그아웃
             </li>
           ) : (
             <li className='btn-cursor' onClick={() => openModal()}>
-              관리자 로그인
+              로그인
             </li>
           )}
-          <li>
-            <Link to='/signup'>회원가입</Link>
-          </li>
+          {!login ? (
+            <li>
+              <Link to='/signup'>회원가입</Link>
+            </li>
+          ) : null}
         </ul>
 
         <Modal
@@ -112,7 +111,7 @@ const Header = ({ login, handleLogin, handleLogout }) => {
           onClickAway={() => closeModal()}
         >
           <div className='acenter'>
-            <h4 className='login login-title'>관리자 로그인</h4>
+            <h4 className='login login-title'>로그인</h4>
             <form>
               <div className='login-div'>
                 <div className='login-input'>
