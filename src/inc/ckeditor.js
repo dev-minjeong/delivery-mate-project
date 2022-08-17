@@ -12,13 +12,6 @@ function Ckeditor({ getContents, contents }) {
           const data = editor.getData();
           getContents(data);
         }}
-        // onReady={(editor) => {
-        //   console.log('편집기 사용 가능합니다', editor);
-        // }}
-        // onChange={(event, editor) => {
-        //   const data = editor.getDate();
-        //   console.log({ event, editor, data });
-        // }}
         onFocus={(event, editor) => {
           console.log('Focus ', editor);
         }}

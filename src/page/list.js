@@ -8,75 +8,74 @@ import { useState, useEffect } from 'react';
 import queryString from 'query-string';
 import { Link } from 'react-router-dom';
 
-const List = (props) => {
-  const [data, setData] = useState([]);
-  const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(10);
-  const [allPage, setAllPage] = useState([]);
-  const [search, setSearch] = useState('');
+const List = ({
+  category,
+  listData,
+  listAllPage,
+  listSearch,
+  listPage,
+  changePage,
+}) => {
+  // useEffect(() => {
+  //   getListData();
+  //   settingPage();
+  // }, []);
 
-  useEffect(() => {
-    getListData();
-    settingPage();
-  }, []);
+  // const getListData = async () => {
+  //   if (sessionStorage.getItem('category')) {
+  //     category = sessionStorage.getItem('category');
+  //   }
+  //   let search = queryString.parse(window.location.search);
+  //   if (search) {
+  //     search = search.search;
+  //   }
 
-  const getListData = async () => {
-    let { category } = props;
-    if (sessionStorage.getItem('category')) {
-      category = sessionStorage.getItem('category');
-    }
-    let search = queryString.parse(window.location.search);
-    if (search) {
-      search = search.search;
-    }
+  //   // Board 테이블 데이터 전체 수
+  //   const total_cnt = await axios('/get/board_cnt', {
+  //     method: 'POST',
+  //     headers: new Headers(),
+  //     data: { search: search, category: category },
+  //   });
+  //   // console.log(total_cnt.data.cnt);
 
-    // Board 테이블 데이터 전체 수
-    const total_cnt = await axios('/get/board_cnt', {
-      method: 'POST',
-      headers: new Headers(),
-      data: { search: search, category: category },
-    });
-    // console.log(total_cnt.data.cnt);
+  //   // 데이터 불러오기
+  //   const total_list = await axios('/get/board', {
+  //     method: 'POST',
+  //     headers: new Headers(),
+  //     data: {
+  //       limit: limit,
+  //       page: settingPage(),
+  //       search: search,
+  //       category: category,
+  //     },
+  //   });
 
-    // 데이터 불러오기
-    const total_list = await axios('/get/board', {
-      method: 'POST',
-      headers: new Headers(),
-      data: {
-        limit: limit,
-        page: settingPage(),
-        search: search,
-        category: category,
-      },
-    });
+  //   // 전체 페이지 수 구하기
+  //   let page_arr = [];
 
-    // 전체 페이지 수 구하기
-    let page_arr = [];
+  //   for (let i = 1; i <= Math.ceil(total_cnt.data.cnt / limit); i++) {
+  //     page_arr.push(i);
+  //   }
+  //   setData(total_list);
+  //   setAllPage(page_arr);
+  //   setSearch(search);
+  // };
 
-    for (let i = 1; i <= Math.ceil(total_cnt.data.cnt / limit); i++) {
-      page_arr.push(i);
-    }
-    setData(total_list);
-    setAllPage(page_arr);
-    setSearch(search);
-  };
+  // const changePage = (el) => {
+  //   setPage(el);
+  //   sessionStorage.setItem('page', el);
 
-  const changePage = (el) => {
-    setPage(el);
-    sessionStorage.setItem('page', el);
+  //   return getListData();
+  // };
 
-    return getListData();
-  };
-
-  const settingPage = () => {
-    if (sessionStorage.page) {
-      setPage(Number(sessionStorage.page));
-      return Number(sessionStorage.page);
-    }
-    setPage(1);
-    return 1;
-  };
-  const list = data.data;
+  // const settingPage = () => {
+  //   if (sessionStorage.page) {
+  //     setPage(Number(sessionStorage.page));
+  //     return Number(sessionStorage.page);
+  //   }
+  //   setPage(1);
+  //   return 1;
+  // };
   return (
     <div className='list'>
       <div className='list-title list-box'>
@@ -84,8 +83,8 @@ const List = (props) => {
         <div>조회수</div>
         <div className='acenter'>날짜</div>
       </div>
-      {list && list.length > 0 ? (
-        list.map((el, key) => {
+      {listData !== '[]' && listData.length > 0 ? (
+        JSON.parse(listData).map((el, key) => {
           const view_url = '/view/' + el.board_id;
           return (
             <div className='list-data list-box' key={key}>
@@ -99,8 +98,8 @@ const List = (props) => {
         })
       ) : (
         <div className='not-data acenter'>
-          {search !== '' ? (
-            <div>{`'${search}'에 대한 `}검색 결과가 없습니다</div>
+          {listSearch && listSearch !== '' ? (
+            <div>{`'${listSearch}'에 대한 `}검색 결과가 없습니다</div>
           ) : (
             <div>게시글이 없습니다</div>
           )}
@@ -110,9 +109,9 @@ const List = (props) => {
         <div></div>
         <div>
           <ul>
-            {allPage
-              ? allPage.map((el, key) => {
-                  return el === page ? (
+            {listAllPage
+              ? listAllPage.map((el, key) => {
+                  return el === listPage ? (
                     <li key={key} className='page-num'>
                       <b>{el}</b>
                     </li>
@@ -128,7 +127,7 @@ const List = (props) => {
                 })
               : null}
           </ul>
-          <Search search={search}></Search>
+          <Search search={listSearch}></Search>
         </div>
         <div></div>
       </div>

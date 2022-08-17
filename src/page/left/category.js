@@ -14,10 +14,8 @@ function Category({ changeCategory, login, changeState, admin, userIp }) {
 
   const getCategoryData = async () => {
     const getData = await axios('/get/category');
-
     setCategory(getData.data);
   };
-
   const addCategory = async () => {
     let categoryName = window.prompt('추가할 카테고리를 입력하세요');
     if (categoryName) {
@@ -29,7 +27,6 @@ function Category({ changeCategory, login, changeState, admin, userIp }) {
           data: { name: categoryName },
           headers: new Headers(),
         });
-        // console.log(add.data.msg);
         alert(add.data.msg);
         getCategoryData();
       } else {
@@ -37,7 +34,6 @@ function Category({ changeCategory, login, changeState, admin, userIp }) {
       }
     }
   };
-
   const removeCategory = async (category) => {
     if (window.confirm(`"${category.name}" 카테고리를 삭제하시겠습니까?`)) {
       const remove = await axios('/delete/category', {
@@ -51,7 +47,6 @@ function Category({ changeCategory, login, changeState, admin, userIp }) {
       }
     }
   };
-
   const modifyCategory = async (category) => {
     let modifyName = document.getElementsByName('modify_' + category.id)[0]
       .value;
@@ -59,11 +54,11 @@ function Category({ changeCategory, login, changeState, admin, userIp }) {
 
     if (modifyName !== '' && modifyName.length > 0) {
       if (category.name === modifyName) {
-        return alert('수정 시 다른 카테고리 명으로 입력하세요');
+        return alert('변경 시 다른 카테고리 명으로 입력하세요');
       }
       if (
         window.confirm(
-          `"${category.name}"카테고리를 "${modifyName}"카테고리로 수정하시겠습니까?`
+          `"${category.name}"카테고리를 "${modifyName}"로 수정하시겠습니까?`
         )
       ) {
         const data = { id: category.id, name: modifyName };
@@ -84,7 +79,6 @@ function Category({ changeCategory, login, changeState, admin, userIp }) {
   if (sessionStorage.getItem('category')) {
     pre_food = Number(sessionStorage.getItem('category'));
   }
-  // const login = login.login;
 
   return (
     <div className='category'>
