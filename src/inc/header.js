@@ -1,75 +1,39 @@
 import { Route, Routes, Link } from 'react-router-dom';
 import React from 'react';
-import { useState, useEffect } from 'react';
-import axios from 'axios';
+import { useState } from 'react';
 import '../App.css';
 
-import Modal from 'react-awesome-modal';
+import { Login } from './index.js';
 
-const Header = ({ login, handleLogin, handleLogout }) => {
+const Header = ({
+  login,
+  admin,
+  userIp,
+  handleLogin,
+  handleLogout,
+  loginModal,
+  toggleModal,
+}) => {
   const [visible, setVisible] = useState(false);
   const [id, setId] = useState('');
   const [passWord, setPassWord] = useState('');
 
-  // useEffect(() => {
-  //   if (sessionStorage.login) {
-  //     setLogin(true);
-  //   }
-  // }, []);
-
   const openModal = () => {
-    setVisible(true);
+    return toggleModal(true);
   };
-  const closeModal = () => {
-    setVisible(false);
-  };
-  const changeId = () => {
-    const idValue = document.getElementsByName('id')[0].value;
-    setId(idValue);
-  };
-  const changePW = () => {
-    const pwValue = document.getElementsByName('password')[0].value;
-    setPassWord(pwValue);
-  };
-
-  const selectUserData = async (e) => {
-    const idTrim = id.trim();
-    const pwTrim = passWord.trim();
-
-    if (idTrim === '') {
-      return alert('아이디를 입력하세요');
-    } else if (pwTrim === '') {
-      return alert('비밀번호를 입력하세요');
-    }
-
-    const obj = { id: idTrim, password: pwTrim };
-    const res = await axios('/send/pw', {
-      method: 'POST',
-      data: obj,
-      headers: new Headers(),
-    });
-
-    if (res.data) {
-      if (res.data.suc) {
-        // sessionStorage.setItem('login', true);
-        // setLogin(true);
-        handleLogin(res.data);
-        closeModal();
-        return alert(`안녕하세요 ${idTrim}님!`);
-      } else {
-        return alert(
-          '아이디 및 비밀번호가 일치히지 않습니다. 다시 입력해주세요!'
-        );
-      }
-    }
-  };
-
   const logout = () => {
     if (window.confirm('로그아웃 하시겠습니까?')) {
-      // sessionStorage.removeItem('login');
-      // setLogin(false);
       handleLogout();
+
+      sessionStorage.removeItem('page');
+      sessionStorage.setItem('cagtegory', '');
+      return (window.location.href = '/');
     }
+  };
+  const handleHeader = () => {
+    window.location.href = '/';
+    sessionStorage.removeItem('page');
+    sessionStorage.setItem('category', '');
   };
   return (
     <div className='header'>
@@ -81,9 +45,12 @@ const Header = ({ login, handleLogin, handleLogout }) => {
         ) : null}
       </div>
       <div className='logo btn-cusor'>
-        <Link className='link-title' to='/'>
-          <h3>Delivery Mate App</h3>
-        </Link>
+        <Routes>
+          <Route path='/' />
+        </Routes>
+        <h3 className='link-title' onClick={() => handleHeader()} to='/'>
+          Delivery Mate App
+        </h3>
       </div>
       <div className='login'>
         <ul className='login-list'>
@@ -96,60 +63,17 @@ const Header = ({ login, handleLogin, handleLogout }) => {
               로그인
             </li>
           )}
+          <Login
+            handleLogin={handleLogin}
+            loginModal={loginModal}
+            toggleModal={toggleModal}
+          />
           {!login ? (
             <li>
               <Link to='/signup'>회원가입</Link>
             </li>
           ) : null}
         </ul>
-
-        <Modal
-          visible={visible}
-          width='400'
-          height='300'
-          effect='fadeInDown'
-          onClickAway={() => closeModal()}
-        >
-          <div className='acenter'>
-            <h4 className='login login-title'>로그인</h4>
-            <form>
-              <div className='login-div'>
-                <div className='login-input'>
-                  <p>아이디</p>
-                  <input
-                    type='text'
-                    name='id'
-                    onChange={() => changeId()}
-                  ></input>
-                </div>
-                <div className='login-input'>
-                  <p>비밀번호</p>
-                  <input
-                    type='password'
-                    name='password'
-                    onChange={() => changePW()}
-                  ></input>
-                </div>
-                <div className='login-submit'>
-                  <div>
-                    <input
-                      type='button'
-                      value='로그인'
-                      onClick={() => selectUserData()}
-                    ></input>
-                  </div>
-                  <div>
-                    <input
-                      type='button'
-                      value='취소'
-                      onClick={() => closeModal()}
-                    ></input>
-                  </div>
-                </div>
-              </div>
-            </form>
-          </div>
-        </Modal>
       </div>
     </div>
   );
