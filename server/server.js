@@ -28,12 +28,6 @@ app.use('/', router);
 // 포트 할당하기
 const PORT = process.env.PORT || 5001;
 
-// 서버 응답 출력
-
-// app.get('/api/host', (req, res) => {
-//   res.send({ host: 'mj😛' });
-// });
-
 // 서버 실행
 app.listen(PORT, () => {
   console.log(`Server : http://localhost:${PORT}/`);
