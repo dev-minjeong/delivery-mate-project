@@ -12,9 +12,7 @@ function Ckeditor({ getContents, contents }) {
           const data = editor.getData();
           getContents(data);
         }}
-        onFocus={(event, editor) => {
-          console.log('Focus ', editor);
-        }}
+        onFocus={(event, editor) => {}}
       ></CKEditor>
     </div>
   );

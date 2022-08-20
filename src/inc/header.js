@@ -1,4 +1,4 @@
-import { Route, Routes, Link } from 'react-router-dom';
+import { Route, Routes, Link, Outlet } from 'react-router-dom';
 import React from 'react';
 import { useState } from 'react';
 import '../App.css';
@@ -14,9 +14,9 @@ const Header = ({
   loginModal,
   toggleModal,
 }) => {
-  const [visible, setVisible] = useState(false);
-  const [id, setId] = useState('');
-  const [passWord, setPassWord] = useState('');
+  // const [visible, setVisible] = useState(false);
+  // const [id, setId] = useState('');
+  // const [passWord, setPassWord] = useState('');
 
   const openModal = () => {
     return toggleModal(true);
@@ -70,7 +70,7 @@ const Header = ({
           />
           {!login ? (
             <li>
-              <Link to='/signup'>회원가입</Link>
+              <Link to='signup'>회원가입</Link>
             </li>
           ) : null}
         </ul>

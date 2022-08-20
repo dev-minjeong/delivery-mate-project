@@ -8,14 +8,14 @@ import { useState, useEffect } from 'react';
 import queryString from 'query-string';
 import { Link } from 'react-router-dom';
 
-const List = ({
+function List({
   category,
   listData,
   listAllPage,
   listSearch,
   listPage,
   changePage,
-}) => {
+}) {
   // useEffect(() => {
   //   getListData();
   //   settingPage();
@@ -98,7 +98,7 @@ const List = ({
         })
       ) : (
         <div className='not-data acenter'>
-          {listSearch && listSearch !== '' ? (
+          {listSearch !== '' ? (
             <div>{`'${listSearch}'에 대한 `}검색 결과가 없습니다</div>
           ) : (
             <div>게시글이 없습니다</div>
@@ -133,6 +133,6 @@ const List = ({
       </div>
     </div>
   );
-};
+}
 
 export default List;

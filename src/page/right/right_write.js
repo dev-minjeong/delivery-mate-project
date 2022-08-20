@@ -29,7 +29,7 @@ function RightWrite(props) {
     // else if(category === '') {
     //   return alert('카테고리를 선택하세요')
     // }
-    if (params.data) {
+    if (!params.data) {
       const data = { title: title, contents: contents };
       const res = await axios('/add/board', {
         method: 'POST',
