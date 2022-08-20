@@ -9,7 +9,7 @@ import { Main } from './page/index.js';
 import queryString from 'query-string';
 import axios from 'axios';
 
-const App = (props) => {
+const App = () => {
   const [login, setLogin] = useState(false);
   const [admin, setAdmin] = useState(false);
   const [userIp, setUserIp] = useState('');
@@ -36,21 +36,19 @@ const App = (props) => {
       setUserIp(JSON.parse(sessionStorage.IP));
     }
   }, []);
-
-  // const getData = async (board_id) => {
-  //   const getBoardData = await axios('/get/board_data', {
-  //     method: 'POST',
-  //     headers: new Header(),
-  //     data: { id: board_id },
-  //   });
-  //   const date =
-  //     getBoardData.data[0].date.slice(0, 10) +
-  //     ' ' +
-  //     getBoardData.data[0].date.slice(11, 16);
-  //     setData(getBoardData);
-  //     setDate(date);
-  //     setLikeNum(getBoardData.data[0].likes)
-  // };
+  const getData = async (board_id) => {
+    const getBoardData = await axios('/get/board_data', {
+      method: 'POST',
+      headers: new Headers(),
+      data: { id: board_id },
+    });
+    const date =
+      getBoardData.data.data[0].date.slice(0, 10) +
+      ' ' +
+      getBoardData.data.data[0].date.slice(11, 16);
+    setData(getBoardData.data);
+    setDate(date);
+  };
   const setPage = () => {
     if (sessionStorage.page) {
       setListPage(Number(sessionStorage.page));
@@ -121,11 +119,11 @@ const App = (props) => {
   };
   const changeCategory = (target) => {
     sessionStorage.setItem('category', target);
-    return (window.location.href = '/');
+    setCategory(target);
+    return getListData();
   };
   return (
     <div className='App'>
-      {/* <BrowserRouter basename={process.env.PUBLIC_URL}> */}
       <Header
         login={login}
         admin={admin}
@@ -150,8 +148,8 @@ const App = (props) => {
         userId={userId}
         data={data}
         date={date}
+        getData={getData}
       ></Main>
-      {/* </BrowserRouter> */}
     </div>
   );
 };
