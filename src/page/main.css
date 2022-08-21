@@ -270,7 +270,8 @@ button {
   margin-top: 15px;
   text-align: center;
 }
-.search-box div input[name='search-id-name'] {
+.search-box div input[name='search-id-name'],
+.search-box div input[name='search-pw-id'] {
   width: 140px;
 }
 .search-box div input[name='search-id-bday'] {
@@ -279,14 +280,17 @@ button {
 .search-box div input[name='search-id-sex'] {
   width: 10px;
 }
-.search-box div input[name='search-id-email'] {
+.search-box div input[name='search-id-email'],
+.search-box div input[name='search-pw-email'] {
   width: 135px;
 }
-.search-box div input[name='search-id-write-email'] {
+.search-box div input[name='search-id-write-email'],
+.search-box div input[name='search-pw-write-email'] {
   width: 100px;
 }
 .search-box div input[name='search-id-submit'],
-.search-id-result div input[name='search-id-back'] {
+.search-id-result div input[name='search-id-back'],
+.search-box div input[name='search-pw-submit'] {
   margin-top: 20px;
   border: 1px solid #ababab;
   border-radius: 4px;
