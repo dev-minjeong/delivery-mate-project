@@ -28,6 +28,22 @@ module.exports = {
         });
     },
   },
+  search: {
+    id: (body, callback) => {
+      User.findAll({
+        where: {
+          name: body.user_name,
+          birthday: body.user_birthday,
+          sex: body.user_sex,
+          email: body.user_email,
+        },
+      })
+        .then((result) => callback(result))
+        .catch((err) => {
+          throw err;
+        });
+    },
+  },
   add: {
     board: (body, callback) => {
       Board.create({

@@ -4,6 +4,8 @@ const controller = require('./controller');
 
 router.post('/send/pw', controller.api.sendPw);
 
+router.post('/search/id', controller.search.id);
+
 router.post('/add/board', controller.add.board);
 router.post('/add/category', controller.add.category);
 router.post('/add/user', controller.add.user);
