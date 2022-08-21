@@ -2,10 +2,14 @@ import Modal from 'react-awesome-modal';
 import axios from 'axios';
 import { useState } from 'react';
 import React from 'react';
+import '../App.css';
+import { SearchId, SearchPw } from './index.js';
 
 function Login({ handleLogin, loginModal, toggleModal }) {
   const [id, setId] = useState('');
   const [passWord, setPassWord] = useState('');
+  const [searchIdModal, setSearchIdModal] = useState(false);
+  const [searchPwModal, setSearchPwModal] = useState(false);
 
   const changeId = () => {
     const idValue = document.getElementsByName('id')[0].value;
@@ -47,13 +51,21 @@ function Login({ handleLogin, loginModal, toggleModal }) {
       }
     }
   };
+  const openSearchModal = (target) => {
+    if (target === 'id') {
+      setSearchIdModal(true);
+    } else if (target === 'pw') {
+      setSearchPwModal(true);
+    }
+    return toggleModal(false);
+  };
 
   return (
     <div>
       <Modal
         visible={loginModal}
         width='400'
-        height='300'
+        height='350'
         effect='fadeInDown'
         onClickAway={() => toggleModal(false)}
       >
@@ -95,8 +107,18 @@ function Login({ handleLogin, loginModal, toggleModal }) {
               </div>
             </div>
           </form>
+          <div className='search-user-info'>
+            <div>
+              <b onClick={() => openSearchModal('id')}>아이디 찾기</b>
+            </div>
+            <div>
+              <b onClick={() => openSearchModal('pw')}>비밀번호 찾기</b>
+            </div>
+          </div>
         </div>
       </Modal>
+      <SearchId searchIdModal={searchIdModal}></SearchId>
+      <SearchPw searchPwModal={searchPwModal}></SearchPw>
     </div>
   );
 }
