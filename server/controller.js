@@ -12,6 +12,40 @@ const now_date = moment().format('YYYY-MM-DD HH:mm:ss');
 
 const user_ip = require('ip');
 
+// 이메일 전송
+const nodeMailer = require('nodemailer');
+// 이메일 발송 서비스 환경설정
+const mailPoster = nodeMailer.createTransport({
+  host: 'smtp.gmail.com',
+  service: 'gmail',
+  port: 465,
+  secure: true,
+  auth: {
+    user: '이메일@gmail.com',
+    pass: '이메일 비번',
+  },
+});
+// 이메일 받을 유저설정
+const mailOption = (user_data) => {
+  const mail_options = {
+    from: '이메일@gmail.com',
+    to: user_data.email,
+    subject: '비밀번호 인증 코드',
+    text: '111111',
+  };
+  return mail_options;
+};
+// 메일 전송
+const sendMail = (mailOpt) => {
+  mailPoster.sendMail(mailOpt, function (error, info) {
+    if (error) {
+      console.log('에러!' + error);
+    } else {
+      console.log('전송 완료!' + info.response);
+    }
+  });
+};
+
 // const AWS = require('aws-sdk');
 // AWS.config.loadFromPath(
 // loadFromPath로 json파일을 path모듈로 연결
@@ -46,10 +80,15 @@ module.exports = {
         res.send(result);
       });
     },
-    pw:(req, res) => {
+    pw: (req, res) => {
       const body = req.body;
+      console.log(body);
 
       model.search.pw(body, (result) => {
+        if (result[0]) {
+          const mailOpt = mailOption(result[0].dataValues);
+          sendMail(mailOpt);
+        }
         res.send(result);
       });
     },

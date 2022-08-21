@@ -45,6 +45,7 @@
     "moment-timezone": "^0.5.34",
     "mysql": "^2.18.1",
     "mysql2": "^2.3.3",
+    "nodemailer": "^6.7.8",
     "path": "^0.12.7",
     "postcss": "^8.4.4",
     "postcss-flexbugs-fixes": "^5.0.2",
