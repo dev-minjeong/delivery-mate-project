@@ -1,15 +1,25 @@
 import Modal from 'react-awesome-modal';
+import { BackAndClose } from './index.js';
 
-function SearchId(props) {
+function SearchId({
+  searchIdModal,
+  closeSearchModal,
+  backSearchModal,
+  target,
+}) {
   return (
     <>
       <Modal
-        visible={props.searchIdModal}
+        visible={searchIdModal}
         width='400'
         height='350'
         effect='fadeInDown'
       >
-        Search ID Page
+        <BackAndClose
+          closeSearchModal={closeSearchModal}
+          backSearchModal={backSearchModal}
+          target={target}
+        ></BackAndClose>
       </Modal>
     </>
   );

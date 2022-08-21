@@ -1,15 +1,25 @@
 import Modal from 'react-awesome-modal';
+import { BackAndClose } from './index.js';
 
-function SearchPw(props) {
+function SearchPw({
+  searchPwModal,
+  closeSearchModal,
+  backSearchModal,
+  target,
+}) {
   return (
     <>
       <Modal
-        visible={props.searchPwModal}
+        visible={searchPwModal}
         wigth='400'
         height='350'
         effect='fadeInDown'
       >
-        Search PW Page
+        <BackAndClose
+          closeSearchModal={closeSearchModal}
+          backSearchModal={backSearchModal}
+          target={target}
+        ></BackAndClose>
       </Modal>
     </>
   );

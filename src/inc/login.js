@@ -59,6 +59,17 @@ function Login({ handleLogin, loginModal, toggleModal }) {
     }
     return toggleModal(false);
   };
+  const closeSearchModal = (target) => {
+    if (target === 'id') {
+      setSearchIdModal(false);
+    } else if (target === 'pw') {
+      setSearchPwModal(false);
+    }
+  };
+  const backSearchModal = (target) => {
+    closeSearchModal(target);
+    return toggleModal(true);
+  };
 
   return (
     <div>
@@ -117,8 +128,18 @@ function Login({ handleLogin, loginModal, toggleModal }) {
           </div>
         </div>
       </Modal>
-      <SearchId searchIdModal={searchIdModal}></SearchId>
-      <SearchPw searchPwModal={searchPwModal}></SearchPw>
+      <SearchId
+        searchIdModal={searchIdModal}
+        closeSearchModal={closeSearchModal}
+        backSearchModal={backSearchModal}
+        target='id'
+      ></SearchId>
+      <SearchPw
+        searchPwModal={searchPwModal}
+        closeSearchModal={closeSearchModal}
+        backSearchModal={backSearchModal}
+        target='pw'
+      ></SearchPw>
     </div>
   );
 }
