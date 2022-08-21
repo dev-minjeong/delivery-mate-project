@@ -46,6 +46,13 @@ module.exports = {
         res.send(result);
       });
     },
+    pw:(req, res) => {
+      const body = req.body;
+
+      model.search.pw(body, (result) => {
+        res.send(result);
+      });
+    },
   },
   add: {
     board: (req, res) => {

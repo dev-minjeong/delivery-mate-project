@@ -43,6 +43,18 @@ module.exports = {
           throw err;
         });
     },
+    pw: (body, callback) => {
+      User.findAll({
+        where: {
+          id: body.user_id,
+          email: body.user_email,
+        },
+      })
+        .then((result) => callback(result))
+        .catch((err) => {
+          throw err;
+        });
+    },
   },
   add: {
     board: (body, callback) => {
