@@ -10,6 +10,9 @@ function SearchPw({
   target,
 }) {
   const [result, setResult] = useState(false);
+  const [secret, setSecret] = useState('');
+  const [userData, setUserData] = useState('');
+  const [change, setChange] = useState(false);
 
   const searchPassword = async () => {
     const userId = document.getElementsByName('search-pw-id')[0].value.trim();
@@ -40,10 +43,59 @@ function SearchPw({
       data: obj,
       headers: new Headers(),
     });
-    if (res.data.length === 0) {
+    if (res.data === false) {
       return alert('일치한 데이터가 없습니다. 형식에 맞게 정확히 입력해주세요');
     }
+
+    document.getElementsByName('search-pw-id')[0].value = '';
+    alert(res.data.result[0].email + '에 6자리의 숫자코드가 전송됐습니다');
     setResult(true);
+    setSecret(res.data.secret);
+    setUserData(res.data.result[0]);
+  };
+  const checkSecretCode = () => {
+    const secretCode = Number(secret);
+    const secretInput = Number(
+      document.getElementsByName('pw-secret')[0].value.trim()
+    );
+
+    if (String(secretInput).length !== 6) {
+      return alert('6자리의 숫자코드를 입력하세요');
+    } else if (secretCode !== secretInput) {
+      return alert('인증코드가 일치하지 않습니다. 다시 입력하세요.');
+    }
+    return setChange(true);
+  };
+  const changePassword = async () => {
+    const changePw = document.getElementsByName('change-pw')[0].value.trim();
+    const changePwCheck = document
+      .getElementsByName('change-pw-check')[0]
+      .value.trim();
+
+    const pwCheck = /^[a-z]+[a-z0-9]{5,19}$/g;
+    if (!pwCheck.test(changePw)) {
+      return alert(
+        '비밀번호는 영문자로 시작하며 영문자와 숫자를 포함해 6-20자입니다 '
+      );
+    } else if (changePw !== changePwCheck) {
+      return alert('비밀번호가 일지하지 않습니다');
+    }
+    const userId = userData.id;
+    const obj = { user_id: userId, change_password: changePw };
+    await axios('/update/pw', {
+      method: 'POST',
+      data: obj,
+      headers: new Headers(),
+    });
+    alert('비밀번호가 변경되었습니다');
+    setResult(false);
+    setChange(false);
+
+    return backSearchModal(target);
+  };
+  const resetPwResult = () => {
+    setResult(false);
+    setChange(false);
   };
   return (
     <>
@@ -56,6 +108,7 @@ function SearchPw({
         <BackAndClose
           closeSearchModal={closeSearchModal}
           backSearchModal={backSearchModal}
+          resetPwResult={resetPwResult}
           target={target}
         ></BackAndClose>
         {!result ? (
@@ -83,13 +136,51 @@ function SearchPw({
               ></input>
             </div>
           </div>
-        ) : (
+        ) : !change ? (
           <div className='result-box'>
             <h4>비밀번호 찾기</h4>
             <div className='search-pw-result'>
               <p>
-                {'< '}비밀번호 조회 결과{' >'}
+                <b>{userData.email}</b>로 전송된 6자리의 숫자코드를 입력하세요
               </p>
+              <input type='text' maxLength='6' name='pw-secret'></input>
+              <input
+                type='button'
+                value='확인'
+                name='pw-secret-submit'
+                onClick={() => checkSecretCode()}
+              ></input>
+            </div>
+          </div>
+        ) : (
+          <div className='change-box'>
+            <h4>비밀번호 변경</h4>
+            <div className='change-pw-result'>
+              <span>
+                변경할 비밀번호를 입력하세요
+                <p>
+                  비밀번호는 <b>영문자로 시작하며 영문, 숫자를 포함해 6-20자</b>{' '}
+                  입니다
+                </p>
+              </span>
+              <div>
+                <h5>비밀번호</h5>
+                <input type='password' name='change-pw' maxLength='20'></input>
+              </div>
+              <div>
+                <h5>비밀번호 확인</h5>
+                <input
+                  type='password'
+                  name='change-pw-check'
+                  maxLength='20'
+                ></input>
+              </div>
+              <input
+                type='button'
+                value='비밀번호 변경'
+                name='change-pw-submit'
+                onClick={() => changePassword()}
+              ></input>
             </div>
           </div>
         )}

@@ -290,7 +290,9 @@ button {
 }
 .search-box div input[name='search-id-submit'],
 .search-id-result div input[name='search-id-back'],
-.search-box div input[name='search-pw-submit'] {
+.search-box div input[name='search-pw-submit'],
+input[name='pw-secret-submit'],
+input[name='change-pw-submit'] {
   margin-top: 20px;
   border: 1px solid #ababab;
   border-radius: 4px;
@@ -313,6 +315,30 @@ button {
 }
 .search-id-result-div div {
   margin: 10px;
+}
+.search-pw-result {
+  padding-top: 20px;
+}
+.change-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px 60px;
+}
+.change-box div {
+  margin-top: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.change-pw-result span {
+  text-align: center;
+  font-size: 14px;
+}
+input[name='pw-secret'] {
+  margin: 0 10px 0 0;
+  width: 130px;
+  padding: 5px;
 }
 /* 회원가입 */
 .signup {

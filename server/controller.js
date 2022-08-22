@@ -21,14 +21,14 @@ const mailPoster = nodeMailer.createTransport({
   port: 465,
   secure: true,
   auth: {
-    user: '',
-    pass: '',
+    user: 'vitaminjeong1026@gmail.com',
+    pass: 'lcjxfolgjhplnehd',
   },
 });
 // 이메일 받을 유저설정
 const mailOption = (user_data, title, contents) => {
   const mail_options = {
-    from: '',
+    from: 'vitaminjeong1026@gmail.com',
     to: user_data.email,
     subject: title,
     text: contents,
@@ -84,6 +84,8 @@ module.exports = {
       const body = req.body;
 
       model.search.pw(body, (result) => {
+        let resData = {};
+
         if (result[0]) {
           const title = '비밀번호 인증 코드';
           const contents = () => {
@@ -93,10 +95,16 @@ module.exports = {
               random = Math.round(Math.random() * (9 - 0) + 0);
               number += random;
             }
+            resData['secret'] = number;
             return `6자리 인증코드 입니다. ${number}`;
           };
           const mailOpt = mailOption(result[0].dataValues, title, contents());
           sendMail(mailOpt);
+
+          resData['result'] = result;
+          res.send(resData);
+        } else {
+          res.send(false);
         }
       });
     },
@@ -187,6 +195,14 @@ module.exports = {
       } else {
         res.send(false);
       }
+    },
+    pw: (req, res) => {
+      const body = req.body;
+      const hash_pw = hashing.enc(body.user_id, body.change_password, salt);
+
+      model.update.pw(body, hash_pw, (result) => {
+        res.send(true);
+      });
     },
   },
   delete: {

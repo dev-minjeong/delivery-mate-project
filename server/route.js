@@ -12,6 +12,7 @@ router.post('/add/category', controller.add.category);
 router.post('/add/user', controller.add.user);
 
 router.post('/update/view_cnt', controller.update.view_cnt);
+router.post('/update/pw', controller.update.pw);
 
 router.post('/delete/category', controller.delete.category);
 

@@ -126,6 +126,20 @@ module.exports = {
           // console.log(err.data);
         });
     },
+    pw: (body, hash_pw, callback) => {
+      User.update(
+        { password: hash_pw },
+        {
+          where: { id: body.user_id },
+        }
+      )
+        .then(() => {
+          callback(true);
+        })
+        .catch((err) => {
+          throw err;
+        });
+    },
   },
   delete: {
     category: (body, callback) => {
