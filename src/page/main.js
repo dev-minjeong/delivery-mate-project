@@ -6,21 +6,33 @@ import { useState, Component } from 'react';
 
 import './main.css';
 
-const Main = ({ login, admin, userIp }) => {
+const Main = ({
+  login,
+  admin,
+  userIp,
+  loginModal,
+  toggleModal,
+  listData,
+  listAllPage,
+  listSearch,
+  listPage,
+  changePage,
+  changeCategory,
+  userId,
+  data,
+  date,
+  getData,
+}) => {
   const [category, setCategory] = useState('');
   const [change_Category, setChange_Category] = useState(false);
   const [contents, setContents] = useState('');
+  const [title, setTitle] = useState('');
 
   const withProps = (Component, props) => {
     return function (matchProps) {
       return <Component {...props} {...matchProps} />;
     };
   };
-  const changeCategory = (target) => {
-    setCategory(target);
-    sessionStorage.setItem('category', target);
-  };
-  // category === null || console.log(category);
   const changeState = () => {
     setChange_Category(true);
   };
@@ -28,11 +40,33 @@ const Main = ({ login, admin, userIp }) => {
     const contents = val.trim();
     setContents(contents);
   };
+  const getTitles = () => {
+    const title = document.getElementsByName('title')[0].value.trim();
+    setTitle(title);
+  };
 
-  const ListWithProps = withProps(List, { category: category });
+  const ListWithProps = withProps(List, {
+    category: category,
+    listData: listData,
+    listAllPage: listAllPage,
+    listSearch: listSearch,
+    listPage: listPage,
+    changePage: changePage,
+  });
   const WriteWithProps = withProps(Write, {
     getContents: getContents,
+    getTitles: getTitles,
     contents: contents,
+    title: title,
+  });
+  const ViewWithProps = withProps(View, {
+    login: login,
+    admin: admin,
+    toggleModal: toggleModal,
+    userId: userId,
+    data: data,
+    date: date,
+    getData: getData,
   });
   const RightWriteWithProps = withProps(RightWrite, { contents: contents });
   // alert(contents);
@@ -58,11 +92,9 @@ const Main = ({ login, admin, userIp }) => {
       <div id='main-center'>
         <Routes>
           <Route path='/' element={<ListWithProps />}></Route>
-          <Route path='/signup' element={<SignUp />}></Route>
-        </Routes>
-        <Routes>
           <Route path='/write' element={<WriteWithProps />}></Route>
-          <Route path='/view/:data' element={<View />}></Route>
+          <Route path='/signup' element={<SignUp />}></Route>
+          <Route path='/view/:data' element={<ViewWithProps />}></Route>
         </Routes>
       </div>
       <div id='main-right'>

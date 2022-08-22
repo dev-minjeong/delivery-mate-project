@@ -9,7 +9,7 @@ import { Main } from './page/index.js';
 import queryString from 'query-string';
 import axios from 'axios';
 
-const App = () => {
+function App() {
   const [login, setLogin] = useState(false);
   const [admin, setAdmin] = useState(false);
   const [userIp, setUserIp] = useState('');
@@ -152,6 +152,6 @@ const App = () => {
       ></Main>
     </div>
   );
-};
+}
 
 export default App;

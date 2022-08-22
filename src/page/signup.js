@@ -5,7 +5,6 @@ import axios from 'axios';
 function SignUp() {
   const [emailWriter, setEmailWriter] = useState(false);
   const [input, setInput] = useState(false);
-  const [focus, setFocus] = useState(false);
   const [currName, setCurrName] = useState('');
 
   const changeEmailSelect = () => {
@@ -36,7 +35,6 @@ function SignUp() {
         .getElementsByName('signup-email-write')[0]
         .value.trim();
     }
-    // const email = `${emailId}@ ${emailSelect}`;
     const email = emailId + '@' + emailSelect;
 
     // 정규표현식
