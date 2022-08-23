@@ -142,6 +142,21 @@ module.exports = {
           throw err;
         });
     },
+    like: (body, callback) => {
+      if (body.type === 'add') {
+        Board.update(
+          { likes: sequelize.literal('likes + 1') },
+          {
+            where: { board_id: body.board_id },
+          }
+        );
+        Like.create({
+          board_id: body.board_id,
+          user_id: body.user_id,
+        });
+      }
+      callback(true);
+    },
   },
   delete: {
     category: (body, callback) => {
@@ -262,6 +277,22 @@ module.exports = {
         .catch((err) => {
           throw err;
           // console.log(err.result);
+        });
+    },
+  },
+  check: {
+    like: (body, callback) => {
+      Like.findAll({
+        where: {
+          board_id: body.board_id,
+          user_id: body.user_id,
+        },
+      })
+        .then((result) => {
+          callback(result);
+        })
+        .catch((err) => {
+          throw err;
         });
     },
   },

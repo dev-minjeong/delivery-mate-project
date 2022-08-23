@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 function View({ login, admin, toggleModal, userId, data, date, getData }) {
-  const board_data = useParams();
+  const params = useParams();
   // const [data, setData] = useState([]);
   // const [date, setDate] = useState('');
   const [noneLike, setNoneLike] = useState(
@@ -16,30 +16,40 @@ function View({ login, admin, toggleModal, userId, data, date, getData }) {
   );
 
   useEffect(() => {
-    const board_id = board_data.data;
-    addViewCnt(board_id);
+    const boardId = params.data;
+    addViewCnt(boardId);
     if (!data) {
-      getData(board_id);
+      getData(boardId);
     }
   }, []);
 
   // 조회수 카운트
-  const addViewCnt = async (board_id) => {
+  const addViewCnt = async (boardId) => {
     await axios('/update/view_cnt', {
       method: 'POST',
       headers: new Headers(),
-      data: { id: board_id },
+      data: { id: boardId },
     });
   };
   const toggleLike = async () => {
     if (!login) {
       alert('로그인 후 이용가능합니다');
       return toggleModal(true);
+    }
+    const boardId = params.data;
+    const obj = { type: 'add', user_id: userId, board_id: boardId };
+    const res = await axios('/update/like', {
+      method: 'POST',
+      headers: new Headers(),
+      data: obj,
+    });
+
+    if (!res.data) {
+      return alert('이미 좋아요가 반영되었습니다');
     } else {
-      alert('좋아요 버튼을 클릭합니다');
+      return alert('해당 게시물에 좋아요가 반영되었습니다');
     }
   };
-
   return (
     <div className='write'>
       {data.data ? (

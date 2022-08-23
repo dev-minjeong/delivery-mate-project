@@ -34,6 +34,7 @@ function App() {
       setLogin(JSON.parse(sessionStorage.login).id);
       setAdmin(JSON.parse(sessionStorage.login).admin);
       setUserIp(JSON.parse(sessionStorage.IP));
+      setUserId(JSON.parse(sessionStorage.login).user_id);
     }
   }, []);
   const getData = async (board_id) => {
@@ -102,9 +103,12 @@ function App() {
   const handleLogin = (data) => {
     sessionStorage.setItem('login', JSON.stringify(data.suc));
     sessionStorage.setItem('IP', JSON.stringify(data.ip));
+
     setLogin(JSON.parse(sessionStorage.login).id);
     setAdmin(JSON.stringify(data.suc).admin);
     setUserIp(JSON.parse(sessionStorage.IP));
+    setUserId(JSON.parse(sessionStorage.login).user_id);
+
     return window.location.reload();
   };
   const handleLogout = () => {

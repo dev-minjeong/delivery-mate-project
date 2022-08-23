@@ -204,6 +204,19 @@ module.exports = {
         res.send(true);
       });
     },
+    like: (req, res) => {
+      const body = req.body;
+
+      model.check.like(body, (data) => {
+        if (data.length === 0) {
+          model.update.like(body, () => {
+            res.send(true);
+          });
+        } else {
+          res.send(false);
+        }
+      });
+    },
   },
   delete: {
     category: (req, res) => {

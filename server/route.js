@@ -13,6 +13,7 @@ router.post('/add/user', controller.add.user);
 
 router.post('/update/view_cnt', controller.update.view_cnt);
 router.post('/update/pw', controller.update.pw);
+router.post('/update/like', controller.update.like);
 
 router.post('/delete/category', controller.delete.category);
 
