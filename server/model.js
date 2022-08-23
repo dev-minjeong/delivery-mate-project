@@ -8,6 +8,7 @@ const {
   Board,
   Category,
   User,
+  Like,
   Sequelize: { Op },
 } = require('./models');
 sequelize.query('SET NAMES utf8;');
@@ -64,6 +65,7 @@ module.exports = {
         date: new Date(),
         view_cnt: 0,
         food_id: 0,
+        likes: 0,
       })
         .then((data) => {
           callback(true);
