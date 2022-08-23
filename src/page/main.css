@@ -183,6 +183,22 @@ button {
 #content-txt {
   border: none;
 }
+.other-div {
+  display: flex;
+  margin-top: 300px;
+  border-top: 1px solid #ababab;
+  justify-content: space-around;
+}
+.other-div .like {
+  margin-top: 20px;
+}
+.other-div .like img {
+  width: 40px;
+  cursor: pointer;
+}
+.other-div .like h5 {
+  margin-top: 5px;
+}
 
 /* left - 카테고리 메뉴 */
 .category {

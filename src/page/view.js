@@ -6,6 +6,14 @@ import { useParams } from 'react-router-dom';
 
 function View({ login, admin, toggleModal, userId, data, date, getData }) {
   const board_data = useParams();
+  // const [data, setData] = useState([]);
+  // const [date, setDate] = useState('');
+  const [noneLike, setNoneLike] = useState(
+    'https://cdns.iconmonstr.com/wp-content/releases/preview/2013/240/iconmonstr-thumb-10.png'
+  );
+  const [like, setLike] = useState(
+    'https://cdns.iconmonstr.com/wp-content/releases/preview/2013/240/iconmonstr-thumb-9.png'
+  );
 
   useEffect(() => {
     const board_id = board_data.data;
@@ -22,6 +30,14 @@ function View({ login, admin, toggleModal, userId, data, date, getData }) {
       headers: new Headers(),
       data: { id: board_id },
     });
+  };
+  const toggleLike = async () => {
+    if (!login) {
+      alert('로그인 후 이용가능합니다');
+      return toggleModal(true);
+    } else {
+      alert('좋아요 버튼을 클릭합니다');
+    }
   };
 
   return (
@@ -43,6 +59,18 @@ function View({ login, admin, toggleModal, userId, data, date, getData }) {
               id='content-txt'
               dangerouslySetInnerHTML={{ __html: data.data[0].contents }}
             ></div>
+            <div className='other-div'>
+              <div></div>
+              <div className='like'>
+                <img
+                  src={noneLike}
+                  alt='nonelike'
+                  onClick={() => toggleLike()}
+                ></img>
+                <h5>좋아요</h5>
+              </div>
+              <div></div>
+            </div>
           </div>
         </div>
       ) : null}
