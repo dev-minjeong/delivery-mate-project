@@ -15,6 +15,7 @@ function Category({ changeCategory, login, changeState, admin, userIp }) {
   const getCategoryData = async () => {
     const getData = await axios('/get/category');
     setCategory(getData.data);
+    console.log(getData);
   };
   const addCategory = async () => {
     let categoryName = window.prompt('추가할 카테고리를 입력하세요');
@@ -28,6 +29,7 @@ function Category({ changeCategory, login, changeState, admin, userIp }) {
           headers: new Headers(),
         });
         alert(add.data.msg);
+        console.log(add);
         getCategoryData();
       } else {
         return alert('추가할 카테고리를 입력하세요');
