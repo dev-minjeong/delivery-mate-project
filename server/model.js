@@ -25,7 +25,6 @@ module.exports = {
         })
         .catch((err) => {
           throw err;
-          // console.log(err.data);
         });
     },
   },
@@ -58,21 +57,20 @@ module.exports = {
     },
   },
   add: {
-    board: (body, callback) => {
+    board: (body, now_date, callback) => {
       Board.create({
         title: body.title,
         contents: body.contents,
-        date: new Date(),
+        date: now_date,
         view_cnt: 0,
         food_id: 0,
         likes: 0,
       })
-        .then((data) => {
+        .then(() => {
           callback(true);
         })
         .catch((err) => {
           throw err;
-          // console.log(err.data);
         });
     },
     category: (body, callback) => {
@@ -125,7 +123,6 @@ module.exports = {
         })
         .catch((err) => {
           throw err;
-          // console.log(err.data);
         });
     },
     pw: (body, hash_pw, callback) => {
@@ -154,6 +151,19 @@ module.exports = {
           board_id: body.board_id,
           user_id: body.user_id,
         });
+      } else if (body.type === 'remove') {
+        Board.update(
+          { likes: sequelize.literal('likes - 1') },
+          {
+            where: { board_id: body.board_id },
+          }
+        );
+        Like.destroy({
+          where: {
+            board_id: body.board_id,
+            user_id: body.user_id,
+          },
+        });
       }
       callback(true);
     },
@@ -174,9 +184,19 @@ module.exports = {
           })
           .catch((err) => {
             throw err;
-            // console.log(err);
           });
       });
+    },
+    board: (body, callback) => {
+      Board.destroy({
+        where: { board_id: body.board_id },
+      })
+        .then(() => {
+          callback(true);
+        })
+        .catch((err) => {
+          throw err;
+        });
     },
   },
   modify: {
@@ -198,7 +218,6 @@ module.exports = {
             })
             .catch((err) => {
               throw err;
-              // console.log(err);
             });
         }
       });
@@ -211,6 +230,15 @@ module.exports = {
       if (body.search) {
         search = `%${body.search}%`;
       }
+
+      let all_category = body.category;
+      let select_category = '';
+      if (!body.category) {
+        select_category = 0;
+      } else if (body.category) {
+        select_category = null;
+      }
+
       Board.findAll({
         where: {
           title: {
@@ -219,7 +247,12 @@ module.exports = {
           contents: {
             [Op.like]: search,
           },
-          food_id: body.category,
+          food_id: {
+            [Op.or]: {
+              [Op.eq]: all_category,
+              [Op.gt]: select_category,
+            },
+          },
         },
         limit: body.page * body.limit,
         offset: (body.page - 1) * body.limit,
@@ -240,6 +273,15 @@ module.exports = {
       if (body.search) {
         search = `%${body.search}%`;
       }
+
+      let all_category = body.category;
+      let select_category = '';
+      if (!body.category) {
+        select_category = 0;
+      } else if (body.category) {
+        select_category = null;
+      }
+
       Board.count({
         where: {
           title: {
@@ -248,14 +290,16 @@ module.exports = {
           contents: {
             [Op.like]: search,
           },
-          food_id: body.category,
+          food_id: {
+            [Op.or]: {
+              [Op.eq]: all_category,
+              [Op.gt]: select_category,
+            },
+          },
         },
       }).then((result) => {
         callback(result);
       });
-      // .catch((err) => {
-      //   console.log(err.result);
-      // });
     },
     board_data: (body, callback) => {
       Board.findAll({
@@ -266,7 +310,6 @@ module.exports = {
         })
         .catch((err) => {
           throw err;
-          // console.log(err.result);
         });
     },
     category: (callback) => {
@@ -276,7 +319,6 @@ module.exports = {
         })
         .catch((err) => {
           throw err;
-          // console.log(err.result);
         });
     },
   },
