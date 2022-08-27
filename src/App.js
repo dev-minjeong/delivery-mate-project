@@ -25,11 +25,16 @@ function App() {
   const [data, setData] = useState('');
   const [date, setDate] = useState('');
   const [likeNum, setLikeNum] = useState('');
+  const [likeExist, setLikeExist] = useState(null);
+
+  const [categoryData, setCategoryData] = useState([]);
+  const [selectCategory, setSelectCategory] = useState('');
+
   const locationSearch = useLocation().search;
-  // const location = useLocation();
 
   useEffect(() => {
     getListData();
+    getAllCategoryData();
     if (sessionStorage.login && sessionStorage.IP) {
       setLogin(JSON.parse(sessionStorage.login).id);
       setAdmin(JSON.parse(sessionStorage.login).admin);
@@ -37,6 +42,8 @@ function App() {
       setUserId(JSON.parse(sessionStorage.login).user_id);
     }
   }, []);
+
+  // 보드
   const getData = async (board_id) => {
     const getBoardData = await axios('/get/board_data', {
       method: 'POST',
@@ -44,12 +51,14 @@ function App() {
       data: { id: board_id },
     });
     const date =
-      getBoardData.data.data[0].date.slice(0, 10) +
+      getBoardData.data[0].date.slice(0, 10) +
       ' ' +
-      getBoardData.data.data[0].date.slice(11, 16);
-    setData(getBoardData.data);
+      getBoardData.data[0].date.slice(11, 16);
+    setData(getBoardData);
     setDate(date);
+    setLikeNum(getBoardData.data[0].likes);
   };
+  // 페이지
   const setPage = () => {
     if (sessionStorage.page) {
       setListPage(Number(sessionStorage.page));
@@ -63,6 +72,7 @@ function App() {
     sessionStorage.setItem('page', el);
     return getListData();
   };
+  // 리스트
   const getListData = async () => {
     const listPages = setPage();
 
@@ -100,6 +110,7 @@ function App() {
     setListAllPage(pageArr);
     setListSearch(search);
   };
+  // 로그인
   const handleLogin = (data) => {
     sessionStorage.setItem('login', JSON.stringify(data.suc));
     sessionStorage.setItem('IP', JSON.stringify(data.ip));
@@ -121,10 +132,41 @@ function App() {
   const toggleModal = (boolean) => {
     setLoginModal(boolean);
   };
+  // 카테고리
   const changeCategory = (target) => {
     sessionStorage.setItem('category', target);
-    setCategory(target);
-    return getListData();
+    return (window.location.href = '/');
+  };
+  const getAllCategoryData = async () => {
+    const getCategoryData = await axios('/get/category');
+    setCategoryData(getCategoryData.data);
+  };
+  const selectCategoryData = async (board_id) => {
+    let category = document.getElementsByName('select-category')[0].value;
+
+    if (board_id) {
+      const getBoardData = await axios('/get/board_data', {
+        method: 'POST',
+        headers: new Headers(),
+        data: { id: board_id },
+      });
+      console.log(getBoardData);
+      return setSelectCategory(getBoardData.data[0].food_id);
+    }
+    setSelectCategory(category);
+  };
+  // 좋아요
+  const getAllLike = async (board_id) => {
+    const getLikeData = await axios('/get/board_data', {
+      method: 'POST',
+      headers: new Headers(),
+      data: { id: board_id },
+    });
+    console.log(getLikeData);
+    setLikeNum(getLikeData.data[0].likes);
+  };
+  const getLikeExist = (result) => {
+    setLikeExist(result);
   };
   return (
     <div className='App'>
@@ -152,7 +194,14 @@ function App() {
         userId={userId}
         data={data}
         date={date}
+        likeNum={likeNum}
         getData={getData}
+        getAllLike={getAllLike}
+        categoryData={categoryData}
+        selectCategory={selectCategory}
+        selectCategoryData={selectCategoryData}
+        getLikeExist={getLikeExist}
+        likeExist={likeExist}
       ></Main>
     </div>
   );

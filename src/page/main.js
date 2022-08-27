@@ -5,6 +5,7 @@ import { Category } from './left/index.js';
 import { useState, Component } from 'react';
 
 import './main.css';
+import axios from 'axios';
 
 const Main = ({
   login,
@@ -21,7 +22,14 @@ const Main = ({
   userId,
   data,
   date,
+  likeNum,
   getData,
+  getAllLike,
+  categoryData,
+  selectCategory,
+  selectCategoryData,
+  getLikeExist,
+  likeExist,
 }) => {
   const [category, setCategory] = useState('');
   const [change_Category, setChange_Category] = useState(false);
@@ -43,6 +51,16 @@ const Main = ({
   const getTitles = () => {
     const title = document.getElementsByName('title')[0].value.trim();
     setTitle(title);
+  };
+  const getModifyData = async (board_id) => {
+    const getBoardData = await axios('/get/board_data', {
+      method: 'POST',
+      headers: new Headers(),
+      data: { id: board_id },
+    });
+    setTitle(getBoardData.data[0].title);
+    setContents(getBoardData.data[0].contents);
+    console.log(getBoardData);
   };
 
   const ListWithProps = withProps(List, {
@@ -66,10 +84,19 @@ const Main = ({
     userId: userId,
     data: data,
     date: date,
+    likeNum: likeNum,
     getData: getData,
+    getAllLike: getAllLike,
+
+    getLikeExist: getLikeExist,
+    likeExist: likeExist,
   });
-  const RightWriteWithProps = withProps(RightWrite, { contents: contents });
-  // alert(contents);
+  const RightWriteWithProps = withProps(RightWrite, {
+    contents: contents,
+    categoryData: categoryData,
+    selectCategory: selectCategory,
+    selectCategoryData: selectCategoryData,
+  });
 
   return (
     <div className='main'>

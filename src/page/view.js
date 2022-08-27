@@ -2,12 +2,22 @@ import axios from 'axios';
 
 import './main.css';
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 
-function View({ login, admin, toggleModal, userId, data, date, getData }) {
+function View({
+  login,
+  admin,
+  toggleModal,
+  userId,
+  data,
+  date,
+  likeNum,
+  getData,
+  getAllLike,
+  getLikeExist,
+  likeExist,
+}) {
   const params = useParams();
-  // const [data, setData] = useState([]);
-  // const [date, setDate] = useState('');
   const [noneLike, setNoneLike] = useState(
     'https://cdns.iconmonstr.com/wp-content/releases/preview/2013/240/iconmonstr-thumb-10.png'
   );
@@ -17,9 +27,13 @@ function View({ login, admin, toggleModal, userId, data, date, getData }) {
 
   useEffect(() => {
     const boardId = params.data;
+
     addViewCnt(boardId);
     if (!data) {
       getData(boardId);
+    }
+    if (likeExist === null) {
+      getLikeInfo();
     }
   }, []);
 
@@ -32,9 +46,8 @@ function View({ login, admin, toggleModal, userId, data, date, getData }) {
     });
   };
   const toggleLike = async () => {
-    if (!login) {
-      alert('로그인 후 이용가능합니다');
-      return toggleModal(true);
+    if (!loginCheck()) {
+      return;
     }
     const boardId = params.data;
     const obj = { type: 'add', user_id: userId, board_id: boardId };
@@ -45,11 +58,53 @@ function View({ login, admin, toggleModal, userId, data, date, getData }) {
     });
 
     if (!res.data) {
-      return alert('이미 좋아요가 반영되었습니다');
+      if (window.confirm('좋아요를 취소하시겠습니까?')) {
+        const cancel = { type: 'remove', user_id: userId, board_id: boardId };
+
+        await axios('/update/like', {
+          method: 'POST',
+          headers: new Headers(),
+          data: cancel,
+        });
+        getLikeExist(false);
+        getAllLike(boardId);
+
+        alert('좋아요가 취소되었습니다');
+      }
     } else {
-      return alert('해당 게시물에 좋아요가 반영되었습니다');
+      getLikeExist(true);
+      getAllLike(boardId);
+
+      alert('해당 게시물에 좋아요가 반영되었습니다');
     }
   };
+  const getLikeInfo = async () => {
+    if (login) {
+      const boardId = params.data;
+      const obj = { user_id: userId, board_id: boardId };
+
+      const getData = await axios('/check/like', {
+        method: 'POST',
+        headers: new Headers(),
+        data: obj,
+      });
+
+      if (getData.data[0]) {
+        return getLikeExist(true);
+      }
+      getLikeExist(false);
+    }
+  };
+  const loginCheck = () => {
+    if (!login) {
+      alert('로그인후 이용 가능합니다');
+      toggleModal(true);
+
+      return false;
+    }
+    return true;
+  };
+
   return (
     <div className='write'>
       {data.data ? (
@@ -70,14 +125,20 @@ function View({ login, admin, toggleModal, userId, data, date, getData }) {
               dangerouslySetInnerHTML={{ __html: data.data[0].contents }}
             ></div>
             <div className='other-div'>
+              <input
+                type='button'
+                value='목록'
+                id='view-list-btn'
+                onClick={() => (window.location.href = '/')}
+              ></input>
               <div></div>
               <div className='like'>
                 <img
-                  src={noneLike}
+                  src={!likeExist ? noneLike : like}
                   alt='nonelike'
                   onClick={() => toggleLike()}
                 ></img>
-                <h5>좋아요</h5>
+                <h5>좋아요({likeNum})</h5>
               </div>
               <div></div>
             </div>
