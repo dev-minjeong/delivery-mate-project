@@ -21,14 +21,14 @@ const mailPoster = nodeMailer.createTransport({
   port: 465,
   secure: true,
   auth: {
-    user: 'vitaminjeong1026@gmail.com',
-    pass: 'lcjxfolgjhplnehd',
+    user: '',
+    pass: '',
   },
 });
 // 이메일 받을 유저설정
 const mailOption = (user_data, title, contents) => {
   const mail_options = {
-    from: 'vitaminjeong1026@gmail.com',
+    from: '',
     to: user_data.email,
     subject: title,
     text: contents,
@@ -113,7 +113,7 @@ module.exports = {
     board: (req, res) => {
       const body = req.body;
 
-      model.add.board(body, (result) => {
+      model.add.board(body, now_date, (result) => {
         if (result) {
           res.send(true);
         }
@@ -165,9 +165,7 @@ module.exports = {
       const body = req.body;
 
       model.get.board_data(body, (data) => {
-        // res.send(data);
-        const result = { data: data };
-        res.send(result);
+        res.send(data);
       });
     },
     category: (req, res) => {
@@ -209,12 +207,25 @@ module.exports = {
 
       model.check.like(body, (data) => {
         if (data.length === 0) {
-          model.update.like(body, () => {
-            res.send(true);
+          model.update.like(body, (result) => {
+            res.send(result);
           });
         } else {
-          res.send(false);
+          if (body.type === 'remove') {
+            model.update.like(body, (result) => {
+              res.send(result);
+            });
+          } else {
+            res.send(false);
+          }
         }
+      });
+    },
+    board: (req, res) => {
+      const body = req.body;
+
+      model.update.board(body, (data) => {
+        res.send(true);
       });
     },
   },
@@ -226,6 +237,13 @@ module.exports = {
         if (result) {
           res.send(result);
         }
+      });
+    },
+    board: (req, res) => {
+      const body = req.body;
+
+      model.delete.board(body, () => {
+        res.send(true);
       });
     },
   },
@@ -243,6 +261,15 @@ module.exports = {
           obj['msg'] = '이미 존재하는 카테고리 입니다';
         }
         res.send(obj);
+      });
+    },
+  },
+  check: {
+    like: (req, res) => {
+      const body = req.body;
+
+      model.check.like(body, (result) => {
+        res.send(result);
       });
     },
   },
