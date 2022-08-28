@@ -9,6 +9,7 @@ function RightWrite({
   categoryData,
   selectCategory,
   selectCategoryData,
+  login,
 }) {
   const params = useParams();
   useEffect(() => {
@@ -29,7 +30,12 @@ function RightWrite({
       return alert('카테고리를 선택하세요');
     }
     if (!params.data) {
-      const data = { title: title, contents: contents, category: category };
+      const data = {
+        title: title,
+        contents: contents,
+        category: category,
+        writer_id: login,
+      };
       const res = await axios('/add/board', {
         method: 'POST',
         data: data,
@@ -45,6 +51,7 @@ function RightWrite({
         contents: contents,
         category: category,
         board_id: params.data,
+        writer_id: login,
       };
       const res = await axios('/update/board', {
         method: 'POST',
@@ -60,7 +67,6 @@ function RightWrite({
       }
     }
   };
-
   return (
     <div>
       <div className='select-category-box'>

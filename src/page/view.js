@@ -206,7 +206,7 @@ function View({
       {data.data ? (
         <div className='view-box'>
           <div className='title-box'>
-            {admin === 'Y' ? (
+            {admin === 'Y' || login === data.data[0].writer_id ? (
               <div className='write-option-box'>
                 <Link to={modifyUrl}>
                   <input type='button' value='수정'></input>
@@ -314,6 +314,8 @@ function View({
                     let id = el.user.id;
                     if (el.user.admin === 'Y') {
                       id = '관리자';
+                    } else if (el.user.id === data.data[0].writer_id) {
+                      id = '작성자';
                     }
                     let date =
                       el.date.slice(5, 10) + ' ' + el.date.slice(11, 16);
@@ -322,7 +324,8 @@ function View({
                         <div className='reply-contents'>
                           <div
                             style={
-                              el.user.admin === 'Y'
+                              el.user.admin === 'Y' ||
+                              el.user.id === data.data[0].writer_id
                                 ? { fontWeight: 'bold', color: 'blue' }
                                 : null
                             }
@@ -356,13 +359,13 @@ function View({
                 <h5>작성된 댓글이 없습니다.</h5>
               )}
             </div>
+            <input
+              type='button'
+              value='목록'
+              id='view-list-btn'
+              onClick={() => (window.location.href = '/')}
+            ></input>
           </div>
-          <input
-            type='button'
-            value='목록'
-            id='view-list-btn'
-            onClick={() => (window.location.href = '/')}
-          ></input>
         </div>
       ) : null}
     </div>

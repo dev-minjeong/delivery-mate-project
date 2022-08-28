@@ -34,6 +34,10 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         defaultValue: 0,
       },
+      writer_id: {
+        type: DataTypes.STRING(30),
+        allowNull: false,
+      },
     },
     {
       charset: 'utf8',

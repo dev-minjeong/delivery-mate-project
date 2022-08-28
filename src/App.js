@@ -30,6 +30,7 @@ function App() {
   const [selectCategory, setSelectCategory] = useState('');
   const [replyData, setReplyData] = useState([]);
   const [replyNum, setReplyNum] = useState(null);
+  // const [writerId, setWriterId] = useState('');
 
   const locationSearch = useLocation().search;
 
@@ -41,6 +42,7 @@ function App() {
       setAdmin(JSON.parse(sessionStorage.login).admin);
       setUserIp(JSON.parse(sessionStorage.IP));
       setUserId(JSON.parse(sessionStorage.login).user_id);
+      // setWriterId(JSON.parse(sessionStorage.login).id);
     }
   }, []);
 
@@ -58,6 +60,7 @@ function App() {
     setData(getBoardData);
     setDate(date);
     setLikeNum(getBoardData.data[0].likes);
+    console.log(getBoardData);
   };
   // 페이지
   const setPage = () => {

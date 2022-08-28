@@ -113,12 +113,14 @@ const Main = ({
     categoryData: categoryData,
     selectCategory: selectCategory,
     selectCategoryData: selectCategoryData,
+    login: login,
   });
   const RightWriteModifyWithProps = withProps(RightWrite, {
     contents: contents,
     categoryData: categoryData,
     selectCategory: selectCategory,
     selectCategoryData: selectCategoryData,
+    login: login,
   });
 
   return (
