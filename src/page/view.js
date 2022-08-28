@@ -60,6 +60,8 @@ function View({
       data: { id: boardId },
     });
   };
+
+  // 좋아요
   const toggleLike = async () => {
     if (!loginCheck()) {
       return;
@@ -110,6 +112,8 @@ function View({
       getLikeExist(false);
     }
   };
+
+  // 로그인
   const loginCheck = () => {
     if (!login) {
       alert('로그인후 이용 가능합니다');
@@ -119,6 +123,8 @@ function View({
     }
     return true;
   };
+
+  // 페이지
   const changeViewPage = (url) => {
     if (url === 'null_pre') {
       return alert('첫 게시물 입니다');
@@ -128,6 +134,20 @@ function View({
     return (window.location.href = url);
   };
 
+  // 게시글
+  const removeView = async () => {
+    if (window.confirm('해당 게시글을 삭제하시겠습니까?')) {
+      const boardId = params.data;
+
+      await axios('/delete/board', {
+        method: 'POST',
+        headers: new Headers(),
+        data: { board_id: boardId },
+      });
+      alert('게시글이 삭제되었습니다.');
+      return (window.location.href = '/');
+    }
+  };
   return (
     <div className='write'>
       {data.data ? (
@@ -136,7 +156,11 @@ function View({
             {admin === 'Y' ? (
               <div className='write-option-box'>
                 <input type='button' value='수정'></input>
-                <input type='button' value='삭제'></input>
+                <input
+                  type='button'
+                  value='삭제'
+                  onClick={() => removeView()}
+                ></input>
               </div>
             ) : null}
             <input
