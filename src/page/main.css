@@ -84,6 +84,14 @@ button {
   cursor: pointer;
   background-color: white;
 }
+.select-category-box {
+  margin: 30px;
+  text-align: center;
+}
+.select-category {
+  padding: 4px;
+  margin-top: 5px;
+}
 
 /* 게시판 리스트 */
 .list {

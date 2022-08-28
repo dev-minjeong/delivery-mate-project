@@ -63,7 +63,7 @@ module.exports = {
         contents: body.contents,
         date: now_date,
         view_cnt: 0,
-        food_id: 0,
+        food_id: body.category,
         likes: 0,
       })
         .then(() => {

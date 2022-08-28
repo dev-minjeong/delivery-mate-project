@@ -145,15 +145,15 @@ function App() {
   const selectCategoryData = async (board_id) => {
     let category = document.getElementsByName('select-category')[0].value;
 
-    if (board_id) {
-      const getBoardData = await axios('/get/board_data', {
-        method: 'POST',
-        headers: new Headers(),
-        data: { id: board_id },
-      });
-      console.log(getBoardData);
-      return setSelectCategory(getBoardData.data[0].food_id);
-    }
+    // if (board_id) {
+    //   const getBoardData = await axios('/get/board_data', {
+    //     method: 'POST',
+    //     headers: new Headers(),
+    //     data: { id: board_id },
+    //   });
+    //   console.log(getBoardData);
+    //   return setSelectCategory(getBoardData.data[0].food_id);
+    // }
     setSelectCategory(category);
   };
   // 좋아요

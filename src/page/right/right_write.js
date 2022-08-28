@@ -29,41 +29,60 @@ function RightWrite({
     } else if (category === '') {
       return alert('카테고리를 선택하세요');
     }
-    if (!params.data) {
-      const data = { title: title, contents: contents, category: category };
-      const res = await axios('/add/board', {
-        method: 'POST',
-        data: data,
-        headers: new Headers(),
-      });
-      if (res.data) {
-        alert('글이 게시되었습니다');
-        return window.location.replace('/');
-      }
-    } else {
-      const data = {
-        title: title,
-        contents: contents,
-        category: category,
-        board_id: params.data,
-      };
-      const res = await axios('/update/board', {
-        method: 'POST',
-        data: data,
-        headers: new Headers(),
-      });
-      if (res.data) {
-        alert('글이 수정되었습니다');
-        const url = '/view/' + params.data;
-
-        sessionStorage.setItem('category', category);
-        return (window.location.href = url);
-      }
+    // if (!params.data) {
+    const data = { title: title, contents: contents, category: category };
+    const res = await axios('/add/board', {
+      method: 'POST',
+      data: data,
+      headers: new Headers(),
+    });
+    if (res.data) {
+      alert('글이 게시되었습니다');
+      return window.location.replace('/');
     }
+    // } else {
+    //   const data = {
+    //     title: title,
+    //     contents: contents,
+    //     category: category,
+    //     board_id: params.data,
+    //   };
+    //   const res = await axios('/update/board', {
+    //     method: 'POST',
+    //     data: data,
+    //     headers: new Headers(),
+    //   });
+    //   if (res.data) {
+    //     alert('글이 수정되었습니다');
+    //     const url = '/view/' + params.data;
+
+    //     sessionStorage.setItem('category', category);
+    //     return (window.location.href = url);
+    //   }
+    // }
   };
 
   return (
     <div>
+      <div className='select-category-box'>
+        <h4>카테고리 선택</h4>
+        <select
+          name='select-category'
+          onChange={() => selectCategoryData()}
+          value={selectCategory}
+        >
+          <option value=''>- 카테고리 선택 -</option>
+          {categoryData
+            ? categoryData.map((el, key) => {
+                return (
+                  <option value={el.id} key={key}>
+                    {el.name}
+                  </option>
+                );
+              })
+            : null}
+        </select>
+      </div>
       <div id='post-submit'>
         <button onClick={() => submitBoard()}>
           {!params.data ? '게시글 올리기' : '게시글 수정'}
