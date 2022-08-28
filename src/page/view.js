@@ -153,9 +153,9 @@ function View({
     }
   };
   return (
-    <div className='write'>
+    <div className='view'>
       {data.data ? (
-        <div className='view'>
+        <div className='view-box'>
           <div className='title-box'>
             {admin === 'Y' ? (
               <div className='write-option-box'>
@@ -183,12 +183,6 @@ function View({
               id='content-txt'
               dangerouslySetInnerHTML={{ __html: data.data[0].contents }}
             ></div>
-            <input
-              type='button'
-              value='목록'
-              id='view-list-btn'
-              onClick={() => (window.location.href = '/')}
-            ></input>
           </div>
           <div className='other-box'>
             <div className='pre-view'>
@@ -203,9 +197,13 @@ function View({
               </div>
               <div className='pre-title'>
                 {preView.length > 0 ? (
-                  preView[0].title
+                  preView[0].title.length > 5 ? (
+                    `${preView[0].title.slice(0, 5)}..`
+                  ) : (
+                    preView[0].title
+                  )
                 ) : (
-                  <p>첫 게시물 입니다</p>
+                  <p>이전글이 없습니다.</p>
                 )}
               </div>
             </div>
@@ -231,13 +229,41 @@ function View({
               </div>
               <div className='next-title'>
                 {nextView.length > 0 ? (
-                  nextView[0].title
+                  nextView[0].title.length > 5 ? (
+                    `${nextView[0].title.slice(0, 5)}..`
+                  ) : (
+                    nextView[0].title
+                  )
                 ) : (
-                  <p>마지막 게시물 입니다</p>
+                  <p>다음글이 없습니다.</p>
                 )}
               </div>
             </div>
           </div>
+          <div className='reply-box'>
+            <h5>댓글</h5>
+            <div className='reply-write'>
+              <textarea
+                rows='3'
+                placeholder='댓글을 입력하세요'
+                maxLength='100'
+                name='reply-write'
+                onClick={() => loginCheck()}
+              ></textarea>
+              <input
+                type='button'
+                value='등록'
+                id='reply-submit-btn'
+                onClick={() => loginCheck()}
+              ></input>
+            </div>
+          </div>
+          <input
+            type='button'
+            value='목록'
+            id='view-list-btn'
+            onClick={() => (window.location.href = '/')}
+          ></input>
         </div>
       ) : null}
     </div>

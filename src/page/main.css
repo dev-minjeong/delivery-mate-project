@@ -176,14 +176,22 @@ button {
 
 /* 게시판 상세페이지 */
 .view {
-  height: 500px;
+  min-width: 350px;
+  min-height: 560px;
+}
+.view-box {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 }
 .title-box {
   border-bottom: 1px solid #ababab;
-  flex-basis: 20%;
+  flex-basis: 15%;
+  padding: 10px 8px 0;
+}
+#title-txt {
+  font-weight: 700;
+  font-size: 16px;
 }
 .date-box {
   text-align: right;
@@ -209,30 +217,40 @@ button {
   border-radius: 4px;
   cursor: pointer;
   padding: 5px;
-  font-weight: 700;
+  font-weight: 600;
   height: 30px;
   width: 40px;
 }
 .contents-box {
+  padding: 10px;
   display: flex;
-  flex-basis: 55%;
+  flex-basis: 50%;
   flex-direction: column;
   justify-content: space-between;
+  min-height: 110px;
 }
 #content-txt {
   border: none;
+  font-size: 13px;
 }
+
 .other-box {
   display: flex;
   border-top: 1px solid #ababab;
-  justify-content: space-around;
-  flex-basis: 25%;
+  justify-content: space-between;
+  flex-basis: 20%;
+  padding: 10px;
+}
+.pre-view,
+.next-view {
+  font-size: 13px;
+  flex-basis: 30%;
 }
 .other-box .like {
-  margin-top: 40px;
+  margin-top: 20px;
 }
 .other-box .like img {
-  width: 40px;
+  width: 30px;
   cursor: pointer;
   margin-left: 5px;
 }
@@ -249,23 +267,47 @@ button {
   font-size: 25px;
   height: 28px;
 }
-
 .pre-btn:hover,
 .next-btn:hover {
   font-size: 28px;
 }
-.pre-view,
-.next-view {
-  font-size: 13px;
-  margin-top: 20px;
-  flex-basis: 30%;
-}
 .pre-title,
 .next-title {
+  min-width: 115px;
   margin-top: 10px;
   color: #ababab;
+  text-align: center;
 }
 
+.reply-box {
+  border-top: 1px solid #ababab;
+  display: flex;
+  flex-direction: column;
+  flex-basis: 15%;
+  padding: 15px;
+}
+.reply-write {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+.reply-box textarea {
+  width: 68%;
+  padding: 10px;
+  resize: none;
+  font-size: 13px;
+  line-height: 15px;
+}
+#reply-submit-btn {
+  width: 22%;
+  height: 67px;
+  cursor: pointer;
+}
+#view-list-btn {
+  margin: auto;
+  margin-top: 30px;
+}
 /* left - 카테고리 메뉴 */
 .category {
   padding: 20px 0;
