@@ -19,6 +19,7 @@ router.post('/update/board', controller.update.board);
 
 router.post('/delete/category', controller.delete.category);
 router.post('/delete/board', controller.delete.board);
+router.post('/delete/reply', controller.delete.reply);
 
 router.post('/modify/category', controller.modify.category);
 

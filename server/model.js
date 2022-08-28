@@ -227,6 +227,15 @@ module.exports = {
           throw err;
         });
     },
+    reply: (body, callback) => {
+      Reply.destroy({
+        where: { reply_id: body.reply_id },
+      })
+        .then(() => callback(true))
+        .catch((err) => {
+          throw err;
+        });
+    },
   },
   modify: {
     category: (body, callback) => {

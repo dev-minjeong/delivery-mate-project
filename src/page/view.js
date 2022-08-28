@@ -190,7 +190,17 @@ function View({
     alert('댓글이 등록되었습니다');
     return window.location.reload();
   };
-  console.log(userId);
+  const removeReply = async (reply_id) => {
+    if (window.confirm('해당 댓글을 삭제하시겠습니까?')) {
+      await axios('/delete/reply', {
+        method: 'POST',
+        headers: new Headers(),
+        data: { reply_id: reply_id },
+      });
+    }
+    alert('댓글이 삭제되었습니다.');
+    return window.location.reload();
+  };
   return (
     <div className='view'>
       {data.data ? (
@@ -331,6 +341,7 @@ function View({
                               type='button'
                               value='❌'
                               className='reply-delete-btn'
+                              onClick={() => removeReply(el.reply_id)}
                             ></input>
                           ) : (
                             <div></div>

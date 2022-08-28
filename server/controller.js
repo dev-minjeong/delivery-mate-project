@@ -190,8 +190,8 @@ module.exports = {
       const body = req.body;
       model.get.reply_data(body, (data) => {
         res.send(data);
-      })
-    }
+      });
+    },
   },
   update: {
     view_cnt: (req, res) => {
@@ -262,6 +262,13 @@ module.exports = {
       const body = req.body;
 
       model.delete.board(body, () => {
+        res.send(true);
+      });
+    },
+    reply: (req, res) => {
+      const body = req.body;
+
+      model.delete.reply(body, () => {
         res.send(true);
       });
     },
