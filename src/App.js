@@ -30,7 +30,7 @@ function App() {
   const [selectCategory, setSelectCategory] = useState('');
   const [replyData, setReplyData] = useState([]);
   const [replyNum, setReplyNum] = useState(null);
-  // const [writerId, setWriterId] = useState('');
+  const [mapModal, setMapModal] = useState(false);
 
   const locationSearch = useLocation().search;
 
@@ -133,7 +133,7 @@ function App() {
     sessionStorage.removeItem('login');
     sessionStorage.removeItem('IP');
   };
-  const toggleModal = (boolean) => {
+  const toggleLoginModal = (boolean) => {
     setLoginModal(boolean);
   };
   // 카테고리
@@ -192,6 +192,10 @@ function App() {
     setReplyData(data.data.rows);
     setReplyNum(data.data.count);
   };
+  // 지도
+  const toggleMapModal = (boolean) => {
+    setMapModal(boolean);
+  };
   return (
     <div className='App'>
       <Header
@@ -201,14 +205,14 @@ function App() {
         handleLogin={handleLogin}
         handleLogout={handleLogout}
         loginModal={loginModal}
-        toggleModal={toggleModal}
+        toggleLoginModal={toggleLoginModal}
       ></Header>
       <Main
         login={login}
         admin={admin}
         userIp={userIp}
         loginModal={loginModal}
-        toggleModal={toggleModal}
+        toggleLoginModal={toggleLoginModal}
         listData={listData}
         listAllPage={listAllPage}
         listSearch={listSearch}
@@ -232,6 +236,8 @@ function App() {
         replyData={replyData}
         replyNum={replyNum}
         getReplyData={getReplyData}
+        toggleMapModal={toggleMapModal}
+        mapModal={mapModal}
       ></Main>
     </div>
   );

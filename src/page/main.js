@@ -12,7 +12,7 @@ const Main = ({
   admin,
   userIp,
   loginModal,
-  toggleModal,
+  toggleLoginModal,
   listData,
   listAllPage,
   listSearch,
@@ -36,6 +36,8 @@ const Main = ({
   replyData,
   replyNum,
   getReplyData,
+  toggleMapModal,
+  mapModal,
 }) => {
   const [category, setCategory] = useState('');
   const [change_Category, setChange_Category] = useState(false);
@@ -92,7 +94,7 @@ const Main = ({
   const ViewWithProps = withProps(View, {
     login: login,
     admin: admin,
-    toggleModal: toggleModal,
+    toggleLoginModal: toggleLoginModal,
     userId: userId,
     data: data,
     date: date,
@@ -107,6 +109,8 @@ const Main = ({
     replyData: replyData,
     replyNum: replyNum,
     getReplyData: getReplyData,
+    toggleMapModal: toggleMapModal,
+    mapModal: mapModal,
   });
   const RightWriteWithProps = withProps(RightWrite, {
     contents: contents,

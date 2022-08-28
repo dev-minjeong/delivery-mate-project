@@ -12,10 +12,10 @@ const Header = ({
   handleLogin,
   handleLogout,
   loginModal,
-  toggleModal,
+  toggleLoginModal,
 }) => {
   const openModal = () => {
-    return toggleModal(true);
+    return toggleLoginModal(true);
   };
   const logout = () => {
     if (window.confirm('로그아웃 하시겠습니까?')) {
@@ -62,7 +62,7 @@ const Header = ({
           <Login
             handleLogin={handleLogin}
             loginModal={loginModal}
-            toggleModal={toggleModal}
+            toggleLoginModal={toggleLoginModal}
           />
           {!login ? (
             <li>

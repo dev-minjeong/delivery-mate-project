@@ -4,3 +4,5 @@ export { default as Login } from './login';
 export { default as SearchId } from './search_id';
 export { default as SearchPw } from './search_pw';
 export { default as BackAndClose } from './back_and_close';
+export { default as KakaoMap } from './kakao_map';
+export { default as Map } from './map';

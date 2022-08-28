@@ -5,7 +5,7 @@ import React from 'react';
 import '../App.css';
 import { SearchId, SearchPw } from './index.js';
 
-function Login({ handleLogin, loginModal, toggleModal }) {
+function Login({ handleLogin, loginModal, toggleLoginModal }) {
   const [id, setId] = useState('');
   const [passWord, setPassWord] = useState('');
   const [searchIdModal, setSearchIdModal] = useState(false);
@@ -39,7 +39,7 @@ function Login({ handleLogin, loginModal, toggleModal }) {
     if (res.data) {
       if (res.data.suc) {
         handleLogin(res.data);
-        toggleModal(false);
+        toggleLoginModal(false);
         return alert(`안녕하세요 ${idTrim}님!`);
       } else {
         return alert(
@@ -54,7 +54,7 @@ function Login({ handleLogin, loginModal, toggleModal }) {
     } else if (target === 'pw') {
       setSearchPwModal(true);
     }
-    return toggleModal(false);
+    return toggleLoginModal(false);
   };
   const closeSearchModal = (target) => {
     if (target === 'id') {
@@ -65,7 +65,7 @@ function Login({ handleLogin, loginModal, toggleModal }) {
   };
   const backSearchModal = (target) => {
     closeSearchModal(target);
-    return toggleModal(true);
+    return toggleLoginModal(true);
   };
 
   return (
@@ -75,7 +75,7 @@ function Login({ handleLogin, loginModal, toggleModal }) {
         width='400'
         height='350'
         effect='fadeInDown'
-        onClickAway={() => toggleModal(false)}
+        onClickAway={() => toggleLoginModal(false)}
       >
         <div className='acenter'>
           <h4 className='login login-title'>로그인</h4>
@@ -109,7 +109,7 @@ function Login({ handleLogin, loginModal, toggleModal }) {
                   <input
                     type='button'
                     value='취소'
-                    onClick={() => toggleModal(false)}
+                    onClick={() => toggleLoginModal(false)}
                   ></input>
                 </div>
               </div>

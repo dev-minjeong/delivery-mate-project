@@ -3,11 +3,12 @@ import axios from 'axios';
 import './main.css';
 import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
+import { Map } from './../inc/index.js';
 
 function View({
   login,
   admin,
-  toggleModal,
+  toggleLoginModal,
   userId,
   data,
   date,
@@ -22,6 +23,8 @@ function View({
   replyData,
   replyNum,
   getReplyData,
+  toggleMapModal,
+  mapModal,
 }) {
   const params = useParams();
   const [noneLike, setNoneLike] = useState(
@@ -128,7 +131,7 @@ function View({
   const loginCheck = () => {
     if (!login) {
       alert('로그인후 이용 가능합니다');
-      toggleModal(true);
+      toggleLoginModal(true);
 
       return false;
     }
@@ -201,6 +204,10 @@ function View({
     alert('댓글이 삭제되었습니다.');
     return window.location.reload();
   };
+  // 지도
+  const openModal = () => {
+    return toggleMapModal(true);
+  };
   return (
     <div className='view'>
       {data.data ? (
@@ -232,7 +239,14 @@ function View({
               id='content-txt'
               dangerouslySetInnerHTML={{ __html: data.data[0].contents }}
             ></div>
+            <input
+              type='button'
+              value='픽업장소 확인'
+              className='pickup-map'
+              onClick={() => openModal()}
+            ></input>
           </div>
+          <Map toggleMapModal={toggleMapModal} mapModal={mapModal}></Map>
           <div className='other-box'>
             <div className='pre-view'>
               <p>이전글</p>

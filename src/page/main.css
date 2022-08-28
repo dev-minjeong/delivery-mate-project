@@ -234,6 +234,18 @@ button {
   border: none;
   font-size: 13px;
 }
+.pickup-map {
+  width: 90px;
+  height: 30px;
+  cursor: pointer;
+  border: none;
+  background-color: coral;
+  color: beige;
+  font-weight: 500;
+  font-size: 13px;
+  border-radius: 5px;
+  margin-left: 50vw;
+}
 
 .other-box {
   display: flex;
