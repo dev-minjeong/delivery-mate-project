@@ -63,7 +63,6 @@ const Main = ({
     });
     setTitle(getBoardData.data[0].title);
     setContents(getBoardData.data[0].contents);
-    console.log(getBoardData);
   };
 
   const ListWithProps = withProps(List, {
@@ -79,6 +78,13 @@ const Main = ({
     getTitles: getTitles,
     contents: contents,
     title: title,
+  });
+  const WriteModifyWithProps = withProps(Write, {
+    getContents: getContents,
+    getTitles: getTitles,
+    contents: contents,
+    title: title,
+    getModifyData: getModifyData,
   });
   const ViewWithProps = withProps(View, {
     login: login,
@@ -97,6 +103,12 @@ const Main = ({
     getPreNextData: getPreNextData,
   });
   const RightWriteWithProps = withProps(RightWrite, {
+    contents: contents,
+    categoryData: categoryData,
+    selectCategory: selectCategory,
+    selectCategoryData: selectCategoryData,
+  });
+  const RightWriteModifyWithProps = withProps(RightWrite, {
     contents: contents,
     categoryData: categoryData,
     selectCategory: selectCategory,
@@ -125,6 +137,10 @@ const Main = ({
         <Routes>
           <Route path='/' element={<ListWithProps />}></Route>
           <Route path='/write' element={<WriteWithProps />}></Route>
+          <Route
+            path='/write/modify/:data'
+            element={<WriteModifyWithProps />}
+          ></Route>
           <Route path='/signup' element={<SignUp />}></Route>
           <Route path='/view/:data' element={<ViewWithProps />}></Route>
         </Routes>
@@ -132,6 +148,10 @@ const Main = ({
       <div id='main-right'>
         <Routes>
           <Route path='/write' element={<RightWriteWithProps />}></Route>
+          <Route
+            path='/write/modify/:data'
+            element={<RightWriteModifyWithProps />}
+          ></Route>
         </Routes>
       </div>
     </div>

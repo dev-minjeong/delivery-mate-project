@@ -29,6 +29,7 @@ function View({
   );
   const [preUrl, setPreUrl] = useState('');
   const [nextUrl, setNextUrl] = useState('');
+  const [modifyUrl, setModifyUrl] = useState('');
 
   useEffect(() => {
     const boardId = params.data;
@@ -49,6 +50,9 @@ function View({
     }
     if (nextView.length) {
       setNextUrl(`/view/${nextView[0].board_id}`);
+    }
+    if (data.data) {
+      setModifyUrl(`/write/modify/${data.data[0].board_id}`);
     }
   }, []);
 
@@ -155,7 +159,9 @@ function View({
           <div className='title-box'>
             {admin === 'Y' ? (
               <div className='write-option-box'>
-                <input type='button' value='수정'></input>
+                <Link to={modifyUrl}>
+                  <input type='button' value='수정'></input>
+                </Link>
                 <input
                   type='button'
                   value='삭제'
