@@ -35,6 +35,7 @@ db.Board = require('./board')(sequelize, Sequelize);
 db.Category = require('./category')(sequelize, Sequelize);
 db.User = require('./user')(sequelize, Sequelize);
 db.Like = require('./like')(sequelize, Sequelize);
+db.Reply = require('./reply')(sequelize, Sequelize);
 
 // 1대 M관계
 db.Category.hasMany(db.Board, {
@@ -53,6 +54,15 @@ db.Board.belongsToMany(db.User, {
 db.User.belongsToMany(db.Board, {
   through: 'like',
   foreignKey: 'user_id',
+});
+
+db.User.hasMany(db.Reply, {
+  foreignKey: 'user_id',
+  sourceKey: 'user_id',
+});
+db.Reply.belongsTo(db.User, {
+  foreignKey: 'user_id',
+  sourceKey: 'user_id',
 });
 
 module.exports = db;
