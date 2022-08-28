@@ -2,7 +2,7 @@ import { Routes, Route } from 'react-router-dom';
 import { Write, List, View, SignUp } from './index.js';
 import { RightWrite } from './right/index.js';
 import { Category } from './left/index.js';
-import { useState, Component } from 'react';
+import { useState } from 'react';
 
 import './main.css';
 import axios from 'axios';

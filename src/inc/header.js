@@ -14,10 +14,6 @@ const Header = ({
   loginModal,
   toggleModal,
 }) => {
-  // const [visible, setVisible] = useState(false);
-  // const [id, setId] = useState('');
-  // const [passWord, setPassWord] = useState('');
-
   const openModal = () => {
     return toggleModal(true);
   };

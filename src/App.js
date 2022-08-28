@@ -2,7 +2,7 @@ import './App.css';
 // import axios from 'axios';
 import { useState, useEffect } from 'react';
 import React from 'react';
-import { BrowserRouter, Route, Routes, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 import { Header } from './inc/index.js';
 import { Main } from './page/index.js';
@@ -13,14 +13,12 @@ function App() {
   const [login, setLogin] = useState(false);
   const [admin, setAdmin] = useState(false);
   const [userIp, setUserIp] = useState('');
-  const [signup, setSignup] = useState(false);
   const [loginModal, setLoginModal] = useState(false);
   const [listData, setListData] = useState([]);
   const [listPage, setListPage] = useState(1);
   const [listLimit, setListLimit] = useState(10);
   const [listAllPage, setListAllPage] = useState([]);
   const [listSearch, setListSearch] = useState('');
-  const [category, setCategory] = useState('');
   const [userId, setUserId] = useState('');
   const [data, setData] = useState('');
   const [date, setDate] = useState('');

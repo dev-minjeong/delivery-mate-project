@@ -38,11 +38,8 @@ function Login({ handleLogin, loginModal, toggleModal }) {
 
     if (res.data) {
       if (res.data.suc) {
-        // sessionStorage.setItem('login', true);
-        // setLogin(true);
         handleLogin(res.data);
         toggleModal(false);
-        // closeModal();
         return alert(`안녕하세요 ${idTrim}님!`);
       } else {
         return alert(

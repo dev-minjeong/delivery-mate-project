@@ -174,11 +174,11 @@ module.exports = {
       });
     },
     pre_next: (req, res) => {
-      const body = req.body
+      const body = req.body;
       model.get.pre_next(body, (data) => {
-        res.send(data)
-      })
-    }
+        res.send(data);
+      });
+    },
   },
   update: {
     view_cnt: (req, res) => {
@@ -280,42 +280,3 @@ module.exports = {
     },
   },
 };
-
-// 모듈화 및 외부 접근 가능
-/* 
-module.exports = {
-  api: {
-    getData: (req, res) => {
-      model.api.getData((data) => {
-        if (data) {
-          res.send(data);
-        }
-      });
-    },
-    addData: (req, res) => {
-      const body = req.body;
-      model.api.addData(body, (data) => {
-        if (data) {
-          res.send(data);
-        }
-      });
-    },
-    modifyData: (req, res) => {
-      const body = req.body;
-      model.api.modifyData(body, (data) => {
-        if (data) {
-          res.send(data);
-        }
-      });
-    },
-    deleteData: (req, res) => {
-      const body = req.body;
-      model.api.deleteData(body, (data) => {
-        if (data) {
-          res.send(data);
-        }
-      });
-    },
-  },
-};
- */
