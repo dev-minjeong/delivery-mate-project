@@ -131,8 +131,14 @@ function View({
   return (
     <div className='write'>
       {data.data ? (
-        <div>
-          <div className='top-title'>
+        <div className='view'>
+          <div className='title-box'>
+            {admin === 'Y' ? (
+              <div className='write-option-box'>
+                <input type='button' value='수정'></input>
+                <input type='button' value='삭제'></input>
+              </div>
+            ) : null}
             <input
               type='text'
               id='title-txt'
@@ -142,63 +148,63 @@ function View({
             ></input>
             <div className='date-box'>{date}</div>
           </div>
-          <div>
+          <div className='contents-box'>
             <div
               id='content-txt'
               dangerouslySetInnerHTML={{ __html: data.data[0].contents }}
             ></div>
-            <div className='other-div'>
-              <input
-                type='button'
-                value='목록'
-                id='view-list-btn'
-                onClick={() => (window.location.href = '/')}
-              ></input>
-              <div className='pre-view'>
-                <p>이전글</p>
-                <div
-                  className='pre-btn'
-                  onClick={() =>
-                    preUrl ? changeViewPage(preUrl) : changeViewPage('null_pre')
-                  }
-                >
-                  ◀
-                </div>
-                <div>
-                  {preView.length > 0 ? (
-                    preView[0].title
-                  ) : (
-                    <p>첫 게시물 입니다</p>
-                  )}
-                </div>
+            <input
+              type='button'
+              value='목록'
+              id='view-list-btn'
+              onClick={() => (window.location.href = '/')}
+            ></input>
+          </div>
+          <div className='other-box'>
+            <div className='pre-view'>
+              <p>이전글</p>
+              <div
+                className='pre-btn'
+                onClick={() =>
+                  preUrl ? changeViewPage(preUrl) : changeViewPage('null_pre')
+                }
+              >
+                ◀
               </div>
-              <div className='like'>
-                <img
-                  src={!likeExist ? noneLike : like}
-                  alt='nonelike'
-                  onClick={() => toggleLike()}
-                ></img>
-                <h5>좋아요({likeNum})</h5>
+              <div className='pre-title'>
+                {preView.length > 0 ? (
+                  preView[0].title
+                ) : (
+                  <p>첫 게시물 입니다</p>
+                )}
               </div>
-              <div className='next-view'>
-                <p>다음글</p>
-                <div
-                  className='next-btn'
-                  onClick={() =>
-                    nextUrl
-                      ? changeViewPage(nextUrl)
-                      : changeViewPage('null_next')
-                  }
-                >
-                  ▶
-                </div>
-                <div>
-                  {nextView.length > 0 ? (
-                    nextView[0].title
-                  ) : (
-                    <p>마지막 게시물 입니다</p>
-                  )}
-                </div>
+            </div>
+            <div className='like'>
+              <img
+                src={!likeExist ? noneLike : like}
+                alt='nonelike'
+                onClick={() => toggleLike()}
+              ></img>
+              <h5>좋아요({likeNum})</h5>
+            </div>
+            <div className='next-view'>
+              <p>다음글</p>
+              <div
+                className='next-btn'
+                onClick={() =>
+                  nextUrl
+                    ? changeViewPage(nextUrl)
+                    : changeViewPage('null_next')
+                }
+              >
+                ▶
+              </div>
+              <div className='next-title'>
+                {nextView.length > 0 ? (
+                  nextView[0].title
+                ) : (
+                  <p>마지막 게시물 입니다</p>
+                )}
               </div>
             </div>
           </div>
