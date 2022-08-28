@@ -171,10 +171,12 @@ function App() {
   };
   // 이전, 다음페이지 이동
   const getPreNextData = async (board_id) => {
+    const category = sessionStorage.getItem('category');
+
     const res = await axios('/get/pre_next', {
       method: 'POST',
       headers: new Headers(),
-      data: { board_id: board_id },
+      data: { board_id: board_id, category: category },
     });
     setPreView(res.data.pre);
     setNextView(res.data.next);

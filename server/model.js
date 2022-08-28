@@ -322,12 +322,25 @@ module.exports = {
         });
     },
     pre_next: (body, callback) => {
-      let result = {};
+      let all_category = body.category;
+      let select_category = '';
+      if (!body.category) {
+        select_category = 0;
+      } else if (body.category) {
+        select_category = null;
+      }
 
+      let result = {};
       Board.findAll({
         where: {
           board_id: {
             [Op.gt]: body.board_id,
+          },
+          food_id: {
+            [Op.or]: {
+              [Op.eq]: all_category,
+              [Op.gt]: select_category,
+            },
           },
         },
         limit: 1,
@@ -338,6 +351,12 @@ module.exports = {
           where: {
             board_id: {
               [Op.lt]: body.board_id,
+            },
+            food_id: {
+              [Op.or]: {
+                [Op.eq]: all_category,
+                [Op.gt]: select_category,
+              },
             },
           },
           limit: 1,
