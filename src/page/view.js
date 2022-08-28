@@ -152,6 +152,38 @@ function View({
       return (window.location.href = '/');
     }
   };
+  // 댓글
+  const addReply = async () => {
+    const boardId = params.data;
+    let reply = document.getElementsByName('reply-write')[0].value.trim();
+    // 줄바꿈 처리
+    reply = reply.replace(/(\n\\r\n)/g, '<br>');
+
+    if (!loginCheck()) {
+      return;
+    }
+    if (reply === '' || reply.length === 0) {
+      document.getElementsByName('reply-write')[0].focus();
+      document.getElementsByName('reply-write')[0].value = reply;
+
+      return alert('댓글을 입력하세요');
+    } else if (reply.split('<br>').length > 5) {
+      return alert('5줄 이내의 댓글을 작성하세요.');
+    }
+
+    const data = {
+      board_id: boardId,
+      contents: reply,
+      user_id: userId,
+    };
+    await axios('/add/reply', {
+      method: 'POST',
+      headers: new Headers(),
+      data: data,
+    });
+    alert('댓글이 등록되었습니다');
+    return window.location.reload();
+  };
   return (
     <div className='view'>
       {data.data ? (
@@ -254,7 +286,7 @@ function View({
                 type='button'
                 value='등록'
                 id='reply-submit-btn'
-                onClick={() => loginCheck()}
+                onClick={() => addReply()}
               ></input>
             </div>
           </div>

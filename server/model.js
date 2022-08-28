@@ -110,6 +110,16 @@ module.exports = {
         }
       });
     },
+    reply: (body, now_date, callback) => {
+      Reply.create({
+        board_id: body.board_id,
+        contents: body.contents,
+        user_id: body.user_id,
+        date: now_date,
+      })
+        .then(() => callback(true))
+        .catch(() => callback(false));
+    },
   },
   update: {
     view_cnt: (body, callback) => {

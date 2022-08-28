@@ -142,6 +142,13 @@ module.exports = {
         res.send(result);
       });
     },
+    reply: (req, res) => {
+      const body = req.body;
+
+      model.add.reply(body, now_date, (result) => {
+        res.send(result);
+      });
+    },
   },
   get: {
     board: (req, res) => {

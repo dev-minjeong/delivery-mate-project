@@ -10,6 +10,7 @@ router.post('/search/pw', controller.search.pw);
 router.post('/add/board', controller.add.board);
 router.post('/add/category', controller.add.category);
 router.post('/add/user', controller.add.user);
+router.post('/add/reply', controller.add.reply);
 
 router.post('/update/view_cnt', controller.update.view_cnt);
 router.post('/update/pw', controller.update.pw);

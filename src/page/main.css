@@ -34,7 +34,8 @@ button {
   padding: 20px;
 }
 .logo {
-  padding: 20px;
+  margin: 20px;
+  cursor: pointer;
 }
 .login-list li {
   margin-bottom: 5px;
