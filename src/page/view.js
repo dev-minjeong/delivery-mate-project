@@ -19,6 +19,9 @@ function View({
   preView,
   nextView,
   getPreNextData,
+  replyData,
+  replyNum,
+  getReplyData,
 }) {
   const params = useParams();
   const [noneLike, setNoneLike] = useState(
@@ -53,6 +56,10 @@ function View({
     }
     if (data.data) {
       setModifyUrl(`/write/modify/${data.data[0].board_id}`);
+    }
+
+    if (replyNum === null) {
+      getReplyData(boardId);
     }
   }, []);
 
@@ -170,7 +177,6 @@ function View({
     } else if (reply.split('<br>').length > 5) {
       return alert('5줄 이내의 댓글을 작성하세요.');
     }
-
     const data = {
       board_id: boardId,
       contents: reply,
@@ -184,6 +190,7 @@ function View({
     alert('댓글이 등록되었습니다');
     return window.location.reload();
   };
+  console.log(userId);
   return (
     <div className='view'>
       {data.data ? (
@@ -288,6 +295,55 @@ function View({
                 id='reply-submit-btn'
                 onClick={() => addReply()}
               ></input>
+            </div>
+            <div className='reply-list-box'>
+              {replyData.length > 0 && replyNum > 0 ? (
+                <div>
+                  <h5>{replyNum}개의 댓글이 있습니다.</h5>
+                  {replyData.map((el, key) => {
+                    let id = el.user.id;
+                    if (el.user.admin === 'Y') {
+                      id = '관리자';
+                    }
+                    let date =
+                      el.date.slice(5, 10) + ' ' + el.date.slice(11, 16);
+                    return (
+                      <div className='reply-list' key={key}>
+                        <div className='reply-contents'>
+                          <div
+                            style={
+                              el.user.admin === 'Y'
+                                ? { fontWeight: 'bold', color: 'blue' }
+                                : null
+                            }
+                            className='reply-list-id'
+                          >
+                            {id}
+                          </div>
+                          <div
+                            dangerouslySetInnerHTML={{ __html: el.contents }}
+                            className='reply-list-contents'
+                          ></div>
+                        </div>
+                        <div className='reply-delete-date'>
+                          {(login && login === el.user.id) || admin === 'Y' ? (
+                            <input
+                              type='button'
+                              value='❌'
+                              className='reply-delete-btn'
+                            ></input>
+                          ) : (
+                            <div></div>
+                          )}
+                          <div className='reply-list-date'>{date}</div>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              ) : (
+                <h5>작성된 댓글이 없습니다.</h5>
+              )}
             </div>
           </div>
           <input

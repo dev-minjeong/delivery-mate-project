@@ -24,3 +24,8 @@ localStorage - 사용자가 추가한 데이터를 직접적으로 삭제 안할
                웹 브라우저 종료해도 해당 값 그대로 유지
 sessionStorage - 사용자가 추가한 데이터를 삭제하지 않아도 웹 브라우저 
                  종료와 동시에 해당 데이터 삭제됨
+
+dangerouslySetInnerHTML 
+  - DOM에서 innerHTML 사용 위한 React의 대체방법
+  - 사이트간 스크립팅공격에 대해 위험성을 상기시켜줌
+  - innerHTML 사용 시 DOM 수정된 것을 알 수 없음 

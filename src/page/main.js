@@ -33,6 +33,9 @@ const Main = ({
   preView,
   nextView,
   getPreNextData,
+  replyData,
+  replyNum,
+  getReplyData,
 }) => {
   const [category, setCategory] = useState('');
   const [change_Category, setChange_Category] = useState(false);
@@ -101,6 +104,9 @@ const Main = ({
     preView: preView,
     nextView: nextView,
     getPreNextData: getPreNextData,
+    replyData: replyData,
+    replyNum: replyNum,
+    getReplyData: getReplyData,
   });
   const RightWriteWithProps = withProps(RightWrite, {
     contents: contents,

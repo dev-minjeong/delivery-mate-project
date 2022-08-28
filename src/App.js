@@ -28,6 +28,8 @@ function App() {
   const [nextView, setNextView] = useState('');
   const [categoryData, setCategoryData] = useState([]);
   const [selectCategory, setSelectCategory] = useState('');
+  const [replyData, setReplyData] = useState([]);
+  const [replyNum, setReplyNum] = useState(null);
 
   const locationSearch = useLocation().search;
 
@@ -177,6 +179,16 @@ function App() {
     setPreView(res.data.pre);
     setNextView(res.data.next);
   };
+  // 댓글
+  const getReplyData = async (board_id) => {
+    const data = await axios('/get/reply_data', {
+      method: 'POST',
+      headers: new Headers(),
+      data: { board_id: board_id },
+    });
+    setReplyData(data.data.rows);
+    setReplyNum(data.data.count);
+  };
   return (
     <div className='App'>
       <Header
@@ -214,6 +226,9 @@ function App() {
         preView={preView}
         nextView={nextView}
         getPreNextData={getPreNextData}
+        replyData={replyData}
+        replyNum={replyNum}
+        getReplyData={getReplyData}
       ></Main>
     </div>
   );

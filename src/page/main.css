@@ -309,6 +309,46 @@ button {
   margin: auto;
   margin-top: 30px;
 }
+.reply-list-box {
+  margin-top: 20px;
+}
+.reply-list {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+  border-bottom: 1px solid #ababab;
+  padding: 5px;
+  width: 100%;
+}
+.reply-contents {
+  width: 80%;
+}
+.reply-list .reply-list-id {
+  font-size: 13px;
+}
+.reply-list .reply-list-contents {
+  font-size: 15px;
+  font-weight: 500;
+  margin-top: 5px;
+}
+.reply-delete-date {
+  width: 20%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+.reply-delete-btn {
+  background-color: transparent;
+  border: none;
+  font-size: 17px;
+  cursor: pointer;
+}
+.reply-list-date {
+  font-size: 10px;
+  color: #ababab;
+  text-align: end;
+  margin-top: 5px;
+}
 /* left - 카테고리 메뉴 */
 .category {
   padding: 20px 0;

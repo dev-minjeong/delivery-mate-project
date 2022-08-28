@@ -186,6 +186,12 @@ module.exports = {
         res.send(data);
       });
     },
+    reply_data: (req, res) => {
+      const body = req.body;
+      model.get.reply_data(body, (data) => {
+        res.send(data);
+      })
+    }
   },
   update: {
     view_cnt: (req, res) => {

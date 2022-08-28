@@ -395,6 +395,16 @@ module.exports = {
         });
       });
     },
+    reply_data: (body, callback) => {
+      Reply.findAndCountAll({
+        include: [{ model: User }],
+        where: { board_id: body.board_id },
+      })
+        .then((result) => callback(result))
+        .catch((err) => {
+          throw err;
+        });
+    },
   },
   check: {
     like: (body, callback) => {
