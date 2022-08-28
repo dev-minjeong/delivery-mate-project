@@ -199,6 +199,22 @@ button {
 .other-div .like h5 {
   margin-top: 5px;
 }
+.pre-btn,
+.next-btn {
+  cursor: pointer;
+  text-align: center;
+  font-size: 25px;
+}
+.pre-btn:hover,
+.next-btn:hover {
+  font-size: 28px;
+}
+.pre-view p,
+.next-view p {
+  font-size: 13px;
+  color: #ababab;
+  margin-top: 20px;
+}
 
 /* left - 카테고리 메뉴 */
 .category {

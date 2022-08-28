@@ -173,6 +173,12 @@ module.exports = {
         res.send(data);
       });
     },
+    pre_next: (req, res) => {
+      const body = req.body
+      model.get.pre_next(body, (data) => {
+        res.send(data)
+      })
+    }
   },
   update: {
     view_cnt: (req, res) => {

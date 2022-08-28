@@ -30,6 +30,9 @@ const Main = ({
   selectCategoryData,
   getLikeExist,
   likeExist,
+  preView,
+  nextView,
+  getPreNextData,
 }) => {
   const [category, setCategory] = useState('');
   const [change_Category, setChange_Category] = useState(false);
@@ -87,9 +90,11 @@ const Main = ({
     likeNum: likeNum,
     getData: getData,
     getAllLike: getAllLike,
-
     getLikeExist: getLikeExist,
     likeExist: likeExist,
+    preView: preView,
+    nextView: nextView,
+    getPreNextData: getPreNextData,
   });
   const RightWriteWithProps = withProps(RightWrite, {
     contents: contents,

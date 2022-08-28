@@ -26,7 +26,8 @@ function App() {
   const [date, setDate] = useState('');
   const [likeNum, setLikeNum] = useState('');
   const [likeExist, setLikeExist] = useState(null);
-
+  const [preView, setPreView] = useState('');
+  const [nextView, setNextView] = useState('');
   const [categoryData, setCategoryData] = useState([]);
   const [selectCategory, setSelectCategory] = useState('');
 
@@ -168,6 +169,16 @@ function App() {
   const getLikeExist = (result) => {
     setLikeExist(result);
   };
+  // 이전, 다음페이지 이동
+  const getPreNextData = async (board_id) => {
+    const res = await axios('/get/pre_next', {
+      method: 'POST',
+      headers: new Headers(),
+      data: { board_id: board_id },
+    });
+    setPreView(res.data.pre);
+    setNextView(res.data.next);
+  };
   return (
     <div className='App'>
       <Header
@@ -202,6 +213,9 @@ function App() {
         selectCategoryData={selectCategoryData}
         getLikeExist={getLikeExist}
         likeExist={likeExist}
+        preView={preView}
+        nextView={nextView}
+        getPreNextData={getPreNextData}
       ></Main>
     </div>
   );

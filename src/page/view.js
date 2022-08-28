@@ -16,6 +16,9 @@ function View({
   getAllLike,
   getLikeExist,
   likeExist,
+  preView,
+  nextView,
+  getPreNextData,
 }) {
   const params = useParams();
   const [noneLike, setNoneLike] = useState(
@@ -24,6 +27,8 @@ function View({
   const [like, setLike] = useState(
     'https://cdns.iconmonstr.com/wp-content/releases/preview/2013/240/iconmonstr-thumb-9.png'
   );
+  const [preUrl, setPreUrl] = useState('');
+  const [nextUrl, setNextUrl] = useState('');
 
   useEffect(() => {
     const boardId = params.data;
@@ -34,6 +39,16 @@ function View({
     }
     if (likeExist === null) {
       getLikeInfo();
+    }
+    if (preView === '' || nextView === '') {
+      getPreNextData(boardId);
+    }
+
+    if (preView.length) {
+      setPreUrl(`/view/${preView[0].board_id}`);
+    }
+    if (nextView.length) {
+      setNextUrl(`/view/${nextView[0].board_id}`);
     }
   }, []);
 
@@ -104,6 +119,14 @@ function View({
     }
     return true;
   };
+  const changeViewPage = (url) => {
+    if (url === 'null_pre') {
+      return alert('첫 게시물 입니다');
+    } else if (url === 'null_next') {
+      return alert('마지막 게시물 입니다');
+    }
+    return (window.location.href = url);
+  };
 
   return (
     <div className='write'>
@@ -131,7 +154,24 @@ function View({
                 id='view-list-btn'
                 onClick={() => (window.location.href = '/')}
               ></input>
-              <div></div>
+              <div className='pre-view'>
+                <p>이전글</p>
+                <div
+                  className='pre-btn'
+                  onClick={() =>
+                    preUrl ? changeViewPage(preUrl) : changeViewPage('null_pre')
+                  }
+                >
+                  ◀
+                </div>
+                <div>
+                  {preView.length > 0 ? (
+                    preView[0].title
+                  ) : (
+                    <p>첫 게시물 입니다</p>
+                  )}
+                </div>
+              </div>
               <div className='like'>
                 <img
                   src={!likeExist ? noneLike : like}
@@ -140,7 +180,26 @@ function View({
                 ></img>
                 <h5>좋아요({likeNum})</h5>
               </div>
-              <div></div>
+              <div className='next-view'>
+                <p>다음글</p>
+                <div
+                  className='next-btn'
+                  onClick={() =>
+                    nextUrl
+                      ? changeViewPage(nextUrl)
+                      : changeViewPage('null_next')
+                  }
+                >
+                  ▶
+                </div>
+                <div>
+                  {nextView.length > 0 ? (
+                    nextView[0].title
+                  ) : (
+                    <p>마지막 게시물 입니다</p>
+                  )}
+                </div>
+              </div>
             </div>
           </div>
         </div>
