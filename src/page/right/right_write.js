@@ -10,6 +10,7 @@ function RightWrite({
   selectCategory,
   selectCategoryData,
   login,
+  userName,
 }) {
   const params = useParams();
   useEffect(() => {
@@ -34,7 +35,7 @@ function RightWrite({
         title: title,
         contents: contents,
         category: category,
-        writer_id: login,
+        writer_name: userName,
       };
       const res = await axios('/add/board', {
         method: 'POST',
@@ -51,7 +52,7 @@ function RightWrite({
         contents: contents,
         category: category,
         board_id: params.data,
-        writer_id: login,
+        writer_name: userName,
       };
       const res = await axios('/update/board', {
         method: 'POST',

@@ -66,12 +66,12 @@ db.Reply.belongsTo(db.User, {
 });
 
 db.User.hasMany(db.Board, {
-  foreignKey: 'writer_id',
-  sourceKey: 'user_id',
+  foreignKey: 'writer_name',
+  sourceKey: 'name',
 });
 db.Board.belongsTo(db.User, {
-  foreignKey: 'writer_id',
-  sourceKey: 'user_id',
+  foreignKey: 'writer_name',
+  sourceKey: 'name',
 });
 
 module.exports = db;

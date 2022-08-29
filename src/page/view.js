@@ -25,6 +25,7 @@ function View({
   getReplyData,
   toggleMapModal,
   mapModal,
+  userLocationData,
 }) {
   const params = useParams();
   const [noneLike, setNoneLike] = useState(
@@ -208,6 +209,7 @@ function View({
   const openModal = () => {
     return toggleMapModal(true);
   };
+  console.log(data);
   return (
     <div className='view'>
       {data.data ? (
@@ -232,7 +234,13 @@ function View({
               defaultValue={data.data[0].title}
               readOnly
             ></input>
-            <div className='date-box'>{date}</div>
+            <div className='board-info-box'>
+              <div className='user-info'>
+                <image className='nick-img'></image>
+                <div className='user-nickname'>{data.data[0].writer_name}</div>
+              </div>
+              <div className='date-box'>{date}</div>
+            </div>
           </div>
           <div className='contents-box'>
             <div
@@ -246,7 +254,11 @@ function View({
               onClick={() => openModal()}
             ></input>
           </div>
-          <Map toggleMapModal={toggleMapModal} mapModal={mapModal}></Map>
+          <Map
+            toggleMapModal={toggleMapModal}
+            mapModal={mapModal}
+            userLocationData={userLocationData}
+          ></Map>
           <div className='other-box'>
             <div className='pre-view'>
               <p>이전글</p>
@@ -325,11 +337,9 @@ function View({
                 <div>
                   <h5>{replyNum}개의 댓글이 있습니다.</h5>
                   {replyData.map((el, key) => {
-                    let id = el.user.id;
+                    let nickname = el.user.name;
                     if (el.user.admin === 'Y') {
-                      id = '관리자';
-                    } else if (el.user.id === data.data[0].writer_id) {
-                      id = '작성자';
+                      nickname = '관리자';
                     }
                     let date =
                       el.date.slice(5, 10) + ' ' + el.date.slice(11, 16);
@@ -339,13 +349,13 @@ function View({
                           <div
                             style={
                               el.user.admin === 'Y' ||
-                              el.user.id === data.data[0].writer_id
+                              el.user.name === data.data[0].writer_name
                                 ? { fontWeight: 'bold', color: 'blue' }
                                 : null
                             }
                             className='reply-list-id'
                           >
-                            {id}
+                            {nickname}
                           </div>
                           <div
                             dangerouslySetInnerHTML={{ __html: el.contents }}

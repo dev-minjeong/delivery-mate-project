@@ -188,17 +188,34 @@ button {
 .title-box {
   border-bottom: 1px solid #ababab;
   flex-basis: 15%;
-  padding: 10px 8px 0;
+  padding: 10px;
 }
 #title-txt {
   font-weight: 700;
   font-size: 16px;
 }
+.board-info-box {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+.board-info-box .user-info {
+  display: flex;
+}
+.board-info-box .nick-img {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 1px solid black;
+  margin-right: 6px;
+}
+.board-info-box .user-nickname {
+  font-size: 13px;
+}
 .date-box {
   text-align: right;
   font-size: 13px;
   color: #ababab;
-  margin: 0 10px 10px 0;
 }
 .title-box #title-txt {
   border: none;

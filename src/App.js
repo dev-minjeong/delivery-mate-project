@@ -31,6 +31,7 @@ function App() {
   const [replyData, setReplyData] = useState([]);
   const [replyNum, setReplyNum] = useState(null);
   const [mapModal, setMapModal] = useState(false);
+  const [userName, setUserName] = useState('');
 
   const locationSearch = useLocation().search;
 
@@ -60,7 +61,7 @@ function App() {
     setData(getBoardData);
     setDate(date);
     setLikeNum(getBoardData.data[0].likes);
-    console.log(getBoardData);
+    setUserName(getBoardData.data[0].writer_name)
   };
   // 페이지
   const setPage = () => {
@@ -196,6 +197,9 @@ function App() {
   const toggleMapModal = (boolean) => {
     setMapModal(boolean);
   };
+  const userLocationData = () => {
+    // const data =
+  };
   return (
     <div className='App'>
       <Header
@@ -238,6 +242,8 @@ function App() {
         getReplyData={getReplyData}
         toggleMapModal={toggleMapModal}
         mapModal={mapModal}
+        userLocationData={userLocationData}
+        userName={userName}
       ></Main>
     </div>
   );

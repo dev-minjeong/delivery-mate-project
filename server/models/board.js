@@ -34,9 +34,10 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         defaultValue: 0,
       },
-      writer_id: {
-        type: DataTypes.STRING(30),
+      writer_name: {
+        type: DataTypes.STRING(20),
         allowNull: false,
+        defaultValue: 0,
       },
     },
     {

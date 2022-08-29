@@ -38,6 +38,8 @@ const Main = ({
   getReplyData,
   toggleMapModal,
   mapModal,
+  userLocationData,
+  userName,
 }) => {
   const [category, setCategory] = useState('');
   const [change_Category, setChange_Category] = useState(false);
@@ -111,6 +113,8 @@ const Main = ({
     getReplyData: getReplyData,
     toggleMapModal: toggleMapModal,
     mapModal: mapModal,
+    userLocationData: userLocationData,
+    userName: userName,
   });
   const RightWriteWithProps = withProps(RightWrite, {
     contents: contents,
@@ -118,6 +122,7 @@ const Main = ({
     selectCategory: selectCategory,
     selectCategoryData: selectCategoryData,
     login: login,
+    userName: userName,
   });
   const RightWriteModifyWithProps = withProps(RightWrite, {
     contents: contents,
@@ -125,6 +130,7 @@ const Main = ({
     selectCategory: selectCategory,
     selectCategoryData: selectCategoryData,
     login: login,
+    userName: userName,
   });
 
   return (

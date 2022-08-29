@@ -66,7 +66,7 @@ module.exports = {
         view_cnt: 0,
         food_id: body.category,
         likes: 0,
-        writer_id: body.writer_id,
+        writer_name: body.writer_name,
       })
         .then(() => {
           callback(true);

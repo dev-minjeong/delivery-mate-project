@@ -138,7 +138,7 @@ function SignUp() {
           <input type='password' maxLength='10' name='signup-pwCheck'></input>
         </div>
         <div>
-          <h5>이름</h5>
+          <h5>이름 또는 닉네임</h5>
           <input
             type='text'
             maxLength='10'
