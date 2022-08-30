@@ -3,7 +3,7 @@ import axios from 'axios';
 import './main.css';
 import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { Map } from './../inc/index.js';
+import { AutoSettingMap } from './../inc/index.js';
 
 function View({
   login,
@@ -209,7 +209,6 @@ function View({
   const openModal = () => {
     return toggleMapModal(true);
   };
-  console.log(data);
   return (
     <div className='view'>
       {data.data ? (
@@ -254,11 +253,11 @@ function View({
               onClick={() => openModal()}
             ></input>
           </div>
-          <Map
+          <AutoSettingMap
             toggleMapModal={toggleMapModal}
             mapModal={mapModal}
             userLocationData={userLocationData}
-          ></Map>
+          ></AutoSettingMap>
           <div className='other-box'>
             <div className='pre-view'>
               <p>이전글</p>

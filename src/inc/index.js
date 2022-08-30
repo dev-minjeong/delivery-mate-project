@@ -5,4 +5,5 @@ export { default as SearchId } from './search_id';
 export { default as SearchPw } from './search_pw';
 export { default as BackAndClose } from './back_and_close';
 export { default as KakaoMap } from './kakao_map';
-export { default as Map } from './map';
+export { default as UserSettingMap } from './user_setting_map';
+export { default as AutoSettingMap } from './auto_setting_map';

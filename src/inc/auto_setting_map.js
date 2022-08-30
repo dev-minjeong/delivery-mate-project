@@ -2,7 +2,7 @@ import Modal from 'react-awesome-modal';
 import { KakaoMap } from './index.js';
 import '../App.css';
 
-function Map({ toggleMapModal, mapModal }) {
+function AutoSettingMap({ toggleMapModal, mapModal, userLocationData }) {
   return (
     <>
       <Modal
@@ -12,7 +12,7 @@ function Map({ toggleMapModal, mapModal }) {
         effect='fadeInDown'
         onClickAway={() => toggleMapModal(false)}
       >
-        <KakaoMap></KakaoMap>
+        <KakaoMap userLocationData={userLocationData}></KakaoMap>
         <div className='map-close-btn' onClick={() => toggleMapModal(false)}>
           ✖
         </div>
@@ -20,4 +20,4 @@ function Map({ toggleMapModal, mapModal }) {
     </>
   );
 }
-export default Map;
+export default AutoSettingMap;
