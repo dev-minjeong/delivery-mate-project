@@ -39,6 +39,14 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         defaultValue: 0,
       },
+      writer_lat: {
+        type: DataTypes.DECIMAL(9, 7),
+        allowNull: false,
+      },
+      writer_lon: {
+        type: DataTypes.DECIMAL(10, 7),
+        allowNull: false,
+      },
     },
     {
       charset: 'utf8',

@@ -67,6 +67,8 @@ module.exports = {
         food_id: body.category,
         likes: 0,
         writer_name: body.writer_name,
+        writer_lat: body.writer_lat,
+        writer_lon: body.writer_lon,
       })
         .then(() => {
           callback(true);
@@ -185,7 +187,9 @@ module.exports = {
           title: body.title,
           contents: body.contents,
           food_id: body.category,
-          writer_id: body.writer_id,
+          writer_name: body.writer_name,
+          writer_lat: body.writer_lat,
+          writer_lon: body.writer_lon,
         },
         {
           where: { board_id: body.board_id },
