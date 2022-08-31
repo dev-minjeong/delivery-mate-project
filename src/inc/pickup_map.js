@@ -4,7 +4,13 @@ import { useEffect, useState } from 'react';
 import '../App.css';
 /* global kakao */
 
-function PickupMap({ toggleMapModal, mapModal, writerLat, writerLon }) {
+function PickupMap({
+  toggleMapModal,
+  mapModal,
+  writerLat,
+  writerLon,
+  writerName,
+}) {
   console.log(writerLat);
   console.log(writerLon);
   useEffect(() => {
@@ -19,6 +25,12 @@ function PickupMap({ toggleMapModal, mapModal, writerLat, writerLon }) {
       position: markerPosition,
     });
     marker.setMap(map);
+    const writerContent = `<div style="padding:5px; font-size: 15px; font-weight: bold; text-align:center;">${writerName}<br><a href="https://map.kakao.com/link/map/Hello World!,${writerLat},${writerLon}" style="color:blue; font-size: 13px; font-weight: middle;" target="_blank">큰지도보기</a> <a href="https://map.kakao.com/link/to/Hello World!,${writerLat},${writerLon}" style="color:blue; font-size: 13px; font-weight: middle;" target="_blank">길찾기</a></div>`;
+    const writerWindow = new kakao.maps.InfoWindow({
+      position: markerPosition,
+      content: writerContent,
+    });
+    writerWindow.open(map, marker);
   }, []);
 
   // userLocationData = [

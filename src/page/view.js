@@ -4,6 +4,7 @@ import './main.css';
 import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { PickupMap } from './../inc/index.js';
+import _ from 'lodash';
 
 function View({
   login,
@@ -42,6 +43,8 @@ function View({
   const [modifyUrl, setModifyUrl] = useState('');
   const [join, setJoin] = useState(false);
 
+  const writerName = data.data[0].writer_name;
+
   useEffect(() => {
     const boardId = params.data;
 
@@ -70,13 +73,19 @@ function View({
     if (replyNum === null) {
       getReplyData(boardId);
     }
-    for (let i = 0; i < replyData.length; i++) {
+    // let totalMateCnt = _.uniqBy(replyData, 'user_id').length;
+    for (let i = 0; i < _.uniqBy(replyData, 'user_id').length; i++) {
       if (login === replyData[i].user.id) {
         setJoin(true);
       }
+      // if (replyData[i].user.name === writerName) {
+      //   totalMateCnt--;
+      // } else if (replyData[i].user.admin === 'Y') {
+      //   totalMateCnt--;
+      // }
     }
     if (data && data.data.length > 0) {
-      if (userName === data.data[0].writer_name) {
+      if (userName === writerName) {
         setJoin(true);
       }
     }
@@ -224,12 +233,13 @@ function View({
   const openMapModal = () => {
     return toggleMapModal(true);
   };
+
   return (
     <div className='view'>
       {data.data ? (
         <div className='view-box'>
           <div className='title-box'>
-            {admin === 'Y' || userName === data.data[0].writer_name ? (
+            {admin === 'Y' || userName === writerName ? (
               <div className='write-option-box'>
                 <Link to={modifyUrl}>
                   <input type='button' value='수정'></input>
@@ -251,7 +261,7 @@ function View({
             <div className='board-info-box'>
               <div className='user-info'>
                 <img alt='' src='' className='nick-img'></img>
-                <div className='user-nickname'>{data.data[0].writer_name}</div>
+                <div className='user-nickname'>{writerName}</div>
               </div>
               <div className='date-box'>{date}</div>
             </div>
@@ -261,7 +271,7 @@ function View({
               id='content-txt'
               dangerouslySetInnerHTML={{ __html: data.data[0].contents }}
             ></div>
-            {join || userName === data.data[0].writer_name ? (
+            {join || userName === writerName ? (
               <input
                 type='button'
                 value='픽업장소 확인'
@@ -275,6 +285,7 @@ function View({
             mapModal={mapModal}
             writerLat={writerLat}
             writerLon={writerLon}
+            writerName={writerName}
           ></PickupMap>
           <div className='other-box'>
             <div className='pre-view'>
@@ -366,7 +377,7 @@ function View({
                           <div
                             style={
                               el.user.admin === 'Y' ||
-                              el.user.name === data.data[0].writer_name
+                              el.user.name === writerName
                                 ? { fontWeight: 'bold', color: 'blue' }
                                 : null
                             }
