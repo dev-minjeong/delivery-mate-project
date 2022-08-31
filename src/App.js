@@ -32,6 +32,8 @@ function App() {
   const [replyNum, setReplyNum] = useState(null);
   const [mapModal, setMapModal] = useState(false);
   const [userName, setUserName] = useState('');
+  const [writerLat, setWriterLat] = useState(0);
+  const [writerLon, setWriterLon] = useState(0);
 
   const locationSearch = useLocation().search;
 
@@ -195,8 +197,14 @@ function App() {
   const toggleMapModal = (boolean) => {
     setMapModal(boolean);
   };
-  const userLocationData = () => {
-    // const data =
+  const getWriterMapData = async (board_id) => {
+    const data = await axios('/get/board_data', {
+      method: 'POST',
+      headers: new Headers(),
+      data: { id: board_id },
+    });
+    setWriterLat(data.data[0].writer_lat);
+    setWriterLon(data.data[0].writer_lon);
   };
   return (
     <div className='App'>
@@ -240,8 +248,10 @@ function App() {
         getReplyData={getReplyData}
         toggleMapModal={toggleMapModal}
         mapModal={mapModal}
-        userLocationData={userLocationData}
         userName={userName}
+        getWriterMapData={getWriterMapData}
+        writerLat={writerLat}
+        writerLon={writerLon}
       ></Main>
     </div>
   );

@@ -25,8 +25,10 @@ function View({
   getReplyData,
   toggleMapModal,
   mapModal,
-  userLocationData,
   userName,
+  getWriterMapData,
+  writerLat,
+  writerLon,
 }) {
   const params = useParams();
   const [noneLike, setNoneLike] = useState(
@@ -38,11 +40,13 @@ function View({
   const [preUrl, setPreUrl] = useState('');
   const [nextUrl, setNextUrl] = useState('');
   const [modifyUrl, setModifyUrl] = useState('');
+  const [join, setJoin] = useState(false);
 
   useEffect(() => {
     const boardId = params.data;
 
     addViewCnt(boardId);
+    getWriterMapData(boardId);
     if (!data) {
       getData(boardId);
     }
@@ -66,7 +70,17 @@ function View({
     if (replyNum === null) {
       getReplyData(boardId);
     }
-  }, []);
+    for (let i = 0; i < replyData.length; i++) {
+      if (login === replyData[i].user.id) {
+        setJoin(true);
+      }
+    }
+    if (data && data.data.length > 0) {
+      if (userName === data.data[0].writer_name) {
+        setJoin(true);
+      }
+    }
+  }, [data]);
 
   // 조회수 카운트
   const addViewCnt = async (boardId) => {
@@ -207,7 +221,7 @@ function View({
     return window.location.reload();
   };
   // 지도
-  const openModal = () => {
+  const openMapModal = () => {
     return toggleMapModal(true);
   };
   return (
@@ -236,7 +250,7 @@ function View({
             ></input>
             <div className='board-info-box'>
               <div className='user-info'>
-                <image className='nick-img'></image>
+                <img alt='' src='' className='nick-img'></img>
                 <div className='user-nickname'>{data.data[0].writer_name}</div>
               </div>
               <div className='date-box'>{date}</div>
@@ -247,17 +261,20 @@ function View({
               id='content-txt'
               dangerouslySetInnerHTML={{ __html: data.data[0].contents }}
             ></div>
-            <input
-              type='button'
-              value='픽업장소 확인'
-              className='pickup-map'
-              onClick={() => openModal()}
-            ></input>
+            {join || userName === data.data[0].writer_name ? (
+              <input
+                type='button'
+                value='픽업장소 확인'
+                className='pickup-map'
+                onClick={() => openMapModal()}
+              ></input>
+            ) : null}
           </div>
           <PickupMap
             toggleMapModal={toggleMapModal}
             mapModal={mapModal}
-            userLocationData={userLocationData}
+            writerLat={writerLat}
+            writerLon={writerLon}
           ></PickupMap>
           <div className='other-box'>
             <div className='pre-view'>
@@ -320,7 +337,7 @@ function View({
             <div className='reply-write'>
               <textarea
                 rows='3'
-                placeholder='댓글을 입력하세요'
+                placeholder='댓글 작성 시 참여 가능합니다'
                 maxLength='100'
                 name='reply-write'
                 onClick={() => loginCheck()}

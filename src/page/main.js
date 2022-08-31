@@ -38,8 +38,10 @@ const Main = ({
   getReplyData,
   toggleMapModal,
   mapModal,
-  userLocationData,
   userName,
+  getWriterMapData,
+  writerLat,
+  writerLon,
 }) => {
   const [category, setCategory] = useState('');
   const [change_Category, setChange_Category] = useState(false);
@@ -113,15 +115,16 @@ const Main = ({
     getReplyData: getReplyData,
     toggleMapModal: toggleMapModal,
     mapModal: mapModal,
-    userLocationData: userLocationData,
     userName: userName,
+    getWriterMapData: getWriterMapData,
+    writerLat: writerLat,
+    writerLon: writerLon,
   });
   const RightWriteWithProps = withProps(RightWrite, {
     contents: contents,
     categoryData: categoryData,
     selectCategory: selectCategory,
     selectCategoryData: selectCategoryData,
-    login: login,
     userName: userName,
   });
   const RightWriteModifyWithProps = withProps(RightWrite, {
@@ -129,7 +132,6 @@ const Main = ({
     categoryData: categoryData,
     selectCategory: selectCategory,
     selectCategoryData: selectCategoryData,
-    login: login,
     userName: userName,
   });
 
