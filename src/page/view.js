@@ -3,7 +3,7 @@ import axios from 'axios';
 import './main.css';
 import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { AutoSettingMap } from './../inc/index.js';
+import { PickupMap } from './../inc/index.js';
 
 function View({
   login,
@@ -26,6 +26,7 @@ function View({
   toggleMapModal,
   mapModal,
   userLocationData,
+  userName,
 }) {
   const params = useParams();
   const [noneLike, setNoneLike] = useState(
@@ -214,7 +215,7 @@ function View({
       {data.data ? (
         <div className='view-box'>
           <div className='title-box'>
-            {admin === 'Y' || login === data.data[0].writer_id ? (
+            {admin === 'Y' || userName === data.data[0].writer_name ? (
               <div className='write-option-box'>
                 <Link to={modifyUrl}>
                   <input type='button' value='수정'></input>
@@ -253,11 +254,11 @@ function View({
               onClick={() => openModal()}
             ></input>
           </div>
-          <AutoSettingMap
+          <PickupMap
             toggleMapModal={toggleMapModal}
             mapModal={mapModal}
             userLocationData={userLocationData}
-          ></AutoSettingMap>
+          ></PickupMap>
           <div className='other-box'>
             <div className='pre-view'>
               <p>이전글</p>

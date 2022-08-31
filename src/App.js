@@ -43,7 +43,7 @@ function App() {
       setAdmin(JSON.parse(sessionStorage.login).admin);
       setUserIp(JSON.parse(sessionStorage.IP));
       setUserId(JSON.parse(sessionStorage.login).user_id);
-      // setWriterId(JSON.parse(sessionStorage.login).id);
+      setUserName(JSON.parse(sessionStorage.login).name);
     }
   }, []);
 
@@ -61,7 +61,6 @@ function App() {
     setData(getBoardData);
     setDate(date);
     setLikeNum(getBoardData.data[0].likes);
-    setUserName(getBoardData.data[0].writer_name)
   };
   // 페이지
   const setPage = () => {
@@ -165,7 +164,6 @@ function App() {
       headers: new Headers(),
       data: { id: board_id },
     });
-    console.log(getLikeData);
     setLikeNum(getLikeData.data[0].likes);
   };
   const getLikeExist = (result) => {

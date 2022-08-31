@@ -177,7 +177,9 @@ function SignUp() {
             <input type='text' name='signup-email-write' maxLength='20'></input>
           ) : null}
         </div>
-        {/* <div id='signup-section'> </div> */}
+        <div>
+          <h5>본인 위치 설정</h5>
+        </div>
       </div>
       <div className='signup-submit'>
         <input
