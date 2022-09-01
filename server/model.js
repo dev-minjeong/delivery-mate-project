@@ -8,7 +8,7 @@ const {
   Board,
   Category,
   User,
-  Like,
+  Join,
   Reply,
   Sequelize: { Op },
 } = require('./models');
@@ -65,7 +65,7 @@ module.exports = {
         date: now_date,
         view_cnt: 0,
         food_id: body.category,
-        likes: 0,
+        join_cnt: 0,
         writer_name: body.writer_name,
         writer_lat: body.writer_lat,
         writer_lon: body.writer_lon,
@@ -153,26 +153,26 @@ module.exports = {
           throw err;
         });
     },
-    like: (body, callback) => {
+    join: (body, callback) => {
       if (body.type === 'add') {
         Board.update(
-          { likes: sequelize.literal('likes + 1') },
+          { join_cnt: sequelize.literal('join_cnt + 1') },
           {
             where: { board_id: body.board_id },
           }
         );
-        Like.create({
+        Join.create({
           board_id: body.board_id,
           user_id: body.user_id,
         });
       } else if (body.type === 'remove') {
         Board.update(
-          { likes: sequelize.literal('likes - 1') },
+          { join_cnt: sequelize.literal('join_cnt - 1') },
           {
             where: { board_id: body.board_id },
           }
         );
-        Like.destroy({
+        Join.destroy({
           where: {
             board_id: body.board_id,
             user_id: body.user_id,
@@ -420,10 +420,23 @@ module.exports = {
           throw err;
         });
     },
+    join_data: (body, callback) => {
+      Join.findAll({
+        where: {
+          board_id: body.board_id,
+        },
+      })
+        .then((result) => {
+          callback(result);
+        })
+        .catch((err) => {
+          throw err;
+        });
+    },
   },
   check: {
-    like: (body, callback) => {
-      Like.findAll({
+    join: (body, callback) => {
+      Join.findAll({
         where: {
           board_id: body.board_id,
           user_id: body.user_id,

@@ -192,6 +192,13 @@ module.exports = {
         res.send(data);
       });
     },
+    join_data: (req, res) => {
+      const body = req.body;
+
+      model.get.join_data(body, (result) => {
+        res.send(result);
+      });
+    },
   },
   update: {
     view_cnt: (req, res) => {
@@ -221,17 +228,17 @@ module.exports = {
         res.send(true);
       });
     },
-    like: (req, res) => {
+    join: (req, res) => {
       const body = req.body;
 
-      model.check.like(body, (data) => {
+      model.check.join(body, (data) => {
         if (data.length === 0) {
-          model.update.like(body, (result) => {
+          model.update.join(body, (result) => {
             res.send(result);
           });
         } else {
           if (body.type === 'remove') {
-            model.update.like(body, (result) => {
+            model.update.join(body, (result) => {
               res.send(result);
             });
           } else {
@@ -291,10 +298,10 @@ module.exports = {
     },
   },
   check: {
-    like: (req, res) => {
+    join: (req, res) => {
       const body = req.body;
 
-      model.check.like(body, (result) => {
+      model.check.join(body, (result) => {
         res.send(result);
       });
     },

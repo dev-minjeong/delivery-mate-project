@@ -14,7 +14,7 @@ router.post('/add/reply', controller.add.reply);
 
 router.post('/update/view_cnt', controller.update.view_cnt);
 router.post('/update/pw', controller.update.pw);
-router.post('/update/like', controller.update.like);
+router.post('/update/join', controller.update.join);
 router.post('/update/board', controller.update.board);
 
 router.post('/delete/category', controller.delete.category);
@@ -29,7 +29,8 @@ router.post('/get/board_cnt', controller.get.board_cnt);
 router.post('/get/board_data', controller.get.board_data);
 router.post('/get/pre_next', controller.get.pre_next);
 router.post('/get/reply_data', controller.get.reply_data);
+router.post('/get/join_data', controller.get.join_data);
 
-router.post('/check/like', controller.check.like);
+router.post('/check/join', controller.check.join);
 
 module.exports = router;
