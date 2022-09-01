@@ -34,8 +34,8 @@ db.sequelize
 db.Board = require('./board')(sequelize, Sequelize);
 db.Category = require('./category')(sequelize, Sequelize);
 db.User = require('./user')(sequelize, Sequelize);
-db.Like = require('./like')(sequelize, Sequelize);
 db.Reply = require('./reply')(sequelize, Sequelize);
+db.Join = require('./join')(sequelize, Sequelize);
 
 // 1대 M관계
 db.Category.hasMany(db.Board, {
@@ -47,14 +47,14 @@ db.Board.belongsTo(db.Category, {
   targetKey: 'id',
 });
 // N대 M관계
-db.Board.belongsToMany(db.User, {
-  through: 'like',
-  foreignKey: 'board_id',
-});
-db.User.belongsToMany(db.Board, {
-  through: 'like',
-  foreignKey: 'user_id',
-});
+// db.Board.belongsToMany(db.User, {
+//   through: 'like',
+//   foreignKey: 'board_id',
+// });
+// db.User.belongsToMany(db.Board, {
+//   through: 'like',
+//   foreignKey: 'user_id',
+// });
 
 db.User.hasMany(db.Reply, {
   foreignKey: 'user_id',
@@ -72,6 +72,15 @@ db.User.hasMany(db.Board, {
 db.Board.belongsTo(db.User, {
   foreignKey: 'writer_name',
   sourceKey: 'name',
+});
+
+db.Board.belongsToMany(db.User, {
+  through: 'join',
+  foreignKey: 'board_id',
+});
+db.User.belongsToMany(db.Board, {
+  through: 'join',
+  foreignKey: 'name',
 });
 
 module.exports = db;
