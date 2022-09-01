@@ -29,7 +29,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER(10),
         allowNull: false,
       },
-      likes: {
+      join_cnt: {
         type: DataTypes.INTEGER(10),
         allowNull: false,
         defaultValue: 0,
