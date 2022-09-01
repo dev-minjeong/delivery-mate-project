@@ -22,14 +22,14 @@ const Main = ({
   userId,
   data,
   date,
-  likeNum,
+  joinNum,
   getData,
-  getAllLike,
+  getAllJoin,
   categoryData,
   selectCategory,
   selectCategoryData,
-  getLikeExist,
-  likeExist,
+  getJoinExist,
+  joinExist,
   preView,
   nextView,
   getPreNextData,
@@ -42,6 +42,7 @@ const Main = ({
   getWriterMapData,
   writerLat,
   writerLon,
+  getBoardJoinData
 }) => {
   const [category, setCategory] = useState('');
   const [change_Category, setChange_Category] = useState(false);
@@ -102,11 +103,11 @@ const Main = ({
     userId: userId,
     data: data,
     date: date,
-    likeNum: likeNum,
+    joinNum: joinNum,
     getData: getData,
-    getAllLike: getAllLike,
-    getLikeExist: getLikeExist,
-    likeExist: likeExist,
+    getAllJoin: getAllJoin,
+    getJoinExist: getJoinExist,
+    joinExist: joinExist,
     preView: preView,
     nextView: nextView,
     getPreNextData: getPreNextData,
@@ -119,6 +120,7 @@ const Main = ({
     getWriterMapData: getWriterMapData,
     writerLat: writerLat,
     writerLon: writerLon,
+    getBoardJoinData:getBoardJoinData
   });
   const RightWriteWithProps = withProps(RightWrite, {
     contents: contents,

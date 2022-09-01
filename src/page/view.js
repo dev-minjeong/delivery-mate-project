@@ -13,11 +13,11 @@ function View({
   userId,
   data,
   date,
-  likeNum,
+  joinNum,
   getData,
-  getAllLike,
-  getLikeExist,
-  likeExist,
+  getAllJoin,
+  getJoinExist,
+  joinExist,
   preView,
   nextView,
   getPreNextData,
@@ -30,31 +30,40 @@ function View({
   getWriterMapData,
   writerLat,
   writerLon,
+  getBoardJoinData,
 }) {
   const params = useParams();
-  const [noneLike, setNoneLike] = useState(
+  const [noneJoinImg, setNoneJoinImg] = useState(
     'https://cdns.iconmonstr.com/wp-content/releases/preview/2013/240/iconmonstr-thumb-10.png'
   );
-  const [like, setLike] = useState(
+  const [joinImg, setJoinImg] = useState(
     'https://cdns.iconmonstr.com/wp-content/releases/preview/2013/240/iconmonstr-thumb-9.png'
   );
   const [preUrl, setPreUrl] = useState('');
   const [nextUrl, setNextUrl] = useState('');
   const [modifyUrl, setModifyUrl] = useState('');
   const [join, setJoin] = useState(false);
+  const [mateLat, setMateLat] = useState(0);
+  const [mateLon, setMateLon] = useState(0);
+  const [mateName, setMateName] = useState('');
+  // const [joinMate, setJoinMate] = useState([]);
 
-  const writerName = data.data[0].writer_name;
-
+  /** 할 것
+   * 좋아요 상태 세션에 저장 -> 중복 방지 ⭕
+   * 참여자들 정보 지도로 넘길 수 있게 어떻게든 해보기
+   */
   useEffect(() => {
     const boardId = params.data;
 
     addViewCnt(boardId);
+    getAllJoin(boardId);
     getWriterMapData(boardId);
+    getBoardJoinData(boardId);
     if (!data) {
       getData(boardId);
     }
-    if (likeExist === null) {
-      getLikeInfo();
+    if (joinExist === null) {
+      getJoinInfo();
     }
     if (preView === '' || nextView === '') {
       getPreNextData(boardId);
@@ -73,21 +82,18 @@ function View({
     if (replyNum === null) {
       getReplyData(boardId);
     }
-    // let totalMateCnt = _.uniqBy(replyData, 'user_id').length;
-    for (let i = 0; i < _.uniqBy(replyData, 'user_id').length; i++) {
-      if (login === replyData[i].user.id) {
-        setJoin(true);
-      }
-      // if (replyData[i].user.name === writerName) {
-      //   totalMateCnt--;
-      // } else if (replyData[i].user.admin === 'Y') {
-      //   totalMateCnt--;
-      // }
-    }
-    if (data && data.data.length > 0) {
-      if (userName === writerName) {
-        setJoin(true);
-      }
+    const storageJoinList = JSON.parse(sessionStorage.join);
+    if (storageJoinList.length > 0) {
+      setMateLat(storageJoinList.map((el) => el.mate_lat));
+      setMateLon(storageJoinList.map((el) => el.mate_lon));
+      setMateName(
+        storageJoinList.map((el) => {
+          if (el.name === userName) {
+            setJoin(true);
+          }
+          return el.name;
+        })
+      );
     }
   }, [data]);
 
@@ -100,55 +106,76 @@ function View({
     });
   };
 
-  // 좋아요
-  const toggleLike = async () => {
+  // 참여하기
+  const toggleJoin = async (mate_lat, mate_lon) => {
+    console.log('toggleJoin');
+    console.log(mate_lat, mate_lon);
     if (!loginCheck()) {
       return;
     }
     const boardId = params.data;
-    const obj = { type: 'add', user_id: userId, board_id: boardId };
-    const res = await axios('/update/like', {
+    const obj = {
+      type: 'add',
+      board_id: boardId,
+      name: userName,
+      mate_lat: mate_lat,
+      mate_lon: mate_lon,
+    };
+    const res = await axios('/update/join', {
       method: 'POST',
       headers: new Headers(),
       data: obj,
     });
+    console.log(res);
 
     if (!res.data) {
-      if (window.confirm('좋아요를 취소하시겠습니까?')) {
-        const cancel = { type: 'remove', user_id: userId, board_id: boardId };
+      if (window.confirm('참여를 취소하시겠습니까?')) {
+        console.log('취소');
+        const cancel = {
+          type: 'remove',
+          board_id: boardId,
+          name: userName,
+        };
 
-        await axios('/update/like', {
+        await axios('/update/join', {
           method: 'POST',
           headers: new Headers(),
           data: cancel,
         });
-        getLikeExist(false);
-        getAllLike(boardId);
+        getJoinExist(false);
+        getAllJoin(boardId);
 
-        alert('좋아요가 취소되었습니다');
+        alert('취소되었습니다');
       }
     } else {
-      getLikeExist(true);
-      getAllLike(boardId);
+      console.log(res.data);
+      console.log('참여');
+      getJoinExist(true);
+      getAllJoin(boardId);
 
-      alert('해당 게시물에 좋아요가 반영되었습니다');
+      alert('해당 게시물에 참여하실 수 있습니다');
+      // return window.location.reload();
     }
+    return window.location.reload();
   };
-  const getLikeInfo = async () => {
+  const getJoinInfo = async () => {
     if (login) {
       const boardId = params.data;
-      const obj = { user_id: userId, board_id: boardId };
+      const obj = {
+        board_id: boardId,
+        name: userName,
+      };
 
-      const getData = await axios('/check/like', {
+      const getData = await axios('/check/join', {
         method: 'POST',
         headers: new Headers(),
         data: obj,
       });
 
       if (getData.data[0]) {
-        return getLikeExist(true);
+        return getJoinExist(true);
       }
-      getLikeExist(false);
+      getJoinExist(false);
     }
   };
 
@@ -216,6 +243,7 @@ function View({
       data: data,
     });
     alert('댓글이 등록되었습니다');
+
     return window.location.reload();
   };
   const removeReply = async (reply_id) => {
@@ -233,13 +261,55 @@ function View({
   const openMapModal = () => {
     return toggleMapModal(true);
   };
+  // gps
+  const getLocation = () => {
+    if (navigator.geolocation) {
+      // gps 지원 시
+      return new Promise((resolve) => {
+        navigator.geolocation.getCurrentPosition(
+          function (position) {
+            resolve({
+              latitude: position.coords.latitude,
+              longitude: position.coords.longitude,
+            });
+          },
+          function (error) {
+            console.log(error);
+            resolve({
+              latitude: 33.450701,
+              longitude: 126.570667,
+            });
+          },
+          {
+            enableHighAccuracy: false,
+            maximumAge: 0,
+            timeout: Infinity,
+          }
+        );
+      }).then((coords) => {
+        return coords;
+      });
+    }
+    console.log('GPS를 지원하지 않습니다');
+    return {
+      latitude: 33.450701,
+      longitude: 126.570667,
+    };
+  };
+  const gsLocation = async () => {
+    console.log('gsLocation');
+    const gettingGsLocation = await getLocation();
+    console.log(`gsLocation: ${JSON.stringify(gettingGsLocation)}`);
+
+    toggleJoin(gettingGsLocation.latitude, gettingGsLocation.longitude);
+  };
 
   return (
     <div className='view'>
       {data.data ? (
         <div className='view-box'>
           <div className='title-box'>
-            {admin === 'Y' || userName === writerName ? (
+            {admin === 'Y' || userName === data.data[0].writer_name ? (
               <div className='write-option-box'>
                 <Link to={modifyUrl}>
                   <input type='button' value='수정'></input>
@@ -261,7 +331,7 @@ function View({
             <div className='board-info-box'>
               <div className='user-info'>
                 <img alt='' src='' className='nick-img'></img>
-                <div className='user-nickname'>{writerName}</div>
+                <div className='user-nickname'>{data.data[0].writer_name}</div>
               </div>
               <div className='date-box'>{date}</div>
             </div>
@@ -271,7 +341,7 @@ function View({
               id='content-txt'
               dangerouslySetInnerHTML={{ __html: data.data[0].contents }}
             ></div>
-            {join || userName === writerName ? (
+            {join || userName === data.data[0].writer_name ? (
               <input
                 type='button'
                 value='픽업장소 확인'
@@ -285,7 +355,10 @@ function View({
             mapModal={mapModal}
             writerLat={writerLat}
             writerLon={writerLon}
-            writerName={writerName}
+            writername={data.data[0].writer_name}
+            mateLat={mateLat}
+            mateLon={mateLon}
+            mateName={mateName}
           ></PickupMap>
           <div className='other-box'>
             <div className='pre-view'>
@@ -310,13 +383,15 @@ function View({
                 )}
               </div>
             </div>
-            <div className='like'>
+            <div className='join'>
               <img
-                src={!likeExist ? noneLike : like}
-                alt='nonelike'
-                onClick={() => toggleLike()}
+                src={!joinExist ? noneJoinImg : joinImg}
+                alt='nonejoin'
+                onClick={() => gsLocation()}
               ></img>
-              <h5>좋아요({likeNum})</h5>
+              <h5>
+                참여하기<br></br>(총 인원: {joinNum})
+              </h5>
             </div>
             <div className='next-view'>
               <p>다음글</p>
@@ -377,7 +452,7 @@ function View({
                           <div
                             style={
                               el.user.admin === 'Y' ||
-                              el.user.name === writerName
+                              el.user.name === data.data[0].writer_name
                                 ? { fontWeight: 'bold', color: 'blue' }
                                 : null
                             }

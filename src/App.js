@@ -22,8 +22,8 @@ function App() {
   const [userId, setUserId] = useState('');
   const [data, setData] = useState('');
   const [date, setDate] = useState('');
-  const [likeNum, setLikeNum] = useState('');
-  const [likeExist, setLikeExist] = useState(null);
+  const [joinNum, setJoinNum] = useState('');
+  const [joinExist, setJoinExist] = useState(null);
   const [preView, setPreView] = useState('');
   const [nextView, setNextView] = useState('');
   const [categoryData, setCategoryData] = useState([]);
@@ -62,7 +62,7 @@ function App() {
       getBoardData.data[0].date.slice(11, 16);
     setData(getBoardData);
     setDate(date);
-    setLikeNum(getBoardData.data[0].likes);
+    setJoinNum(getBoardData.data[0].join_cnt);
   };
   // 페이지
   const setPage = () => {
@@ -159,17 +159,27 @@ function App() {
     }
     setSelectCategory(category);
   };
-  // 좋아요
-  const getAllLike = async (board_id) => {
-    const getLikeData = await axios('/get/board_data', {
+  // 총 참여자
+  const getAllJoin = async (board_id) => {
+    const getJoinData = await axios('/get/board_data', {
       method: 'POST',
       headers: new Headers(),
       data: { id: board_id },
     });
-    setLikeNum(getLikeData.data[0].likes);
+    setJoinNum(getJoinData.data[0].join_cnt);
   };
-  const getLikeExist = (result) => {
-    setLikeExist(result);
+  const getJoinExist = (result) => {
+    setJoinExist(result);
+  };
+  const getBoardJoinData = async (board_id) => {
+    const data = { board_id: board_id };
+
+    const getData = await axios('/get/join_data', {
+      method: 'POST',
+      headers: new Headers(),
+      data: data,
+    });
+    sessionStorage.setItem('join', JSON.stringify(getData.data));
   };
   // 이전, 다음페이지 이동
   const getPreNextData = async (board_id) => {
@@ -232,14 +242,14 @@ function App() {
         userId={userId}
         data={data}
         date={date}
-        likeNum={likeNum}
+        joinNum={joinNum}
         getData={getData}
-        getAllLike={getAllLike}
+        getAllJoin={getAllJoin}
         categoryData={categoryData}
         selectCategory={selectCategory}
         selectCategoryData={selectCategoryData}
-        getLikeExist={getLikeExist}
-        likeExist={likeExist}
+        getJoinExist={getJoinExist}
+        joinExist={joinExist}
         preView={preView}
         nextView={nextView}
         getPreNextData={getPreNextData}
@@ -252,6 +262,7 @@ function App() {
         getWriterMapData={getWriterMapData}
         writerLat={writerLat}
         writerLon={writerLon}
+        getBoardJoinData={getBoardJoinData}
       ></Main>
     </div>
   );

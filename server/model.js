@@ -163,7 +163,9 @@ module.exports = {
         );
         Join.create({
           board_id: body.board_id,
-          user_id: body.user_id,
+          name: body.name,
+          mate_lat: body.mate_lat,
+          mate_lon: body.mate_lon,
         });
       } else if (body.type === 'remove') {
         Board.update(
@@ -175,9 +177,13 @@ module.exports = {
         Join.destroy({
           where: {
             board_id: body.board_id,
-            user_id: body.user_id,
+            name: body.name,
           },
         });
+        // .then(() => callback(true))
+        // .catch((err) => {
+        //   throw err;
+        // });
       }
       callback(true);
     },
@@ -439,7 +445,7 @@ module.exports = {
       Join.findAll({
         where: {
           board_id: body.board_id,
-          user_id: body.user_id,
+          name: body.name,
         },
       })
         .then((result) => {
