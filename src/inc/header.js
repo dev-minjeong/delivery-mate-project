@@ -33,7 +33,7 @@ const Header = ({
   };
   return (
     <div className='header'>
-      <div className='write'>
+      <div className='write-btn'>
         {login ? (
           <h5>
             <Link to='/write'>게시글 작성</Link>

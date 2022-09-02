@@ -3,14 +3,7 @@ import './main.css';
 import { Search } from './index.js';
 import { Link } from 'react-router-dom';
 
-function List({
-  category,
-  listData,
-  listAllPage,
-  listSearch,
-  listPage,
-  changePage,
-}) {
+function List({ listData, listAllPage, listSearch, listPage, changePage }) {
   return (
     <div className='list'>
       <div className='list-title list-box'>
