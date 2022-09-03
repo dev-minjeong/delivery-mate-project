@@ -1,6 +1,6 @@
 import './App.css';
 // import axios from 'axios';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 
@@ -34,6 +34,7 @@ function App() {
   const [userName, setUserName] = useState('');
   const [writerLat, setWriterLat] = useState(0);
   const [writerLon, setWriterLon] = useState(0);
+  const [writerName, setWriterName] = useState('');
 
   const locationSearch = useLocation().search;
 
@@ -47,7 +48,7 @@ function App() {
       setUserId(JSON.parse(sessionStorage.login).user_id);
       setUserName(JSON.parse(sessionStorage.login).name);
     }
-  }, []);
+  }, [writerName]);
 
   // 보드
   const getData = async (board_id) => {
@@ -63,6 +64,7 @@ function App() {
     setData(getBoardData);
     setDate(date);
     setJoinNum(getBoardData.data[0].join_cnt);
+    setWriterName(getBoardData.data[0].writer_name);
   };
   // 페이지
   const setPage = () => {
@@ -159,15 +161,7 @@ function App() {
     }
     setSelectCategory(category);
   };
-  // 총 참여자
-  const getAllJoin = async (board_id) => {
-    const getJoinData = await axios('/get/board_data', {
-      method: 'POST',
-      headers: new Headers(),
-      data: { id: board_id },
-    });
-    setJoinNum(getJoinData.data[0].join_cnt);
-  };
+  // 참여자
   const getJoinExist = (result) => {
     setJoinExist(result);
   };
@@ -215,6 +209,7 @@ function App() {
     });
     setWriterLat(data.data[0].writer_lat);
     setWriterLon(data.data[0].writer_lon);
+    setWriterName(data.data[0].writer_name);
   };
   return (
     <div className='App'>
@@ -244,7 +239,6 @@ function App() {
         date={date}
         joinNum={joinNum}
         getData={getData}
-        getAllJoin={getAllJoin}
         categoryData={categoryData}
         selectCategory={selectCategory}
         selectCategoryData={selectCategoryData}
@@ -262,6 +256,7 @@ function App() {
         getWriterMapData={getWriterMapData}
         writerLat={writerLat}
         writerLon={writerLon}
+        writerName={writerName}
         getBoardJoinData={getBoardJoinData}
       ></Main>
     </div>

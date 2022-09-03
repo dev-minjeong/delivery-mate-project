@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 import './main.css';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { PickupMap } from './../inc/index.js';
 import _ from 'lodash';
@@ -15,7 +15,6 @@ function View({
   date,
   joinNum,
   getData,
-  getAllJoin,
   getJoinExist,
   joinExist,
   preView,
@@ -30,6 +29,7 @@ function View({
   getWriterMapData,
   writerLat,
   writerLon,
+  writerName,
   getBoardJoinData,
 }) {
   const params = useParams();
@@ -43,20 +43,13 @@ function View({
   const [nextUrl, setNextUrl] = useState('');
   const [modifyUrl, setModifyUrl] = useState('');
   const [join, setJoin] = useState(false);
-  const [mateLat, setMateLat] = useState(0);
-  const [mateLon, setMateLon] = useState(0);
   const [mateName, setMateName] = useState('');
-  // const [joinMate, setJoinMate] = useState([]);
+  const [mateData, setMateData] = useState([]);
 
-  /** 할 것
-   * 좋아요 상태 세션에 저장 -> 중복 방지 ⭕
-   * 참여자들 정보 지도로 넘길 수 있게 어떻게든 해보기
-   */
   useEffect(() => {
     const boardId = params.data;
 
     addViewCnt(boardId);
-    getAllJoin(boardId);
     getWriterMapData(boardId);
     getBoardJoinData(boardId);
     if (!data) {
@@ -68,7 +61,6 @@ function View({
     if (preView === '' || nextView === '') {
       getPreNextData(boardId);
     }
-
     if (preView.length) {
       setPreUrl(`/view/${preView[0].board_id}`);
     }
@@ -82,10 +74,16 @@ function View({
     if (replyNum === null) {
       getReplyData(boardId);
     }
+
     const storageJoinList = JSON.parse(sessionStorage.join);
     if (storageJoinList.length > 0) {
-      setMateLat(storageJoinList.map((el) => el.mate_lat));
-      setMateLon(storageJoinList.map((el) => el.mate_lon));
+      mateData.push(...storageJoinList, {
+        board_id: boardId * 1,
+        join_id: 0,
+        mate_lat: writerLat,
+        mate_lon: writerLon,
+        name: writerName,
+      });
       setMateName(
         storageJoinList.map((el) => {
           if (el.name === userName) {
@@ -94,9 +92,16 @@ function View({
           return el.name;
         })
       );
+    } else {
+      mateData.push({
+        board_id: boardId * 1,
+        join_id: 0,
+        mate_lat: writerLat,
+        mate_lon: writerLon,
+        name: writerName,
+      });
     }
   }, [data]);
-
   // 조회수 카운트
   const addViewCnt = async (boardId) => {
     await axios('/update/view_cnt', {
@@ -108,8 +113,6 @@ function View({
 
   // 참여하기
   const toggleJoin = async (mate_lat, mate_lon) => {
-    console.log('toggleJoin');
-    console.log(mate_lat, mate_lon);
     if (!loginCheck()) {
       return;
     }
@@ -126,11 +129,9 @@ function View({
       headers: new Headers(),
       data: obj,
     });
-    console.log(res);
 
     if (!res.data) {
       if (window.confirm('참여를 취소하시겠습니까?')) {
-        console.log('취소');
         const cancel = {
           type: 'remove',
           board_id: boardId,
@@ -143,15 +144,13 @@ function View({
           data: cancel,
         });
         getJoinExist(false);
-        getAllJoin(boardId);
+        getData(boardId);
 
         alert('취소되었습니다');
       }
     } else {
-      console.log(res.data);
-      console.log('참여');
       getJoinExist(true);
-      getAllJoin(boardId);
+      getData(boardId);
 
       alert('해당 게시물에 참여하실 수 있습니다');
       // return window.location.reload();
@@ -290,16 +289,14 @@ function View({
         return coords;
       });
     }
-    console.log('GPS를 지원하지 않습니다');
+    alert('GPS를 지원하지 않습니다');
     return {
       latitude: 33.450701,
       longitude: 126.570667,
     };
   };
   const gsLocation = async () => {
-    console.log('gsLocation');
     const gettingGsLocation = await getLocation();
-    console.log(`gsLocation: ${JSON.stringify(gettingGsLocation)}`);
 
     toggleJoin(gettingGsLocation.latitude, gettingGsLocation.longitude);
   };
@@ -355,10 +352,7 @@ function View({
             mapModal={mapModal}
             writerLat={writerLat}
             writerLon={writerLon}
-            writername={data.data[0].writer_name}
-            mateLat={mateLat}
-            mateLon={mateLon}
-            mateName={mateName}
+            mateData={mateData}
           ></PickupMap>
           <div className='other-box'>
             <div className='pre-view'>
