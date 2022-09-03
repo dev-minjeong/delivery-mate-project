@@ -11,6 +11,11 @@ const PickupMap = ({
   writerLon,
   mateData,
 }) => {
+  const [centerLat, setCenterLat] = useState(0);
+  const [centerLon, setCenterLon] = useState(0);
+  const [map, setMap] = useState('');
+  const [markers, setMarkers] = useState([]);
+
   useEffect(() => {
     const container = document.getElementById('map');
     const options = {
@@ -18,6 +23,10 @@ const PickupMap = ({
       level: 4,
     };
     const map = new kakao.maps.Map(container, options);
+    setMap(map);
+
+    const imgSrc =
+      'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_red.png';
 
     const setMapData = mateData?.map((data) => {
       return {
@@ -28,16 +37,45 @@ const PickupMap = ({
     const bounds = new kakao.maps.LatLngBounds();
 
     setMapData.forEach((el) => {
+      console.log(el.latlon);
+
+      const imageSize = new kakao.maps.Size(24, 35);
+      const markerImage = new kakao.maps.MarkerImage(imgSrc, imageSize);
+
       let marker = new kakao.maps.Marker({
         map: map,
         position: el.latlon,
         name: el.name,
+        image: markerImage,
       });
+      markers.push(marker);
       marker.setMap(map);
       bounds.extend(el.latlon);
     });
+    console.log(setMapData);
     map.setBounds(bounds);
-  });
+
+    const centerLatLng = map.getCenter();
+    setCenterLat(centerLatLng.getLat());
+    setCenterLon(centerLatLng.getLng());
+  }, [centerLat, centerLon, mateData, writerLat, writerLon, markers]);
+
+  const addCenterMarker = () => {
+    const centerImgSrc =
+      'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png';
+
+    const imageSize = new kakao.maps.Size(24, 35);
+    const markerImage = new kakao.maps.MarkerImage(centerImgSrc, imageSize);
+
+    const marker = new kakao.maps.Marker({
+      position: new kakao.maps.LatLng(centerLat, centerLon),
+      image: markerImage,
+      name: '픽업장소',
+    });
+    marker.setMap(map);
+    markers.push(marker);
+    console.log(markers);
+  };
 
   // useEffect(() => {
   // let writerContent = `
@@ -72,6 +110,11 @@ const PickupMap = ({
         onClickAway={() => toggleMapModal(false)}
       >
         <KakaoMap className='pickupMap'></KakaoMap>
+        <input
+          type='button'
+          value='중간위치 찾기'
+          onClick={() => addCenterMarker()}
+        ></input>
         <div className='map-close-btn' onClick={() => toggleMapModal(false)}>
           ✖
         </div>

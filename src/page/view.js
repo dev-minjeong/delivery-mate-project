@@ -76,14 +76,18 @@ function View({
     }
 
     const storageJoinList = JSON.parse(sessionStorage.join);
+
     if (storageJoinList.length > 0) {
-      mateData.push(...storageJoinList, {
-        board_id: boardId * 1,
-        join_id: 0,
-        mate_lat: writerLat,
-        mate_lon: writerLon,
-        name: writerName,
-      });
+      mateData.push(
+        {
+          // board_id: boardId * 1,
+          // join_id: 0,
+          mate_lat: writerLat,
+          mate_lon: writerLon,
+          name: writerName,
+        },
+        ...storageJoinList
+      );
       setMateName(
         storageJoinList.map((el) => {
           if (el.name === userName) {
@@ -94,8 +98,8 @@ function View({
       );
     } else {
       mateData.push({
-        board_id: boardId * 1,
-        join_id: 0,
+        // board_id: boardId * 1,
+        // join_id: 0,
         mate_lat: writerLat,
         mate_lon: writerLon,
         name: writerName,
@@ -378,13 +382,16 @@ function View({
               </div>
             </div>
             <div className='join'>
-              <img
-                src={!joinExist ? noneJoinImg : joinImg}
-                alt='nonejoin'
-                onClick={() => gsLocation()}
-              ></img>
+              {userName !== writerName ? (
+                <img
+                  src={!joinExist ? noneJoinImg : joinImg}
+                  alt='nonejoin'
+                  onClick={() => gsLocation()}
+                ></img>
+              ) : null}
+
               <h5>
-                참여하기<br></br>(총 인원: {joinNum})
+                참여하기<br></br>(참여자: {joinNum}명)
               </h5>
             </div>
             <div className='next-view'>
