@@ -29,6 +29,9 @@ button {
   display: flex;
   justify-content: space-between;
 }
+.write-btn {
+  margin: 20px;
+}
 .login-list {
   list-style: none;
   padding: 20px;
@@ -38,14 +41,14 @@ button {
   cursor: pointer;
 }
 .login-list li {
-  margin-bottom: 5px;
+  margin-top: 5px;
   font-weight: bold;
   font-size: 14px;
 }
 /* 글쓰기 페이지 */
 .write {
+  width: 50vw;
   padding: 20px;
-  padding-left: 30px;
 }
 .write #title {
   margin: 30px 0 0 0;
@@ -73,6 +76,10 @@ button {
   outline: none;
 }
 /* right section */
+.write-submit-box {
+  width: 38vw;
+  padding: 20px;
+}
 #post-submit {
   text-align: center;
   margin-top: 20px;
@@ -276,15 +283,15 @@ button {
   font-size: 13px;
   flex-basis: 30%;
 }
-.other-box .like {
+.other-box .join {
   margin-top: 20px;
 }
-.other-box .like img {
+.other-box .join img {
   width: 30px;
   cursor: pointer;
   margin-left: 10px;
 }
-.other-box .like h5 {
+.other-box .join h5 {
   margin-top: 5px;
 }
 .other-box p {
