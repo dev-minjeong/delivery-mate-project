@@ -58,7 +58,7 @@ function App() {
       data: { id: board_id },
     });
     const date =
-      getBoardData.data[0].date.slice(0, 10) +
+      getBoardData.data[0].date.slice(5, 10) +
       ' ' +
       getBoardData.data[0].date.slice(11, 16);
     setData(getBoardData);

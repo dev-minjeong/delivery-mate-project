@@ -31,6 +31,7 @@ function View({
   writerLon,
   writerName,
   getBoardJoinData,
+  resizePage,
 }) {
   const params = useParams();
   const [noneJoinImg, setNoneJoinImg] = useState(
@@ -52,6 +53,7 @@ function View({
     addViewCnt(boardId);
     getWriterMapData(boardId);
     getBoardJoinData(boardId);
+    resizePage('view-left', 'view-main', 'view-right');
     if (!data) {
       getData(boardId);
     }
@@ -75,35 +77,37 @@ function View({
       getReplyData(boardId);
     }
 
-    const storageJoinList = JSON.parse(sessionStorage.join);
+    if (sessionStorage.join) {
+      const storageJoinList = JSON.parse(sessionStorage.join);
 
-    if (storageJoinList.length > 0) {
-      mateData.push(
-        {
+      if (storageJoinList.length > 0) {
+        mateData.push(
+          {
+            // board_id: boardId * 1,
+            // join_id: 0,
+            mate_lat: writerLat,
+            mate_lon: writerLon,
+            name: writerName,
+          },
+          ...storageJoinList
+        );
+        setMateName(
+          storageJoinList.map((el) => {
+            if (el.name === userName) {
+              setJoin(true);
+            }
+            return el.name;
+          })
+        );
+      } else {
+        mateData.push({
           // board_id: boardId * 1,
           // join_id: 0,
           mate_lat: writerLat,
           mate_lon: writerLon,
           name: writerName,
-        },
-        ...storageJoinList
-      );
-      setMateName(
-        storageJoinList.map((el) => {
-          if (el.name === userName) {
-            setJoin(true);
-          }
-          return el.name;
-        })
-      );
-    } else {
-      mateData.push({
-        // board_id: boardId * 1,
-        // join_id: 0,
-        mate_lat: writerLat,
-        mate_lon: writerLon,
-        name: writerName,
-      });
+        });
+      }
     }
   }, [data]);
   // 조회수 카운트
@@ -334,7 +338,10 @@ function View({
                 <img alt='' src='' className='nick-img'></img>
                 <div className='user-nickname'>{data.data[0].writer_name}</div>
               </div>
-              <div className='date-box'>{date}</div>
+              <div className='board-info'>
+                <div>조회수: {data.data[0].view_cnt}</div>
+                <div>{date}</div>
+              </div>
             </div>
           </div>
           <div className='contents-box'>
@@ -422,13 +429,17 @@ function View({
           <div className='reply-box'>
             <h5>댓글</h5>
             <div className='reply-write'>
-              <textarea
-                rows='3'
-                placeholder='댓글 작성 시 참여 가능합니다'
-                maxLength='100'
-                name='reply-write'
-                onClick={() => loginCheck()}
-              ></textarea>
+              <div className='reply-value'>
+                <textarea
+                  rows='3'
+                  placeholder='댓글 작성 시 참여 가능합니다'
+                  maxLength='100'
+                  name='reply-write'
+                  onClick={() => loginCheck()}
+                ></textarea>
+                <input type='file'></input>
+              </div>
+
               <input
                 type='button'
                 value='등록'

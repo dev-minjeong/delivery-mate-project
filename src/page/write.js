@@ -4,6 +4,7 @@ import { Ckeditor } from './../inc/index.js';
 function Write(props) {
   const params = useParams();
   useEffect(() => {
+    props.resizePage('write-left', 'write-main', 'write-right');
     if (params.data && props.title.length === 0) {
       props.getModifyData(params.data);
     }

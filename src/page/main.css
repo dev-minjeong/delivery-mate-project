@@ -18,10 +18,19 @@ button {
 #main-center {
   border-left: 2px solid black;
   border-right: 2px solid black;
-  flex-basis: 60%;
+  flex-basis: 80%;
 }
 #main-right {
-  flex-basis: 20%;
+  flex-basis: 0;
+}
+.view-left {
+  flex-basis: 0 !important;
+}
+.view-main {
+  flex-basis: 60% !important;
+}
+.view-right {
+  flex-basis: 40% !important;
 }
 /* center section */
 /* 헤더 */
@@ -46,9 +55,17 @@ button {
   font-size: 14px;
 }
 /* 글쓰기 페이지 */
+.write-left {
+  flex-basis: 0 !important;
+}
+.write-main {
+  flex-basis: 60% !important;
+}
+.write-right {
+  flex-basis: 40% !important;
+}
 .write {
-  width: 50vw;
-  padding: 20px;
+  padding: 30px 40px;
 }
 .write #title {
   margin: 30px 0 0 0;
@@ -66,18 +83,19 @@ button {
   width: 99%;
   resize: none;
   border: none;
-  height: 400px;
+  height: 300px;
   font-size: 15px;
   font-family: Arial, Helvetica, sans-serif;
   margin-top: 10px;
 }
-#title input:focus,
-#contents textarea:focus {
+#title input:focus {
   outline: none;
+}
+.ck-content {
+  height: 170px;
 }
 /* right section */
 .write-submit-box {
-  width: 38vw;
   padding: 20px;
 }
 #post-submit {
@@ -121,11 +139,11 @@ button {
 }
 .list-title div:nth-child(1),
 .list-data div:nth-child(1) {
-  flex-basis: 70%;
+  flex-basis: 65%;
 }
 .list-title div:nth-child(2),
 .list-data div:nth-child(2) {
-  flex-basis: 15%;
+  flex-basis: 20%;
 }
 .list-title div:nth-child(3),
 .list-data div:nth-child(3) {
@@ -219,10 +237,13 @@ button {
 .board-info-box .user-nickname {
   font-size: 13px;
 }
-.date-box {
-  text-align: right;
+.board-info {
+  display: flex;
   font-size: 13px;
   color: #ababab;
+}
+.board-info div {
+  margin-left: 10px;
 }
 .title-box #title-txt {
   border: none;
@@ -323,19 +344,23 @@ button {
   flex-basis: 15%;
   padding: 15px;
 }
+.reply-value {
+  width: 68%;
+}
+.reply-value textarea {
+  width: 100%;
+  padding: 10px;
+  font-size: 13px;
+  line-height: 15px;
+  resize: none;
+}
 .reply-write {
   width: 100%;
   display: flex;
   justify-content: space-between;
   margin-top: 10px;
 }
-.reply-box textarea {
-  width: 68%;
-  padding: 10px;
-  resize: none;
-  font-size: 13px;
-  line-height: 15px;
-}
+
 #reply-submit-btn {
   width: 22%;
   height: 67px;

@@ -8,7 +8,7 @@ function List({ listData, listAllPage, listSearch, listPage, changePage }) {
     <div className='list'>
       <div className='list-title list-box'>
         <div>제목</div>
-        <div>조회수</div>
+        <div>닉네임</div>
         <div className='acenter'>날짜</div>
       </div>
       {listData !== '[]' && listData.length > 0 ? (
@@ -19,8 +19,8 @@ function List({ listData, listAllPage, listSearch, listPage, changePage }) {
               <div>
                 <Link to={view_url}>{el.title}</Link>
               </div>
-              <div className='views'>{el.view_cnt}</div>
-              <div className='acenter'>{el.date?.slice(0, 10)}</div>
+              <div className='views'>{el.writer_name}</div>
+              <div className='acenter'>{el.date?.slice(5, 10)}</div>
             </div>
           );
         })

@@ -48,6 +48,9 @@ const Main = ({
   const [change_Category, setChange_Category] = useState(false);
   const [contents, setContents] = useState('');
   const [title, setTitle] = useState('');
+  const [viewLeft, setViewLeft] = useState('');
+  const [viewMain, setViewMain] = useState('');
+  const [viewRight, setViewRight] = useState('');
 
   const withProps = (Component, props) => {
     return function (matchProps) {
@@ -75,6 +78,13 @@ const Main = ({
     setContents(getBoardData.data[0].contents);
   };
 
+  // 구역 비율 재설정
+  const resizePage = (left, main, right) => {
+    setViewLeft(left);
+    setViewMain(main);
+    setViewRight(right);
+  };
+
   const ListWithProps = withProps(List, {
     listData: listData,
     listAllPage: listAllPage,
@@ -87,6 +97,7 @@ const Main = ({
     getTitles: getTitles,
     contents: contents,
     title: title,
+    resizePage: resizePage,
   });
   const WriteModifyWithProps = withProps(Write, {
     getContents: getContents,
@@ -94,6 +105,7 @@ const Main = ({
     contents: contents,
     title: title,
     getModifyData: getModifyData,
+    resizePage: resizePage,
   });
   const ViewWithProps = withProps(View, {
     login: login,
@@ -120,6 +132,7 @@ const Main = ({
     writerLon: writerLon,
     writerName: writerName,
     getBoardJoinData: getBoardJoinData,
+    resizePage: resizePage,
   });
   const RightWriteWithProps = withProps(RightWrite, {
     contents: contents,
@@ -138,7 +151,7 @@ const Main = ({
 
   return (
     <div className='main'>
-      <div id='main-left'>
+      <div id='main-left' className={viewLeft}>
         <Routes>
           <Route
             path='/'
@@ -154,7 +167,7 @@ const Main = ({
           ></Route>
         </Routes>
       </div>
-      <div id='main-center'>
+      <div id='main-center' className={viewMain}>
         <Routes>
           <Route path='/' element={<ListWithProps />}></Route>
           <Route path='/write' element={<WriteWithProps />}></Route>
@@ -166,7 +179,7 @@ const Main = ({
           <Route path='/view/:data' element={<ViewWithProps />}></Route>
         </Routes>
       </div>
-      <div id='main-right'>
+      <div id='main-right' className={viewRight}>
         <Routes>
           <Route path='/write' element={<RightWriteWithProps />}></Route>
           <Route
