@@ -69,6 +69,7 @@ module.exports = {
         writer_name: body.writer_name,
         writer_lat: body.writer_lat,
         writer_lon: body.writer_lon,
+        pay: body.pay,
       })
         .then(() => {
           callback(true);
@@ -196,6 +197,7 @@ module.exports = {
           writer_name: body.writer_name,
           writer_lat: body.writer_lat,
           writer_lon: body.writer_lon,
+          pay: body.pay,
         },
         {
           where: { board_id: body.board_id },

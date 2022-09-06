@@ -15,9 +15,12 @@ function RightWrite({
   const params = useParams();
   const [writerLat, setWriterLat] = useState(0);
   const [writerLon, setWriterLon] = useState(0);
-  const [gpsClick, setGpsClick] = useState(false);
+  const [toggleBtnClick, setToggleBtnClick] = useState('');
+  const [submitBtn, setSubmitBtn] = useState(false);
+  const [payBoolean, setPayBoolean] = useState(false);
 
   useEffect(() => {
+    gsLocation();
     if (params.data && !selectCategory) {
       selectCategoryData(params.data);
     }
@@ -44,6 +47,7 @@ function RightWrite({
         writer_name: userName,
         writer_lat: writerLat,
         writer_lon: writerLon,
+        pay: payBoolean,
       };
       const res = await axios('/add/board', {
         method: 'POST',
@@ -63,6 +67,7 @@ function RightWrite({
         writer_name: userName,
         writer_lat: writerLat,
         writer_lon: writerLon,
+        pay: payBoolean,
       };
       const res = await axios('/update/board', {
         method: 'POST',
@@ -116,7 +121,6 @@ function RightWrite({
   const gsLocation = async () => {
     const gettingGsLocation = await getLocation();
     console.info(`gsLocation: ${JSON.stringify(gettingGsLocation)}`);
-    setGpsClick(true);
     setWriterLat(gettingGsLocation.latitude);
     setWriterLon(gettingGsLocation.longitude);
   };
@@ -127,6 +131,13 @@ function RightWrite({
     if (updateLon) {
       setWriterLon(updateLon);
     }
+  };
+  const togglePayBtn = (result) => {
+    setToggleBtnClick(result);
+    result === 'pay' ? setPayBoolean(true) : setPayBoolean(false);
+  };
+  const finalSubmit = (result) => {
+    setSubmitBtn(result);
   };
 
   return (
@@ -152,23 +163,48 @@ function RightWrite({
       </div>
       <div>
         <input
-          type='button'
-          value={!params.data ? '내 위치 지정하기' : '내 위치 업데이트하기'}
-          onClick={() => gsLocation()}
+          type='radio'
+          id='pay-for-delivery'
+          value='배달비 본인 부담'
+          checked={toggleBtnClick === 'pay'}
+          onChange={() => togglePayBtn('pay')}
         ></input>
-        {gpsClick ? (
-          <SettingMap
-            lattitude={writerLat}
-            longitude={writerLon}
-            UpdateMapMarker={UpdateMapMarker}
-          ></SettingMap>
+        <label htmlFor='pay-for-delivery'>배달비 본인 부담</label>
+        <input
+          type='radio'
+          id='share-delivery-cost'
+          checked={toggleBtnClick === 'share'}
+          onChange={() => togglePayBtn('share')}
+        ></input>
+        <label htmlFor='share-delivery-cost'>배달비 나눠 내기</label>
+        {toggleBtnClick ? (
+          <div>
+            <h5>
+              {toggleBtnClick === 'pay'
+                ? `배달비 본인 지불 시 본인이 지정하신 위치에서 픽업이 가능합니다.`
+                : `배달비 나눠 지불 시 참여하는 메이트들의 중간위치에서 픽업 가능합니다.`}
+            </h5>
+            <h3>
+              {toggleBtnClick === 'pay'
+                ? `픽업하실 위치를 설정하세요`
+                : `본인의 위치를 설정하세요`}
+            </h3>
+            <SettingMap
+              lattitude={writerLat}
+              longitude={writerLon}
+              UpdateMapMarker={UpdateMapMarker}
+              finalSubmit={finalSubmit}
+            ></SettingMap>
+          </div>
         ) : null}
       </div>
-      <div id='post-submit'>
-        <button onClick={() => submitBoard()}>
-          {!params.data ? '게시글 올리기' : '게시글 수정'}
-        </button>
-      </div>
+      {submitBtn ? (
+        <div id='post-submit'>
+          <button onClick={() => submitBoard()}>
+            {!params.data ? '게시글 올리기' : '게시글 수정'}
+          </button>
+        </div>
+      ) : null}
     </div>
   );
 }

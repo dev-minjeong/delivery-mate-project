@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import '../App.css';
 /* global kakao */
 
-function SettingMap({ lattitude, longitude, UpdateMapMarker }) {
+function SettingMap({ lattitude, longitude, UpdateMapMarker, finalSubmit }) {
   const [updateLat, setUpdateLat] = useState('');
   const [updateLon, setUpdateLon] = useState('');
 
@@ -28,12 +28,14 @@ function SettingMap({ lattitude, longitude, UpdateMapMarker }) {
   }, []);
   const submitMap = () => {
     UpdateMapMarker(updateLat, updateLon);
+    finalSubmit(true);
+    alert('위치가 저장되었습니다');
   };
 
   return (
     <>
       <KakaoMap className='settingMap'></KakaoMap>
-      <button onClick={submitMap}>위치확인</button>
+      <button onClick={submitMap}>위치저장</button>
     </>
   );
 }

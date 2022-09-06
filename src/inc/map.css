@@ -21,3 +21,11 @@
   z-index: 1;
   cursor: pointer;
 }
+.settingMap + #addMarkerBtn {
+  width: 10px;
+  height: 10px;
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  visibility: hidden;
+}
