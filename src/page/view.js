@@ -44,7 +44,6 @@ function View({
   const [nextUrl, setNextUrl] = useState('');
   const [modifyUrl, setModifyUrl] = useState('');
   const [join, setJoin] = useState(false);
-  const [mateName, setMateName] = useState('');
   const [mateData, setMateData] = useState([]);
 
   useEffect(() => {
@@ -91,14 +90,11 @@ function View({
           },
           ...storageJoinList
         );
-        setMateName(
-          storageJoinList.map((el) => {
-            if (el.name === userName) {
-              setJoin(true);
-            }
-            return el.name;
-          })
-        );
+        storageJoinList.map((el) => {
+          if (el.name === userName) {
+            setJoin(true);
+          }
+        });
       } else {
         mateData.push({
           // board_id: boardId * 1,

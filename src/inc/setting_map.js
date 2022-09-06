@@ -14,7 +14,6 @@ function SettingMap({ lattitude, longitude, UpdateMapMarker }) {
       level: 3,
     };
     const map = new kakao.maps.Map(container, options);
-    // const markerPosition = new kakao.maps.LatLng(lattitude, longitude);
     const marker = new kakao.maps.Marker({
       position: map.getCenter(),
     });

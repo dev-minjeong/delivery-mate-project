@@ -2,6 +2,8 @@ import Modal from 'react-awesome-modal';
 import { KakaoMap } from './index.js';
 import { useEffect, useRef, useState } from 'react';
 import '../App.css';
+import './map.css';
+
 /* global kakao */
 
 const PickupMap = ({
@@ -17,16 +19,16 @@ const PickupMap = ({
   const [markers, setMarkers] = useState([]);
 
   useEffect(() => {
+    const mapContainer = document.getElementById('mapContainer');
+    const centerMarkerOpen = document.getElementById('addMarkerBtn');
     const container = document.getElementById('map');
+
     const options = {
       center: new kakao.maps.LatLng(writerLat, writerLon),
       level: 4,
     };
     const map = new kakao.maps.Map(container, options);
     setMap(map);
-
-    const imgSrc =
-      'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_red.png';
 
     const setMapData = mateData?.map((data) => {
       return {
@@ -37,69 +39,88 @@ const PickupMap = ({
     const bounds = new kakao.maps.LatLngBounds();
 
     setMapData.forEach((el) => {
-      console.log(el.latlon);
-
-      const imageSize = new kakao.maps.Size(24, 35);
-      const markerImage = new kakao.maps.MarkerImage(imgSrc, imageSize);
-
       let marker = new kakao.maps.Marker({
         map: map,
         position: el.latlon,
         name: el.name,
-        image: markerImage,
+      });
+
+      let content = `
+        <div class="custom-overlay">
+        <span class="marker-name" style="position: relative;
+        bottom: 65px; left: 20px; text-align: center; color: #00a0e9;
+          border-radius:6px; border: 1px; font-size: 14px;
+          box-shadow: 0px 1px 2px #888; font-weight: bold;
+          background: #fff; margin-right: 35px; padding: 10px 10px;
+          ">
+        ${el.name}</span>
+        </div>`;
+      let customOverlay = new kakao.maps.CustomOverlay({
+        position: el.latlon,
+        content: content,
+      });
+      kakao.maps.event.addListener(marker, 'mouseover', function () {
+        customOverlay.setMap(map, marker);
+      });
+      kakao.maps.event.addListener(marker, 'mouseout', function () {
+        setTimeout(function () {
+          customOverlay.setMap();
+        });
       });
       markers.push(marker);
       marker.setMap(map);
       bounds.extend(el.latlon);
     });
-    console.log(setMapData);
     map.setBounds(bounds);
 
     const centerLatLng = map.getCenter();
     setCenterLat(centerLatLng.getLat());
     setCenterLon(centerLatLng.getLng());
   }, [centerLat, centerLon, mateData, writerLat, writerLon, markers]);
-
   const addCenterMarker = () => {
     const centerImgSrc =
       'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png';
-
     const imageSize = new kakao.maps.Size(24, 35);
-    const markerImage = new kakao.maps.MarkerImage(centerImgSrc, imageSize);
-
+    const imageOption = new kakao.maps.Point(20, 60);
+    const markerImage = new kakao.maps.MarkerImage(
+      centerImgSrc,
+      imageSize,
+      imageOption
+    );
     const marker = new kakao.maps.Marker({
       position: new kakao.maps.LatLng(centerLat, centerLon),
       image: markerImage,
       name: '픽업장소',
     });
+    const content = `
+    <div class-"center-custom-overlay" style="position: relative; bottom: 70px;
+      border-radius: 6px; border: 1px solid #ccc;border-bottom: 2px solid #ddd;
+      float: left; border: 0;box-shadow: 0px 1px 2px #888;">
+      <a href="https://map.kakao.com/link/to/픽업장소
+      ,${centerLat} ,${centerLon}" target="_blank" style="display: block;
+        text-decoration: none;color: #000; text-align: center; border-radius: 6px;
+        font-size: 14px; font-weight: bold; overflow: hidden; background: #fbc02d;
+        background: #fbc02d
+          url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/arrow_white.png)
+          no-repeat right 14px center;">
+        <span class="title" style="display: block; text-align: center;
+          background: #fff; margin-right: 35px; padding: 10px 10px;
+          font-size: 14px; font-weight: bold;">
+        픽업장소</span>
+      </a>
+    </div>
+  `;
+    const customOverlay = new kakao.maps.CustomOverlay({
+      map: map,
+      position: new kakao.maps.LatLng(centerLat, centerLon),
+      content: content,
+      yAnchor: 1,
+    });
     marker.setMap(map);
-    markers.push(marker);
-    console.log(markers);
+    customOverlay.setMap(map);
+    // markers.push(marker);
   };
 
-  // useEffect(() => {
-  // let writerContent = `
-  //   <div>${el.name}<br>
-  //     <a href="https://map.kakao.com/link/map/Hello World!
-  //     ,${el.lat},${el.lon}" target="_blank">큰지도보기</a>
-  //     <a href="https://map.kakao.com/link/to/Hello World!
-  //     ,${el.lat} ,${el.lon}" target="_blank">길찾기</a>
-  //   </div>`;
-  // let position = new kakao.maps.LatLng(el.lat, el.lon);
-  // let markerOverlay = new kakao.maps.CustomOverlay({
-  //   position: position,
-  //   content: writerContent,
-  // });
-  // kakao.maps.event.addListener(marker, 'mouseover', function () {
-  //   markerOverlay.setMap(mapRef.current);
-  // });
-  // kakao.maps.event.addListener(marker, 'mouseout', function () {
-  //   setTimeout(function () {
-  //     markerOverlay.setMap();
-  //   });
-  // });
-  //   });
-  // }, [mateData]);
   return (
     <>
       <Modal
@@ -109,12 +130,10 @@ const PickupMap = ({
         effect='fadeInDown'
         onClickAway={() => toggleMapModal(false)}
       >
-        <KakaoMap className='pickupMap'></KakaoMap>
-        <input
-          type='button'
-          value='중간위치 찾기'
-          onClick={() => addCenterMarker()}
-        ></input>
+        <KakaoMap
+          className='pickupMap'
+          addCenterMarker={addCenterMarker}
+        ></KakaoMap>
         <div className='map-close-btn' onClick={() => toggleMapModal(false)}>
           ✖
         </div>
