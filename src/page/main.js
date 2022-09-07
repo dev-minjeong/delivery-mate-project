@@ -1,10 +1,10 @@
 import { Routes, Route } from 'react-router-dom';
 import { Write, List, View, SignUp } from './index.js';
-import { RightWrite } from './right/index.js';
+import { RightWrite, Reply } from './right/index.js';
 import { Category } from './left/index.js';
 import { useState } from 'react';
 
-import './main.css';
+import '../css/main.css';
 import axios from 'axios';
 
 const Main = ({
@@ -43,6 +43,8 @@ const Main = ({
   writerLon,
   writerName,
   getBoardJoinData,
+  writerPay,
+  loginCheck,
 }) => {
   const [category, setCategory] = useState('');
   const [change_Category, setChange_Category] = useState(false);
@@ -110,8 +112,6 @@ const Main = ({
   const ViewWithProps = withProps(View, {
     login: login,
     admin: admin,
-    toggleLoginModal: toggleLoginModal,
-    userId: userId,
     data: data,
     date: date,
     joinNum: joinNum,
@@ -121,9 +121,6 @@ const Main = ({
     preView: preView,
     nextView: nextView,
     getPreNextData: getPreNextData,
-    replyData: replyData,
-    replyNum: replyNum,
-    getReplyData: getReplyData,
     toggleMapModal: toggleMapModal,
     mapModal: mapModal,
     userName: userName,
@@ -133,6 +130,8 @@ const Main = ({
     writerName: writerName,
     getBoardJoinData: getBoardJoinData,
     resizePage: resizePage,
+    writerPay: writerPay,
+    loginCheck: loginCheck,
   });
   const RightWriteWithProps = withProps(RightWrite, {
     contents: contents,
@@ -147,6 +146,16 @@ const Main = ({
     selectCategory: selectCategory,
     selectCategoryData: selectCategoryData,
     userName: userName,
+  });
+  const RightReplyWithProps = withProps(Reply, {
+    replyData: replyData,
+    replyNum: replyNum,
+    data: data,
+    login: login,
+    admin: admin,
+    loginCheck: loginCheck,
+    userId: userId,
+    getReplyData: getReplyData,
   });
 
   return (
@@ -185,6 +194,10 @@ const Main = ({
           <Route
             path='/write/modify/:data'
             element={<RightWriteModifyWithProps />}
+          ></Route>
+          <Route
+            path='/view/:data'
+            element={<RightReplyWithProps></RightReplyWithProps>}
           ></Route>
         </Routes>
       </div>
