@@ -29,3 +29,11 @@
   left: 8px;
   visibility: hidden;
 }
+/* 지도 */
+.map-close-btn {
+  color: white;
+  text-align: end;
+  font-size: 20px;
+  margin: 5px;
+  cursor: pointer;
+}

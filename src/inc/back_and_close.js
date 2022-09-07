@@ -1,4 +1,4 @@
-import '../App.css';
+import '../css/main.css';
 
 function BackAndClose(props) {
   const controller = (target, type) => {

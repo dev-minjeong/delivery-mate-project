@@ -1,5 +1,5 @@
 import React from 'react';
-import './main.css';
+import '../css/main.css';
 import { Search } from './index.js';
 import { Link } from 'react-router-dom';
 

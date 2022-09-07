@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-
-import '../main.css';
+import '../../css/main.css';
 import { Link } from 'react-router-dom';
 
 function Category({ changeCategory, login, changeState, admin, userIp }) {

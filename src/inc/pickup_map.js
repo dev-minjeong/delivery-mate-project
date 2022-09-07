@@ -1,8 +1,8 @@
 import Modal from 'react-awesome-modal';
 import { KakaoMap } from './index.js';
 import { useEffect, useRef, useState } from 'react';
-import '../App.css';
-import './map.css';
+
+import '../css/map.css';
 
 /* global kakao */
 

@@ -1,4 +1,4 @@
-import './map.css';
+import '../css/map.css';
 
 const KakaoMap = ({ className, addCenterMarker }) => {
   return (

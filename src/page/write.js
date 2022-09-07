@@ -1,6 +1,8 @@
 import { useEffect } from 'react';
 import { useParams } from 'react-router';
 import { Ckeditor } from './../inc/index.js';
+import '../css/main.css';
+
 function Write(props) {
   const params = useParams();
   useEffect(() => {

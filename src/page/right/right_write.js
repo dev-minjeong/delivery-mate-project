@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import '../main.css';
+import '../../css/main.css';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { SettingMap } from './../../inc/index.js';
