@@ -18,6 +18,7 @@ function RightWrite({
   const [writerLon, setWriterLon] = useState(0);
   const [toggleBtnClick, setToggleBtnClick] = useState('');
   const [submitBtn, setSubmitBtn] = useState(false);
+  const [deliveryCost, setDeliveryCost] = useState(0);
 
   useEffect(() => {
     gsLocation();
@@ -25,11 +26,19 @@ function RightWrite({
       selectCategoryData(params.data);
     }
   }, []);
+  const inputCost = () => {
+    if (toggleBtnClick === 'pay') {
+      setDeliveryCost(0);
+    } else if (toggleBtnClick === 'share') {
+      const cost = document.getElementsByName('delivery-cost')[0].value.trim();
+      setDeliveryCost(cost);
+    }
+    console.log(deliveryCost);
+  };
 
   const submitBoard = async () => {
     const title = document.getElementsByName('title')[0].value.trim();
     const category = selectCategory;
-    const cost = document.getElementsByName('delivery-cost')[0].value.trim();
 
     if (title === '') {
       return alert('제목을 입력하세요');
@@ -48,7 +57,7 @@ function RightWrite({
         writer_name: userName,
         writer_lat: writerLat,
         writer_lon: writerLon,
-        pay: cost ? cost : 0,
+        pay: deliveryCost,
       };
       const res = await axios('/add/board', {
         method: 'POST',
@@ -68,7 +77,7 @@ function RightWrite({
         writer_name: userName,
         writer_lat: writerLat,
         writer_lon: writerLon,
-        pay: cost ? cost : 0,
+        pay: deliveryCost,
       };
       const res = await axios('/update/board', {
         method: 'POST',
@@ -152,7 +161,12 @@ function RightWrite({
             {toggleBtnClick === 'share' ? (
               <div className='delivery-cost-box'>
                 <p>총 배달비 : </p>
-                <input type='number' name='delivery-cost' />원
+                <input
+                  type='number'
+                  name='delivery-cost'
+                  onChange={() => inputCost()}
+                />
+                원
               </div>
             ) : null}
             <h3>
