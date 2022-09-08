@@ -10,9 +10,6 @@ import axios from 'axios';
 const Main = ({
   login,
   admin,
-  userIp,
-  loginModal,
-  toggleLoginModal,
   listData,
   listAllPage,
   listSearch,
@@ -27,40 +24,27 @@ const Main = ({
   categoryData,
   selectCategory,
   selectCategoryData,
-  getJoinExist,
-  joinExist,
-  preView,
-  nextView,
-  getPreNextData,
-  replyData,
-  replyNum,
-  getReplyData,
-  toggleMapModal,
-  mapModal,
   userName,
-  getWriterMapData,
-  writerLat,
-  writerLon,
   writerName,
-  getBoardJoinData,
   writerPay,
   loginCheck,
+  joinExist,
+  getJoinExist,
+  getBoardJoinData,
 }) => {
-  const [category, setCategory] = useState('');
-  const [change_Category, setChange_Category] = useState(false);
   const [contents, setContents] = useState('');
   const [title, setTitle] = useState('');
   const [viewLeft, setViewLeft] = useState('');
   const [viewMain, setViewMain] = useState('');
   const [viewRight, setViewRight] = useState('');
+  const [writerLat, setWriterLat] = useState(0);
+  const [writerLon, setWriterLon] = useState(0);
+  const [mapModal, setMapModal] = useState(false);
 
   const withProps = (Component, props) => {
     return function (matchProps) {
       return <Component {...props} {...matchProps} />;
     };
-  };
-  const changeState = () => {
-    setChange_Category(true);
   };
   const getContents = (val) => {
     const contents = val.trim();
@@ -78,6 +62,53 @@ const Main = ({
     });
     setTitle(getBoardData.data[0].title);
     setContents(getBoardData.data[0].contents);
+  };
+
+  // 지도
+  const getLocation = () => {
+    if (navigator.geolocation) {
+      return new Promise((resolve) => {
+        navigator.geolocation.getCurrentPosition(
+          function (position) {
+            resolve({
+              latitude: position.coords.latitude,
+              longitude: position.coords.longitude,
+            });
+          },
+          function (error) {
+            console.log(error);
+            resolve({
+              latitude: 33.450701,
+              longitude: 126.570667,
+            });
+          },
+          {
+            enableHighAccuracy: false,
+            maximumAge: 0,
+            timeout: Infinity,
+          }
+        );
+      }).then((coords) => {
+        return coords;
+      });
+    }
+    alert('GPS를 지원하지 않습니다');
+    return {
+      latitude: 33.450701,
+      longitude: 126.570667,
+    };
+  };
+  const getWriterMapData = async (board_id) => {
+    const data = await axios('/get/board_data', {
+      method: 'POST',
+      headers: new Headers(),
+      data: { id: board_id },
+    });
+    setWriterLat(data.data[0].writer_lat);
+    setWriterLon(data.data[0].writer_lon);
+  };
+  const toggleMapModal = (boolean) => {
+    setMapModal(boolean);
   };
 
   // 구역 비율 재설정
@@ -116,11 +147,6 @@ const Main = ({
     date: date,
     joinNum: joinNum,
     getData: getData,
-    getJoinExist: getJoinExist,
-    joinExist: joinExist,
-    preView: preView,
-    nextView: nextView,
-    getPreNextData: getPreNextData,
     toggleMapModal: toggleMapModal,
     mapModal: mapModal,
     userName: userName,
@@ -128,10 +154,13 @@ const Main = ({
     writerLat: writerLat,
     writerLon: writerLon,
     writerName: writerName,
-    getBoardJoinData: getBoardJoinData,
     resizePage: resizePage,
     writerPay: writerPay,
     loginCheck: loginCheck,
+    getLocation: getLocation,
+    joinExist: joinExist,
+    getJoinExist: getJoinExist,
+    getBoardJoinData: getBoardJoinData,
   });
   const RightWriteWithProps = withProps(RightWrite, {
     contents: contents,
@@ -139,6 +168,7 @@ const Main = ({
     selectCategory: selectCategory,
     selectCategoryData: selectCategoryData,
     userName: userName,
+    getLocation: getLocation,
   });
   const RightWriteModifyWithProps = withProps(RightWrite, {
     contents: contents,
@@ -146,16 +176,14 @@ const Main = ({
     selectCategory: selectCategory,
     selectCategoryData: selectCategoryData,
     userName: userName,
+    getLocation: getLocation,
   });
   const RightReplyWithProps = withProps(Reply, {
-    replyData: replyData,
-    replyNum: replyNum,
     data: data,
     login: login,
     admin: admin,
     loginCheck: loginCheck,
     userId: userId,
-    getReplyData: getReplyData,
   });
 
   return (
@@ -168,9 +196,7 @@ const Main = ({
               <Category
                 changeCategory={changeCategory}
                 login={login}
-                changeState={changeState}
                 admin={admin}
-                userIp={userIp}
               />
             }
           ></Route>

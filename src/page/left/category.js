@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import '../../css/main.css';
 import { Link } from 'react-router-dom';
 
-function Category({ changeCategory, login, changeState, admin, userIp }) {
+function Category({ changeCategory, login, admin }) {
   const [category, setCategory] = useState([]);
   const [edit, setEdit] = useState(false);
 

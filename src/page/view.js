@@ -1,10 +1,9 @@
 import axios from 'axios';
 
 import '../css/view.css';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { PickupMap, Calculate } from './../inc/index.js';
-import _ from 'lodash';
+import { PickupMap, Calculate, Join, PageMove } from './../inc/index.js';
 
 function View({
   login,
@@ -14,10 +13,6 @@ function View({
   joinNum,
   getData,
   getJoinExist,
-  joinExist,
-  preView,
-  nextView,
-  getPreNextData,
   toggleMapModal,
   mapModal,
   userName,
@@ -30,16 +25,9 @@ function View({
   writerPay,
   loginCheck,
   getLocation,
+  joinExist,
 }) {
   const params = useParams();
-  const [noneJoinImg, setNoneJoinImg] = useState(
-    'https://cdns.iconmonstr.com/wp-content/releases/preview/2013/240/iconmonstr-thumb-10.png'
-  );
-  const [joinImg, setJoinImg] = useState(
-    'https://cdns.iconmonstr.com/wp-content/releases/preview/2013/240/iconmonstr-thumb-9.png'
-  );
-  const [preUrl, setPreUrl] = useState('');
-  const [nextUrl, setNextUrl] = useState('');
   const [modifyUrl, setModifyUrl] = useState('');
   const [join, setJoin] = useState(false);
   const [mateData, setMateData] = useState([]);
@@ -49,25 +37,17 @@ function View({
 
     addViewCnt(boardId);
     getWriterMapData(boardId);
-    getBoardJoinData(boardId);
     resizePage('view-left', 'view-main', 'view-right');
+    getBoardJoinData(boardId);
     if (!data) {
       getData(boardId);
     }
-    if (joinExist === null) {
-      getJoinInfo();
-    }
-    if (preView === '' || nextView === '') {
-      getPreNextData(boardId);
-    }
-    if (preView.length) {
-      setPreUrl(`/view/${preView[0].board_id}`);
-    }
-    if (nextView.length) {
-      setNextUrl(`/view/${nextView[0].board_id}`);
-    }
     if (data.data) {
       setModifyUrl(`/write/modify/${data.data[0].board_id}`);
+    }
+
+    if (joinExist === null) {
+      getJoinInfo();
     }
     if (sessionStorage.join) {
       const storageJoinList = JSON.parse(sessionStorage.join);
@@ -81,9 +61,10 @@ function View({
           },
           ...storageJoinList
         );
-        storageJoinList.map((el) => {
+        storageJoinList.forEach((el) => {
           if (el.name === userName) {
             setJoin(true);
+            console.log('join');
           }
         });
       } else {
@@ -95,6 +76,7 @@ function View({
       }
     }
   }, [data]);
+
   // 조회수 카운트
   const addViewCnt = async (boardId) => {
     await axios('/update/view_cnt', {
@@ -104,7 +86,21 @@ function View({
     });
   };
 
-  // 참여하기
+  // 게시글
+  const removeView = async () => {
+    if (window.confirm('해당 게시글을 삭제하시겠습니까?')) {
+      const boardId = params.data;
+
+      await axios('/delete/board', {
+        method: 'POST',
+        headers: new Headers(),
+        data: { board_id: boardId },
+      });
+      alert('게시글이 삭제되었습니다.');
+      return (window.location.href = '/');
+    }
+  };
+  // 참여자
   const toggleJoin = async (mate_lat, mate_lon) => {
     if (!loginCheck()) {
       return;
@@ -166,40 +162,16 @@ function View({
       getJoinExist(false);
     }
   };
-
-  // 페이지
-  const changeViewPage = (url) => {
-    if (url === 'null_pre') {
-      return alert('첫 게시물 입니다');
-    } else if (url === 'null_next') {
-      return alert('마지막 게시물 입니다');
-    }
-    return (window.location.href = url);
-  };
-
-  // 게시글
-  const removeView = async () => {
-    if (window.confirm('해당 게시글을 삭제하시겠습니까?')) {
-      const boardId = params.data;
-
-      await axios('/delete/board', {
-        method: 'POST',
-        headers: new Headers(),
-        data: { board_id: boardId },
-      });
-      alert('게시글이 삭제되었습니다.');
-      return (window.location.href = '/');
-    }
-  };
-  // 지도
-  const openMapModal = () => {
-    return toggleMapModal(true);
-  };
   const gsLocation = async () => {
     const gettingGsLocation = await getLocation();
     toggleJoin(gettingGsLocation.latitude, gettingGsLocation.longitude);
   };
 
+  // 지도
+  const openMapModal = () => {
+    return toggleMapModal(true);
+  };
+  console.log(join);
   return (
     <div className='view'>
       {data.data ? (
@@ -242,20 +214,13 @@ function View({
             ></div>
           </div>
           <div className='join-box'>
-            <div className='join'>
-              {userName !== writerName ? (
-                <div>
-                  <img
-                    src={!joinExist ? noneJoinImg : joinImg}
-                    alt='nonejoin'
-                    onClick={() => gsLocation()}
-                  ></img>
-                  <h5>참여하기</h5>
-                </div>
-              ) : null}
-
-              <h5>(참여자: {joinNum}명)</h5>
-            </div>
+            <Join
+              userName={userName}
+              writerName={writerName}
+              joinNum={joinNum}
+              joinExist={joinExist}
+              gsLocation={gsLocation}
+            ></Join>
             {join || userName === data.data[0].writer_name ? (
               <div className='setting-box'>
                 <input
@@ -283,61 +248,7 @@ function View({
             mateData={mateData}
             writerPay={writerPay}
           ></PickupMap>
-          <div className='other-box'>
-            <div className='pre-view'>
-              <p>이전글</p>
-              <div
-                className='pre-btn'
-                onClick={() =>
-                  preUrl ? changeViewPage(preUrl) : changeViewPage('null_pre')
-                }
-              >
-                ◀
-              </div>
-
-              <div className='pre-title'>
-                {preView.length > 0 ? (
-                  preView[0].title.length > 5 ? (
-                    `${preView[0].title.slice(0, 5)}..`
-                  ) : (
-                    preView[0].title
-                  )
-                ) : (
-                  <p>이전글이 없습니다.</p>
-                )}
-              </div>
-            </div>
-            <input
-              type='button'
-              value='목록'
-              id='view-list-btn'
-              onClick={() => (window.location.href = '/')}
-            ></input>
-            <div className='next-view'>
-              <p>다음글</p>
-              <div
-                className='next-btn'
-                onClick={() =>
-                  nextUrl
-                    ? changeViewPage(nextUrl)
-                    : changeViewPage('null_next')
-                }
-              >
-                ▶
-              </div>
-              <div className='next-title'>
-                {nextView.length > 0 ? (
-                  nextView[0].title.length > 5 ? (
-                    `${nextView[0].title.slice(0, 5)}..`
-                  ) : (
-                    nextView[0].title
-                  )
-                ) : (
-                  <p>다음글이 없습니다.</p>
-                )}
-              </div>
-            </div>
-          </div>
+          <PageMove></PageMove>
         </div>
       ) : null}
     </div>

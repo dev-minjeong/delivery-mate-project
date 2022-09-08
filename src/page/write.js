@@ -3,12 +3,19 @@ import { useParams } from 'react-router';
 import { Ckeditor } from './../inc/index.js';
 import '../css/main.css';
 
-function Write(props) {
+function Write({
+  getContents,
+  getTitles,
+  contents,
+  title,
+  getModifyData,
+  resizePage,
+}) {
   const params = useParams();
   useEffect(() => {
-    props.resizePage('write-left', 'write-main', 'write-right');
-    if (params.data && props.title.length === 0) {
-      props.getModifyData(params.data);
+    resizePage('write-left', 'write-main', 'write-right');
+    if (params.data && title.length === 0) {
+      getModifyData(params.data);
     }
   }, []);
   return (
@@ -19,15 +26,12 @@ function Write(props) {
           autoComplete='off'
           name='title'
           placeholder='제목'
-          defaultValue={props.title}
-          onBlur={() => props.getTitles()}
+          defaultValue={title}
+          onBlur={() => getTitles()}
         ></input>
       </div>
       <div id='contents'>
-        <Ckeditor
-          getContents={props.getContents}
-          contents={props.contents}
-        ></Ckeditor>
+        <Ckeditor getContents={getContents} contents={contents}></Ckeditor>
       </div>
     </div>
   );

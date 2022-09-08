@@ -79,7 +79,7 @@ const PickupMap = ({
     setCenterLat(centerLatLng.getLat());
     setCenterLon(centerLatLng.getLng());
 
-    if (writerPay) {
+    if (writerPay > 0) {
       setPickupLat(centerLat);
       setPickupLon(centerLon);
     } else {
@@ -96,6 +96,7 @@ const PickupMap = ({
     writerPay,
   ]);
   const addCenterMarker = () => {
+    console.log(pickupLat, pickupLon);
     const centerImgSrc =
       'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png';
     const imageSize = new kakao.maps.Size(24, 35);
@@ -115,7 +116,7 @@ const PickupMap = ({
       border-radius: 6px; border: 1px solid #ccc;border-bottom: 2px solid #ddd;
       float: left; border: 0;box-shadow: 0px 1px 2px #888;">
       <a href="https://map.kakao.com/link/to/픽업장소
-      ,${centerLat} ,${centerLon}" target="_blank" style="display: block;
+      ,${pickupLat} ,${pickupLon}" target="_blank" style="display: block;
         text-decoration: none;color: #000; text-align: center; border-radius: 6px;
         font-size: 14px; font-weight: bold; overflow: hidden; background: #fbc02d;
         background: #fbc02d
@@ -130,7 +131,7 @@ const PickupMap = ({
   `;
     const customOverlay = new kakao.maps.CustomOverlay({
       map: map,
-      position: new kakao.maps.LatLng(centerLat, centerLon),
+      position: new kakao.maps.LatLng(pickupLat, pickupLon),
       content: content,
       yAnchor: 1,
     });

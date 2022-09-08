@@ -17,13 +17,13 @@ const Calculate = ({ writerPay, writerName, userName, joinNum }) => {
       </h4>
       <div className='calc-cost'>
         <div className='delivery-cost'>
-          <p className='delivery-cost-name'>
-            배달비 : {writerPay}원 / {joinNum + 1}명 = {deliveryCost}원
-          </p>
+          <p className='delivery-cost-name'>배달비 :</p>
           {!writerPay ? (
             <h5>{writerName}님이 배달비 전액 지불 설정하였습니다</h5>
           ) : (
-            <p id='delivery-input'></p>
+            <p id='delivery-input'>
+              {writerPay}원 / {joinNum + 1}명 = {deliveryCost}원
+            </p>
           )}
         </div>
         <div className='food'>

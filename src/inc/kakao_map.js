@@ -8,7 +8,7 @@ const KakaoMap = ({ className, addCenterMarker }) => {
         id='addMarkerBtn'
         className={className}
         type='button'
-        value='중간위치 찾기'
+        value='픽업위치 찾기'
         onClick={() => addCenterMarker()}
       ></input>
     </div>

@@ -7,8 +7,6 @@ import { Login } from './index.js';
 
 const Header = ({
   login,
-  admin,
-  userIp,
   handleLogin,
   handleLogout,
   loginModal,

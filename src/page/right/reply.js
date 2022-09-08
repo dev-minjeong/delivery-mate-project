@@ -1,21 +1,14 @@
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import '../../css/view.css';
 import '../../css/main.css';
 
-function Reply({
-  replyData,
-  replyNum,
-  data,
-  login,
-  admin,
-  loginCheck,
-  userId,
-  getReplyData,
-}) {
+function Reply({ data, login, admin, loginCheck, userId }) {
   const params = useParams();
+  const [replyData, setReplyData] = useState([]);
+  const [replyNum, setReplyNum] = useState(null);
 
   useEffect(() => {
     const boardId = params.data;
@@ -23,6 +16,16 @@ function Reply({
       getReplyData(boardId);
     }
   }, []);
+
+  const getReplyData = async (board_id) => {
+    const data = await axios('/get/reply_data', {
+      method: 'POST',
+      headers: new Headers(),
+      data: { board_id: board_id },
+    });
+    setReplyData(data.data.rows);
+    setReplyNum(data.data.count);
+  };
 
   const addReply = async () => {
     const boardId = params.data;
