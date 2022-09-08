@@ -7,3 +7,4 @@ export { default as BackAndClose } from './back_and_close';
 export { default as KakaoMap } from './kakao_map';
 export { default as SettingMap } from './setting_map';
 export { default as PickupMap } from './pickup_map';
+export { default as Calculate } from './calculate';

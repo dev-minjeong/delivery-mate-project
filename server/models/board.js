@@ -48,7 +48,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
       pay: {
-        type: DataTypes.BOOLEAN,
+        type: DataTypes.INTEGER(10),
         allowNull: false,
         defaultValue: false,
       },

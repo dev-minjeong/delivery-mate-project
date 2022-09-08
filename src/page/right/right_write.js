@@ -11,13 +11,13 @@ function RightWrite({
   selectCategory,
   selectCategoryData,
   userName,
+  getLocation,
 }) {
   const params = useParams();
   const [writerLat, setWriterLat] = useState(0);
   const [writerLon, setWriterLon] = useState(0);
   const [toggleBtnClick, setToggleBtnClick] = useState('');
   const [submitBtn, setSubmitBtn] = useState(false);
-  const [payBoolean, setPayBoolean] = useState(false);
 
   useEffect(() => {
     gsLocation();
@@ -29,6 +29,7 @@ function RightWrite({
   const submitBoard = async () => {
     const title = document.getElementsByName('title')[0].value.trim();
     const category = selectCategory;
+    const cost = document.getElementsByName('delivery-cost')[0].value.trim();
 
     if (title === '') {
       return alert('제목을 입력하세요');
@@ -47,7 +48,7 @@ function RightWrite({
         writer_name: userName,
         writer_lat: writerLat,
         writer_lon: writerLon,
-        pay: payBoolean,
+        pay: cost ? cost : 0,
       };
       const res = await axios('/add/board', {
         method: 'POST',
@@ -67,7 +68,7 @@ function RightWrite({
         writer_name: userName,
         writer_lat: writerLat,
         writer_lon: writerLon,
-        pay: payBoolean,
+        pay: cost ? cost : 0,
       };
       const res = await axios('/update/board', {
         method: 'POST',
@@ -82,41 +83,6 @@ function RightWrite({
         return (window.location.href = url);
       }
     }
-  };
-  // gps
-  const getLocation = () => {
-    if (navigator.geolocation) {
-      // gps 지원 시
-      return new Promise((resolve) => {
-        navigator.geolocation.getCurrentPosition(
-          function (position) {
-            resolve({
-              latitude: position.coords.latitude,
-              longitude: position.coords.longitude,
-            });
-          },
-          function (error) {
-            console.log(error);
-            resolve({
-              latitude: 33.450701,
-              longitude: 126.570667,
-            });
-          },
-          {
-            enableHighAccuracy: false,
-            maximumAge: 0,
-            timeout: Infinity,
-          }
-        );
-      }).then((coords) => {
-        return coords;
-      });
-    }
-    console.log('GPS를 지원하지 않습니다');
-    return {
-      latitude: 33.450701,
-      longitude: 126.570667,
-    };
   };
   const gsLocation = async () => {
     const gettingGsLocation = await getLocation();
@@ -134,7 +100,6 @@ function RightWrite({
   };
   const togglePayBtn = (result) => {
     setToggleBtnClick(result);
-    result === 'pay' ? setPayBoolean(true) : setPayBoolean(false);
   };
   const finalSubmit = (result) => {
     setSubmitBtn(result);
@@ -184,6 +149,12 @@ function RightWrite({
                 ? `배달비 본인 지불 시 본인이 지정하신 위치에서 픽업이 가능합니다.`
                 : `배달비 나눠 지불 시 참여하는 메이트들의 중간위치에서 픽업 가능합니다.`}
             </h5>
+            {toggleBtnClick === 'share' ? (
+              <div className='delivery-cost-box'>
+                <p>총 배달비 : </p>
+                <input type='number' name='delivery-cost' />원
+              </div>
+            ) : null}
             <h3>
               {toggleBtnClick === 'pay'
                 ? `픽업하실 위치를 설정하세요`

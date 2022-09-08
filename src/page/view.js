@@ -3,7 +3,7 @@ import axios from 'axios';
 import '../css/view.css';
 import { useEffect, useMemo, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { PickupMap } from './../inc/index.js';
+import { PickupMap, Calculate } from './../inc/index.js';
 import _ from 'lodash';
 
 function View({
@@ -29,6 +29,7 @@ function View({
   resizePage,
   writerPay,
   loginCheck,
+  getLocation,
 }) {
   const params = useParams();
   const [noneJoinImg, setNoneJoinImg] = useState(
@@ -42,25 +43,6 @@ function View({
   const [modifyUrl, setModifyUrl] = useState('');
   const [join, setJoin] = useState(false);
   const [mateData, setMateData] = useState([]);
-
-  /**
-   * 1. 메인리스트에 조회수 대신 닉네임 표시 ⭕
-   * 2. 상세페이지에 조회수 표시 ⭕
-   * 3. 글쓴이만 글쓴 페이지에 송금 링크 댓글 달 수 있음
-   * 4. 코드정리 및 컴포넌트 분할
-   * 5. 디자인 있어보이게
-   * 6. 지도 픽업마커 옮길 수 있게 ❌ -> 마커 커스텀도 같이 이동 안됨
-   * 7. 지도 커스텀, 마커 길찾기 링크추가 ⭕
-   * 8. 유저 이미지 디자인(4-5개) 및 랜덤 배치
-   * 9. 포스팅 시 픽업장소 ⭕
-   *      1) 글쓴이 지정 -> 배달비 본인 부담
-   *      2) 중간 지점 -> 글쓴이 본인부담 또는 1/n중 택1
-   * 10. 배달비 1/n 기능 구현
-   * 11. 메이트들 각자 시킨 음식과 가격 적어놓는 컴포넌트 구현
-   * 12. 스타일 컴포넌트 사용해 코드 정리
-   * 13. recoile, react-query 적용하여 상태관리
-   * 14. 다크모드 적용
-   */
 
   useEffect(() => {
     const boardId = params.data;
@@ -87,7 +69,6 @@ function View({
     if (data.data) {
       setModifyUrl(`/write/modify/${data.data[0].board_id}`);
     }
-
     if (sessionStorage.join) {
       const storageJoinList = JSON.parse(sessionStorage.join);
 
@@ -149,7 +130,6 @@ function View({
           board_id: boardId,
           name: userName,
         };
-
         await axios('/update/join', {
           method: 'POST',
           headers: new Headers(),
@@ -165,7 +145,6 @@ function View({
       getData(boardId);
 
       alert('해당 게시물에 참여하실 수 있습니다');
-      // return window.location.reload();
     }
     return window.location.reload();
   };
@@ -176,13 +155,11 @@ function View({
         board_id: boardId,
         name: userName,
       };
-
       const getData = await axios('/check/join', {
         method: 'POST',
         headers: new Headers(),
         data: obj,
       });
-
       if (getData.data[0]) {
         return getJoinExist(true);
       }
@@ -218,44 +195,8 @@ function View({
   const openMapModal = () => {
     return toggleMapModal(true);
   };
-  // gps
-  const getLocation = () => {
-    if (navigator.geolocation) {
-      // gps 지원 시
-      return new Promise((resolve) => {
-        navigator.geolocation.getCurrentPosition(
-          function (position) {
-            resolve({
-              latitude: position.coords.latitude,
-              longitude: position.coords.longitude,
-            });
-          },
-          function (error) {
-            console.log(error);
-            resolve({
-              latitude: 33.450701,
-              longitude: 126.570667,
-            });
-          },
-          {
-            enableHighAccuracy: false,
-            maximumAge: 0,
-            timeout: Infinity,
-          }
-        );
-      }).then((coords) => {
-        return coords;
-      });
-    }
-    alert('GPS를 지원하지 않습니다');
-    return {
-      latitude: 33.450701,
-      longitude: 126.570667,
-    };
-  };
   const gsLocation = async () => {
     const gettingGsLocation = await getLocation();
-
     toggleJoin(gettingGsLocation.latitude, gettingGsLocation.longitude);
   };
 
@@ -299,14 +240,39 @@ function View({
               id='content-txt'
               dangerouslySetInnerHTML={{ __html: data.data[0].contents }}
             ></div>
-            <input type='button' value='배달비 나누기'></input>
+          </div>
+          <div className='join-box'>
+            <div className='join'>
+              {userName !== writerName ? (
+                <div>
+                  <img
+                    src={!joinExist ? noneJoinImg : joinImg}
+                    alt='nonejoin'
+                    onClick={() => gsLocation()}
+                  ></img>
+                  <h5>참여하기</h5>
+                </div>
+              ) : null}
+
+              <h5>(참여자: {joinNum}명)</h5>
+            </div>
             {join || userName === data.data[0].writer_name ? (
-              <input
-                type='button'
-                value='픽업장소 확인'
-                className='pickup-map'
-                onClick={() => openMapModal()}
-              ></input>
+              <div className='setting-box'>
+                <input
+                  type='button'
+                  value='픽업장소 확인'
+                  className='pickup-map'
+                  onClick={() => openMapModal()}
+                ></input>
+                {userName === data.data[0].writer_name ? null : (
+                  <Calculate
+                    writerPay={writerPay}
+                    writerName={writerName}
+                    userName={userName}
+                    joinNum={joinNum}
+                  ></Calculate>
+                )}
+              </div>
             ) : null}
           </div>
           <PickupMap
@@ -315,6 +281,7 @@ function View({
             writerLat={writerLat}
             writerLon={writerLon}
             mateData={mateData}
+            writerPay={writerPay}
           ></PickupMap>
           <div className='other-box'>
             <div className='pre-view'>
@@ -327,6 +294,7 @@ function View({
               >
                 ◀
               </div>
+
               <div className='pre-title'>
                 {preView.length > 0 ? (
                   preView[0].title.length > 5 ? (
@@ -339,19 +307,12 @@ function View({
                 )}
               </div>
             </div>
-            <div className='join'>
-              {userName !== writerName ? (
-                <img
-                  src={!joinExist ? noneJoinImg : joinImg}
-                  alt='nonejoin'
-                  onClick={() => gsLocation()}
-                ></img>
-              ) : null}
-
-              <h5>
-                참여하기<br></br>(참여자: {joinNum}명)
-              </h5>
-            </div>
+            <input
+              type='button'
+              value='목록'
+              id='view-list-btn'
+              onClick={() => (window.location.href = '/')}
+            ></input>
             <div className='next-view'>
               <p>다음글</p>
               <div
@@ -377,13 +338,6 @@ function View({
               </div>
             </div>
           </div>
-
-          <input
-            type='button'
-            value='목록'
-            id='view-list-btn'
-            onClick={() => (window.location.href = '/')}
-          ></input>
         </div>
       ) : null}
     </div>

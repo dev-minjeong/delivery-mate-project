@@ -3,7 +3,6 @@ import { KakaoMap } from './index.js';
 import { useEffect, useRef, useState } from 'react';
 
 import '../css/map.css';
-
 /* global kakao */
 
 const PickupMap = ({
@@ -12,11 +11,14 @@ const PickupMap = ({
   writerLat,
   writerLon,
   mateData,
+  writerPay,
 }) => {
   const [centerLat, setCenterLat] = useState(0);
   const [centerLon, setCenterLon] = useState(0);
   const [map, setMap] = useState('');
   const [markers, setMarkers] = useState([]);
+  const [pickupLat, setPickupLat] = useState(0);
+  const [pickupLon, setPickupLon] = useState(0);
 
   useEffect(() => {
     const mapContainer = document.getElementById('mapContainer');
@@ -76,7 +78,23 @@ const PickupMap = ({
     const centerLatLng = map.getCenter();
     setCenterLat(centerLatLng.getLat());
     setCenterLon(centerLatLng.getLng());
-  }, [centerLat, centerLon, mateData, writerLat, writerLon, markers]);
+
+    if (writerPay) {
+      setPickupLat(centerLat);
+      setPickupLon(centerLon);
+    } else {
+      setPickupLat(writerLat);
+      setPickupLon(writerLon);
+    }
+  }, [
+    centerLat,
+    centerLon,
+    mateData,
+    writerLat,
+    writerLon,
+    markers,
+    writerPay,
+  ]);
   const addCenterMarker = () => {
     const centerImgSrc =
       'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png';
@@ -88,7 +106,7 @@ const PickupMap = ({
       imageOption
     );
     const marker = new kakao.maps.Marker({
-      position: new kakao.maps.LatLng(centerLat, centerLon),
+      position: new kakao.maps.LatLng(pickupLat, pickupLon),
       image: markerImage,
       name: '픽업장소',
     });
@@ -118,7 +136,7 @@ const PickupMap = ({
     });
     marker.setMap(map);
     customOverlay.setMap(map);
-    // markers.push(marker);
+    markers.push(marker);
   };
 
   return (
