@@ -4,6 +4,7 @@ import '../css/view.css';
 import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { PickupMap, Calculate, Join, PageMove } from './../inc/index.js';
+import { Loading } from './index.js';
 
 function View({
   login,
@@ -28,13 +29,14 @@ function View({
   joinExist,
 }) {
   const params = useParams();
+
+  const [loading, setLoading] = useState(true);
   const [modifyUrl, setModifyUrl] = useState('');
   const [join, setJoin] = useState(false);
   const [mateData, setMateData] = useState([]);
 
   useEffect(() => {
     const boardId = params.data;
-
     addViewCnt(boardId);
     getWriterMapData(boardId);
     resizePage('view-left', 'view-main', 'view-right');
@@ -64,7 +66,6 @@ function View({
         storageJoinList.forEach((el) => {
           if (el.name === userName) {
             setJoin(true);
-            console.log('join');
           }
         });
       } else {
@@ -75,6 +76,7 @@ function View({
         });
       }
     }
+    setLoading(false);
   }, [data]);
 
   // 조회수 카운트
@@ -171,87 +173,94 @@ function View({
   const openMapModal = () => {
     return toggleMapModal(true);
   };
-  console.log(join);
   return (
-    <div className='view'>
-      {data.data ? (
-        <div className='view-box'>
-          <div className='title-box'>
-            {admin === 'Y' || userName === data.data[0].writer_name ? (
-              <div className='write-option-box'>
-                <Link to={modifyUrl}>
-                  <input type='button' value='수정'></input>
-                </Link>
+    <>
+      {loading ? (
+        <Loading></Loading>
+      ) : (
+        <div className='view'>
+          {data.data ? (
+            <div className='view-box'>
+              <div className='title-box'>
+                {admin === 'Y' || userName === data.data[0].writer_name ? (
+                  <div className='write-option-box'>
+                    <Link to={modifyUrl}>
+                      <input type='button' value='수정'></input>
+                    </Link>
+                    <input
+                      type='button'
+                      value='삭제'
+                      onClick={() => removeView()}
+                    ></input>
+                  </div>
+                ) : null}
                 <input
-                  type='button'
-                  value='삭제'
-                  onClick={() => removeView()}
+                  type='text'
+                  id='title-txt'
+                  name='title'
+                  defaultValue={data.data[0].title}
+                  readOnly
                 ></input>
+                <div className='board-info-box'>
+                  <div className='user-info'>
+                    <img alt='' src='' className='nick-img'></img>
+                    <div className='user-nickname'>
+                      {data.data[0].writer_name}
+                    </div>
+                  </div>
+                  <div className='board-info'>
+                    <div>조회수: {data.data[0].view_cnt}</div>
+                    <div>{date}</div>
+                  </div>
+                </div>
               </div>
-            ) : null}
-            <input
-              type='text'
-              id='title-txt'
-              name='title'
-              defaultValue={data.data[0].title}
-              readOnly
-            ></input>
-            <div className='board-info-box'>
-              <div className='user-info'>
-                <img alt='' src='' className='nick-img'></img>
-                <div className='user-nickname'>{data.data[0].writer_name}</div>
+              <div className='contents-box'>
+                <div
+                  id='content-txt'
+                  dangerouslySetInnerHTML={{ __html: data.data[0].contents }}
+                ></div>
               </div>
-              <div className='board-info'>
-                <div>조회수: {data.data[0].view_cnt}</div>
-                <div>{date}</div>
+              <div className='join-box'>
+                <Join
+                  userName={userName}
+                  writerName={writerName}
+                  joinNum={joinNum}
+                  joinExist={joinExist}
+                  gsLocation={gsLocation}
+                ></Join>
+                {join || userName === data.data[0].writer_name ? (
+                  <div className='setting-box'>
+                    <input
+                      type='button'
+                      value='픽업장소 확인'
+                      className='pickup-map'
+                      onClick={() => openMapModal()}
+                    ></input>
+                    {userName === data.data[0].writer_name ? null : (
+                      <Calculate
+                        writerPay={writerPay}
+                        writerName={writerName}
+                        userName={userName}
+                        joinNum={joinNum}
+                      ></Calculate>
+                    )}
+                  </div>
+                ) : null}
               </div>
+              <PickupMap
+                toggleMapModal={toggleMapModal}
+                mapModal={mapModal}
+                writerLat={writerLat}
+                writerLon={writerLon}
+                mateData={mateData}
+                writerPay={writerPay}
+              ></PickupMap>
+              <PageMove></PageMove>
             </div>
-          </div>
-          <div className='contents-box'>
-            <div
-              id='content-txt'
-              dangerouslySetInnerHTML={{ __html: data.data[0].contents }}
-            ></div>
-          </div>
-          <div className='join-box'>
-            <Join
-              userName={userName}
-              writerName={writerName}
-              joinNum={joinNum}
-              joinExist={joinExist}
-              gsLocation={gsLocation}
-            ></Join>
-            {join || userName === data.data[0].writer_name ? (
-              <div className='setting-box'>
-                <input
-                  type='button'
-                  value='픽업장소 확인'
-                  className='pickup-map'
-                  onClick={() => openMapModal()}
-                ></input>
-                {userName === data.data[0].writer_name ? null : (
-                  <Calculate
-                    writerPay={writerPay}
-                    writerName={writerName}
-                    userName={userName}
-                    joinNum={joinNum}
-                  ></Calculate>
-                )}
-              </div>
-            ) : null}
-          </div>
-          <PickupMap
-            toggleMapModal={toggleMapModal}
-            mapModal={mapModal}
-            writerLat={writerLat}
-            writerLon={writerLon}
-            mateData={mateData}
-            writerPay={writerPay}
-          ></PickupMap>
-          <PageMove></PageMove>
+          ) : null}
         </div>
-      ) : null}
-    </div>
+      )}
+    </>
   );
 }
 export default View;

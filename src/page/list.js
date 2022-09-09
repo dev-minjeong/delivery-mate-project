@@ -1,38 +1,49 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import '../css/main.css';
-import { Search } from './index.js';
+import { Search, Loading } from './index.js';
 import { Link } from 'react-router-dom';
 
 function List({ listData, listAllPage, listSearch, listPage, changePage }) {
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    setLoading(false);
+  }, []);
   return (
     <div className='list'>
-      <div className='list-title list-box'>
-        <div>제목</div>
-        <div>닉네임</div>
-        <div className='acenter'>날짜</div>
-      </div>
-      {listData !== '[]' && listData.length > 0 ? (
-        JSON.parse(listData).map((el, key) => {
-          const view_url = '/view/' + el.board_id;
-          return (
-            <div className='list-data list-box' key={key}>
-              <div>
-                <Link to={view_url}>{el.title}</Link>
-              </div>
-              <div className='views'>{el.writer_name}</div>
-              <div className='acenter'>{el.date?.slice(5, 10)}</div>
-            </div>
-          );
-        })
+      {loading ? (
+        <Loading></Loading>
       ) : (
-        <div className='not-data acenter'>
-          {listSearch && listSearch !== '' ? (
-            <div>{`'${listSearch}'에 대한 `}검색 결과가 없습니다</div>
+        <div>
+          <div className='list-title list-box'>
+            <div>제목</div>
+            <div>닉네임</div>
+            <div className='acenter'>날짜</div>
+          </div>
+          {listData !== '[]' && listData.length > 0 ? (
+            JSON.parse(listData).map((el, key) => {
+              const view_url = '/view/' + el.board_id;
+              return (
+                <div className='list-data list-box' key={key}>
+                  <div>
+                    <Link to={view_url}>{el.title}</Link>
+                  </div>
+                  <div className='views'>{el.writer_name}</div>
+                  <div className='acenter'>{el.date?.slice(5, 10)}</div>
+                </div>
+              );
+            })
           ) : (
-            <div>게시글이 없습니다</div>
+            <div className='not-data acenter'>
+              {listSearch && listSearch !== '' ? (
+                <div>{`'${listSearch}'에 대한 `}검색 결과가 없습니다</div>
+              ) : (
+                <div>게시글이 없습니다</div>
+              )}
+            </div>
           )}
         </div>
       )}
+
       <div className='paging-div'>
         <div></div>
         <div>
