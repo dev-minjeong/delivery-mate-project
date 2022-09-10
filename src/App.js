@@ -1,32 +1,61 @@
-import './App.css';
 import { useState, useEffect } from 'react';
 import React from 'react';
 import { useLocation } from 'react-router-dom';
-import { Header } from './inc/index.js';
+import { Side } from './page/left/index.js';
+import { Header, Login } from './inc/index.js';
 import { Main } from './page/index.js';
 import queryString from 'query-string';
 import axios from 'axios';
+import styled, { createGlobalStyle } from 'styled-components';
+
+const GlobalStyle = createGlobalStyle`
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  text-decoration: none;
+  color: black;
+  list-style: none;
+  border: none;
+}`;
+const AppBox = styled.div`
+  display: flex;
+  width: 100%;
+`;
+const RightBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 80vw;
+  background-color: whitesmoke;
+`;
 
 function App() {
+  // login
   const [login, setLogin] = useState(false);
   const [admin, setAdmin] = useState(false);
   const [userIp, setUserIp] = useState('');
+  const [userId, setUserId] = useState('');
+  const [userName, setUserName] = useState('');
+  const [userEmail, setUserEmail] = useState('');
+  const [userNum, setUserNum] = useState('');
+  const [loginModal, setLoginModal] = useState(false);
+  // list
   const [listData, setListData] = useState([]);
   const [listPage, setListPage] = useState(1);
   const [listLimit, setListLimit] = useState(10);
   const [listAllPage, setListAllPage] = useState([]);
   const [listSearch, setListSearch] = useState('');
-  const [userId, setUserId] = useState('');
-  const [data, setData] = useState('');
-  const [date, setDate] = useState('');
-  const [joinNum, setJoinNum] = useState('');
+  // category
   const [categoryData, setCategoryData] = useState([]);
   const [selectCategory, setSelectCategory] = useState('');
-  const [userName, setUserName] = useState('');
+  // board
+  const [data, setData] = useState('');
+  const [date, setDate] = useState('');
   const [writerName, setWriterName] = useState('');
   const [writerPay, setWriterPay] = useState(false);
-  const [loginModal, setLoginModal] = useState(false);
+  // join
   const [joinExist, setJoinExist] = useState(null);
+  const [joinNum, setJoinNum] = useState('');
 
   const locationSearch = useLocation().search;
 
@@ -39,6 +68,8 @@ function App() {
       setUserIp(JSON.parse(sessionStorage.IP));
       setUserId(JSON.parse(sessionStorage.login).user_id);
       setUserName(JSON.parse(sessionStorage.login).name);
+      setUserEmail(JSON.parse(sessionStorage.login).email);
+      setUserNum(JSON.parse(sessionStorage.login).user_id);
     }
   }, []);
 
@@ -49,6 +80,7 @@ function App() {
       headers: new Headers(),
       data: { id: board_id },
     });
+    console.log(getBoardData);
     const date =
       getBoardData.data[0].date.slice(5, 10) +
       ' ' +
@@ -180,40 +212,54 @@ function App() {
   };
 
   return (
-    <div className='App'>
-      <Header
-        login={login}
+    <>
+      <GlobalStyle></GlobalStyle>
+      <AppBox>
+        <Side
+          login={login}
+          handleLogout={handleLogout}
+          toggleLoginModal={toggleLoginModal}
+          changeCategory={changeCategory}
+          admin={admin}
+          userName={userName}
+          userEmail={userEmail}
+          userNum={userNum}
+        ></Side>
+        <RightBox>
+          <Header login={login} listSearch={listSearch}></Header>
+          <Main
+            login={login}
+            admin={admin}
+            listData={listData}
+            listAllPage={listAllPage}
+            listSearch={listSearch}
+            listPage={listPage}
+            changePage={changePage}
+            changeCategory={changeCategory}
+            userId={userId}
+            data={data}
+            date={date}
+            joinNum={joinNum}
+            getData={getData}
+            categoryData={categoryData}
+            selectCategory={selectCategory}
+            selectCategoryData={selectCategoryData}
+            userName={userName}
+            writerName={writerName}
+            writerPay={writerPay}
+            loginCheck={loginCheck}
+            joinExist={joinExist}
+            getJoinExist={getJoinExist}
+            getBoardJoinData={getBoardJoinData}
+          ></Main>
+        </RightBox>
+      </AppBox>
+      <Login
         handleLogin={handleLogin}
-        handleLogout={handleLogout}
         loginModal={loginModal}
         toggleLoginModal={toggleLoginModal}
-      ></Header>
-      <Main
-        login={login}
-        admin={admin}
-        listData={listData}
-        listAllPage={listAllPage}
-        listSearch={listSearch}
-        listPage={listPage}
-        changePage={changePage}
-        changeCategory={changeCategory}
-        userId={userId}
-        data={data}
-        date={date}
-        joinNum={joinNum}
-        getData={getData}
-        categoryData={categoryData}
-        selectCategory={selectCategory}
-        selectCategoryData={selectCategoryData}
-        userName={userName}
-        writerName={writerName}
-        writerPay={writerPay}
-        loginCheck={loginCheck}
-        joinExist={joinExist}
-        getJoinExist={getJoinExist}
-        getBoardJoinData={getBoardJoinData}
-      ></Main>
-    </div>
+      ></Login>
+    </>
   );
 }
 

@@ -8,21 +8,12 @@ button {
 }
 
 /* 메인 구역 */
-.main {
-  display: flex;
-  justify-content: space-between;
-}
-#main-left {
-  flex-basis: 20%;
-}
-#main-center {
-  border-left: 2px solid black;
-  border-right: 2px solid black;
-  flex-basis: 80%;
-}
-#main-right {
+/* #main-center {
+  flex-basis: 100%;
+} */
+/* #main-right {
   flex-basis: 0;
-}
+} */
 .view-left {
   flex-basis: 0 !important;
 }
@@ -34,20 +25,8 @@ button {
 }
 /* center section */
 /* 헤더 */
-.header {
-  display: flex;
-  justify-content: space-between;
-}
-.write-btn {
-  margin: 20px;
-}
 .login-list {
   list-style: none;
-  padding: 20px;
-}
-.logo {
-  margin: 20px;
-  cursor: pointer;
 }
 .login-list li {
   margin-top: 5px;
@@ -117,87 +96,6 @@ button {
 .select-category {
   padding: 4px;
   margin-top: 5px;
-}
-
-/* 게시판 리스트 */
-.list {
-  padding: 20px;
-  min-height: 300px;
-}
-.list-title {
-  border-bottom: 1px solid #ababab;
-  color: #ababab;
-}
-.list-box {
-  display: flex;
-}
-.list-box div {
-  padding: 10px;
-}
-.list-data {
-  line-height: 30px;
-}
-.list-title div:nth-child(1),
-.list-data div:nth-child(1) {
-  flex-basis: 65%;
-}
-.list-title div:nth-child(2),
-.list-data div:nth-child(2) {
-  flex-basis: 20%;
-}
-.list-title div:nth-child(3),
-.list-data div:nth-child(3) {
-  flex-basis: 15%;
-}
-.list-data .acenter {
-  text-align: center;
-}
-.not-data {
-  margin: 10px 0;
-  color: #ababab;
-  text-align: center;
-}
-
-/* 게시판 페이징 */
-.paging-div {
-  display: flex;
-  margin-top: 10px;
-  justify-content: space-between;
-}
-.paging-div div {
-  padding: 15px;
-  text-align: center;
-}
-.paging-div ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-.page-num {
-  list-style: none;
-  display: inline-block;
-  cursor: pointer;
-  margin-right: 15px;
-}
-.paging-div div:nth-child(1) {
-  flex-basis: 15%;
-}
-.paging-div div:nth-child(2) {
-  flex-basis: 70%;
-}
-.paging-div div:nth-child(3) {
-  flex-basis: 15%;
-}
-
-/* 검색창 */
-.search-input {
-  padding: 2px;
-  margin-right: 10px;
-  min-width: 50px;
-}
-.search-submit {
-  position: absolute;
-  cursor: pointer;
 }
 
 /* left - 카테고리 메뉴 */

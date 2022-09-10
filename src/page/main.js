@@ -1,11 +1,15 @@
 import { Routes, Route } from 'react-router-dom';
 import { Write, List, View, SignUp } from './index.js';
 import { RightWrite, Reply } from './right/index.js';
-import { Category } from './left/index.js';
 import { useState } from 'react';
 
-import '../css/main.css';
+import styled from 'styled-components';
 import axios from 'axios';
+
+const MainBox = styled.div`
+  width: 100%;
+  flex-basis: 100%;
+`;
 
 const Main = ({
   login,
@@ -112,8 +116,7 @@ const Main = ({
   };
 
   // 구역 비율 재설정
-  const resizePage = (left, main, right) => {
-    setViewLeft(left);
+  const resizePage = (main, right) => {
     setViewMain(main);
     setViewRight(right);
   };
@@ -187,21 +190,7 @@ const Main = ({
   });
 
   return (
-    <div className='main'>
-      <div id='main-left' className={viewLeft}>
-        <Routes>
-          <Route
-            path='/'
-            element={
-              <Category
-                changeCategory={changeCategory}
-                login={login}
-                admin={admin}
-              />
-            }
-          ></Route>
-        </Routes>
-      </div>
+    <MainBox>
       <div id='main-center' className={viewMain}>
         <Routes>
           <Route path='/' element={<ListWithProps />}></Route>
@@ -227,7 +216,7 @@ const Main = ({
           ></Route>
         </Routes>
       </div>
-    </div>
+    </MainBox>
   );
 };
 export default Main;

@@ -4,6 +4,9 @@ import { useState } from 'react';
 import React from 'react';
 import '../App.css';
 import { SearchId, SearchPw } from './index.js';
+import styled from 'styled-components';
+
+const LoginBox = styled.div``;
 
 function Login({ handleLogin, loginModal, toggleLoginModal }) {
   const [id, setId] = useState('');
@@ -69,7 +72,7 @@ function Login({ handleLogin, loginModal, toggleLoginModal }) {
   };
 
   return (
-    <div>
+    <LoginBox>
       <Modal
         visible={loginModal}
         width='400'
@@ -77,8 +80,8 @@ function Login({ handleLogin, loginModal, toggleLoginModal }) {
         effect='fadeInDown'
         onClickAway={() => toggleLoginModal(false)}
       >
-        <div className='acenter'>
-          <h4 className='login login-title'>로그인</h4>
+        <div>
+          <h4 className='login-title'>로그인</h4>
           <form>
             <div className='login-div'>
               <div className='login-input'>
@@ -137,7 +140,7 @@ function Login({ handleLogin, loginModal, toggleLoginModal }) {
         backSearchModal={backSearchModal}
         target='pw'
       ></SearchPw>
-    </div>
+    </LoginBox>
   );
 }
 export default Login;

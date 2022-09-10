@@ -1,0 +1,12 @@
+export const LogoImg = require('./logo.png');
+export const LogOutImg = require('./logout.png');
+export const UserOne = require('./user1.png');
+export const UserTwo = require('./user2.png');
+export const UserThree = require('./user3.png');
+export const UserFour = require('./user4.png');
+export const UserFive = require('./user5.png');
+export const UserSix = require('./user6.png');
+export const UserSeven = require('./user7.png');
+export const UserEight = require('./user8.png');
+export const UserNine = require('./user9.png');
+export const UserTen = require('./user0.png');

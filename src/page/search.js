@@ -1,20 +1,54 @@
+import styled from 'styled-components';
 import '../css/main.css';
+
+const SearchBox = styled.div`
+  background-color: white;
+  padding: 10px;
+  border: 0;
+  border-radius: 10px;
+  width: 70%;
+  min-width: 200px;
+  height: 38px;
+  margin-right: 3vw;
+  form {
+    display: flex;
+    justify-content: space-between;
+  }
+`;
+const SearchInput = styled.input`
+  :focus {
+    outline: none;
+  }
+`;
+const SearchSubmit = styled.input`
+  width: 17px;
+  height: 17px;
+  cursor: pointer;
+  background-color: inherit;
+  background-image: url('https://iconmonstr.com/wp-content/g/gd/makefg.php?i=../releases/preview/2012/png/iconmonstr-magnifier-5.png&r=0&g=0&b=0');
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+`;
 
 const Search = (props) => {
   return (
-    <div>
+    <SearchBox>
       <form>
-        <input
+        <SearchInput
           type='text'
           maxLength='20'
           className='search-input'
           name='search'
           placeholder='검색어를 입력하세요'
           defaultValue={props.search}
-        ></input>
-        <input type='submit' value='검색' className='search-submit'></input>
+        ></SearchInput>
+        <SearchSubmit
+          type='submit'
+          value=' '
+          className='search-submit'
+        ></SearchSubmit>
       </form>
-    </div>
+    </SearchBox>
   );
 };
 

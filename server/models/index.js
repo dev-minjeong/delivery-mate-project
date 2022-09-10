@@ -46,15 +46,6 @@ db.Board.belongsTo(db.Category, {
   foreignKey: 'food_id',
   targetKey: 'id',
 });
-// N대 M관계
-// db.Board.belongsToMany(db.User, {
-//   through: 'like',
-//   foreignKey: 'board_id',
-// });
-// db.User.belongsToMany(db.Board, {
-//   through: 'like',
-//   foreignKey: 'user_id',
-// });
 
 db.User.hasMany(db.Reply, {
   foreignKey: 'user_id',
@@ -65,15 +56,7 @@ db.Reply.belongsTo(db.User, {
   sourceKey: 'user_id',
 });
 
-db.User.hasMany(db.Board, {
-  foreignKey: 'writer_name',
-  sourceKey: 'name',
-});
-db.Board.belongsTo(db.User, {
-  foreignKey: 'writer_name',
-  sourceKey: 'name',
-});
-
+// N대 M관계
 db.Board.belongsToMany(db.User, {
   through: 'join',
   foreignKey: 'board_id',
