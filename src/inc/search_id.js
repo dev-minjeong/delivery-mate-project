@@ -1,8 +1,80 @@
 import axios from 'axios';
 import { useState } from 'react';
 import Modal from 'react-awesome-modal';
+import styled from 'styled-components';
 import { BackAndClose } from './index.js';
 
+const SearchBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  .input-info {
+    display: flex;
+    width: 300px;
+    margin-top: 25px;
+    h5 {
+      margin-right: 7px;
+    }
+  }
+  .name {
+    input {
+      width: 175px;
+    }
+  }
+  .bday {
+    input:nth-child(2) {
+      width: 100px;
+      margin-left: 17px;
+    }
+    input:nth-child(3) {
+      width: 25px;
+      margin-right: 3px;
+    }
+  }
+  .email {
+    input {
+      width: 100px;
+    }
+    input:nth-child(3) {
+      width: 88px;
+    }
+  }
+  input {
+    background-color: whitesmoke;
+    margin: 0 7px;
+    height: 27px;
+    padding: 7px;
+  }
+`;
+const ResultBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+const SearchIdResult = styled.div`
+  margin: 43px 0;
+  div {
+    margin-top: 20px;
+    display: flex;
+    h5 {
+      margin: 4px 20px 0 0;
+    }
+  }
+`;
+
+const SearchSubmit = styled.div`
+  margin-top: 30px;
+  align-items: center;
+  input {
+    padding: 8px 15px;
+    background-color: #bbf294;
+    cursor: pointer;
+    color: white;
+    font-weight: 900;
+    border-radius: 15px;
+    height: 34px;
+  }
+`;
 function SearchId({
   searchIdModal,
   closeSearchModal,
@@ -84,19 +156,19 @@ function SearchId({
           target={target}
         ></BackAndClose>
         {!result ? (
-          <div className='search-box'>
+          <SearchBox>
             <h4>아이디 찾기</h4>
-            <div>
-              <h5>이름</h5>
+            <div className='input-info name'>
+              <h5>이름 / 닉네임</h5>
               <input type='text' maxLength='15' name='search-id-name'></input>
             </div>
-            <div>
+            <div className='input-info bday'>
               <h5>생년월일</h5>
               <input type='text' maxLength='6' name='search-id-bday'></input>-
               <input type='text' maxLength='1' name='search-id-sex'></input>
               ******
             </div>
-            <div>
+            <div className='input-info email'>
               <h5>이메일</h5>
               <input type='text' maxLength='20' name='search-id-email'></input>@
               <input
@@ -105,23 +177,20 @@ function SearchId({
                 name='search-id-write-email'
               ></input>
             </div>
-            <div>
+            <SearchSubmit>
               <input
                 type='button'
-                value='조회하기'
+                value='SEARCH'
                 name='search-id-submit'
                 onClick={() => searchUserId()}
               ></input>
-            </div>
-          </div>
+            </SearchSubmit>
+          </SearchBox>
         ) : (
-          <div className='result-box'>
-            <h4>아이디 찾기</h4>
+          <ResultBox>
             <div className='search-id-result'>
-              <p>
-                {'< '}아이디 조회 결과{' >'}
-              </p>
-              <div className='search-id-result-div'>
+              <h4>아이디 조회 결과</h4>
+              <SearchIdResult>
                 <div>
                   <h5>아이디</h5>
                   {result[0].id}
@@ -130,17 +199,18 @@ function SearchId({
                   <h5>가입일</h5>
                   {result[0].signup_date.slice(0, 10)}
                 </div>
-              </div>
-              <div>
+              </SearchIdResult>
+              <SearchSubmit>
                 <input
                   type='button'
-                  value='돌아가기'
+                  value='
+                  GO TO LOGIN'
                   name='search-id-back'
                   onClick={() => resetBack()}
                 ></input>
-              </div>
+              </SearchSubmit>
             </div>
-          </div>
+          </ResultBox>
         )}
       </Modal>
     </>

@@ -1,4 +1,13 @@
-import '../css/main.css';
+
+import { IoArrowBack, IoClose } from 'react-icons/io5';
+import styled from 'styled-components';
+
+const BackCloseBox = styled.div`
+  display: flex;
+  justify-content: space-between;
+  padding: 25px 25px 0 25px;
+  font-size: 24px;
+`;
 
 function BackAndClose(props) {
   const controller = (target, type) => {
@@ -14,22 +23,16 @@ function BackAndClose(props) {
     }
   };
   return (
-    <div className='back-and-close'>
+    <BackCloseBox>
       <div id='back-btn'>
-        <img
+        <IoArrowBack
           onClick={() => controller(props.target, 'back')}
-          src='https://cdns.iconmonstr.com/wp-content/releases/preview/2012/240/iconmonstr-undo-1.png'
-          alt='back-icon'
-        ></img>
+        ></IoArrowBack>
       </div>
       <div id='close-btn'>
-        <img
-          onClick={() => controller(props.target, 'close')}
-          src='https://cdns.iconmonstr.com/wp-content/releases/preview/2012/240/iconmonstr-x-mark-1.png'
-          alt='close-icon'
-        ></img>
+        <IoClose onClick={() => controller(props.target, 'close')}></IoClose>
       </div>
-    </div>
+    </BackCloseBox>
   );
 }
 export default BackAndClose;

@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import '../css/main.css';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { LogoImg } from '../img/index.js';

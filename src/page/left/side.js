@@ -1,12 +1,10 @@
 import { Category } from './index.js';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { UserOne, LogOutImg } from '../../img/index.js';
+import { LogOutImg, UserImg } from '../../img/index.js';
 import { useEffect, useState } from 'react';
 
 const SideBox = styled.div`
-  width: 20vw;
-  min-width: 200px;
   position: sticky;
   top: 0;
   height: 100vh;
@@ -16,6 +14,9 @@ const SideBox = styled.div`
   text-align: center;
   justify-content: space-between;
   padding: 30px 0;
+  width: ${(props) => (props.visible ? '20vw' : '0')};
+  min-width: ${(props) => (props.visible ? '170px' : '0')};
+  visibility: ${(props) => (props.visible ? 'visible' : 'hidden')};
 `;
 const AdminBox = styled.div`
   img {
@@ -32,9 +33,22 @@ const LoginList = styled.ul`
   .user-email {
     font-size: 12px;
     color: #ababab;
+    box-sizing: border-box;
+  }
+  .login-or-signup {
+    display: flex;
+    font-size: 14px;
+    font-weight: bold;
+    li {
+      cursor: pointer;
+      margin: 0 5px;
+    }
   }
 `;
 const OtherBox = styled.div`
+  li {
+    cursor: pointer;
+  }
   .logout-btn {
     color: #ababab;
     font-size: 13px;
@@ -50,16 +64,15 @@ const Side = ({
   userName,
   userEmail,
   userNum,
+  pageLeft,
 }) => {
   const [userImgSrc, setUserImgSrc] = useState('');
 
   useEffect(() => {
     const num = userNum % 10;
-    console.log(num);
-    setUserImgSrc(`../../img/user${num}.png`);
+    setUserImgSrc(UserImg.images[num]);
   }, [userNum]);
 
-  console.log(userImgSrc);
   const openModal = () => {
     return toggleLoginModal(true);
   };
@@ -73,36 +86,40 @@ const Side = ({
     }
   };
   return (
-    <SideBox>
-      <AdminBox>
-        {login ? (
-          <img src={userImgSrc} alt='user-img'></img>
-        ) : (
-          <img src={LogOutImg} alt='logout'></img>
-        )}
-        <LoginList>
+    <SideBox visible={pageLeft}>
+      <div>
+        <AdminBox>
           {login ? (
-            <div>
-              <li className='user-name'>{userName}</li>
-              <li className='user-email'>{userEmail}</li>
-            </div>
+            <img src={userImgSrc} alt='user-img'></img>
           ) : (
-            <div>
-              <li className='btn-cursor' onClick={() => openModal()}>
-                로그인
-              </li>
-              <li>
-                <Link to='signup'>회원가입</Link>
-              </li>
-            </div>
+            <img src={LogOutImg} alt='logout'></img>
           )}
-        </LoginList>
-      </AdminBox>
-      <Category
-        changeCategory={changeCategory}
-        login={login}
-        admin={admin}
-      ></Category>
+          <LoginList>
+            {login ? (
+              <div>
+                <li className='user-name'>{userName}</li>
+                <li className='user-email'>{userEmail}</li>
+              </div>
+            ) : (
+              <div className='login-or-signup'>
+                <li className='btn-cursor' onClick={() => openModal()}>
+                  로그인
+                </li>
+                <b>/</b>
+                <li>
+                  <Link to='signup'> 회원가입</Link>
+                </li>
+              </div>
+            )}
+          </LoginList>
+        </AdminBox>
+        <Category
+          changeCategory={changeCategory}
+          login={login}
+          admin={admin}
+        ></Category>
+      </div>
+
       <OtherBox>
         {login ? (
           <li className='logout-btn' onClick={() => logout()}>

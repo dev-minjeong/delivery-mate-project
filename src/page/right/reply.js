@@ -3,7 +3,6 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 
 import '../../css/view.css';
-import '../../css/main.css';
 
 function Reply({ data, login, admin, loginCheck, userId }) {
   const params = useParams();

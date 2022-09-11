@@ -1,8 +1,119 @@
 import axios from 'axios';
 import { useState } from 'react';
 import Modal from 'react-awesome-modal';
+import styled from 'styled-components';
 import { BackAndClose } from './index.js';
 
+const SearchBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  .input-info {
+    display: flex;
+    width: 300px;
+    margin-top: 25px;
+    h5 {
+      margin-right: 7px;
+    }
+  }
+  .id {
+    margin-top: 40px;
+    input {
+      width: 218px;
+    }
+  }
+  .email {
+    input {
+      width: 100px;
+    }
+    input:nth-child(3) {
+      width: 88px;
+    }
+  }
+  input {
+    background-color: whitesmoke;
+    margin: 0 7px;
+    height: 27px;
+    padding: 7px;
+  }
+`;
+const ResultBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  .search-pw-result {
+    width: 290px;
+    margin-top: 10px;
+  }
+  .input-number-div {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 30px;
+  }
+  .input-number {
+    background-color: whitesmoke;
+    height: 35px;
+    padding: 7px;
+    width: 200px;
+  }
+`;
+const ChangePwBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  .change-pw-result {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 10px 0;
+    width: 350px;
+    span {
+      font-size: 13px;
+    }
+    b {
+      color: red;
+    }
+  }
+  .input-pw {
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+    h5 {
+      margin: 7px 18px 7px 7px;
+    }
+    input {
+      background-color: whitesmoke;
+      height: 35px;
+      padding: 7px;
+      width: 200px;
+    }
+  }
+`;
+const SearchSubmit = styled.div`
+  margin-top: 48px;
+  align-items: center;
+  input {
+    padding: 8px 15px;
+    background-color: #bbf294;
+    cursor: pointer;
+    color: white;
+    font-weight: 900;
+    border-radius: 15px;
+    height: 34px;
+  }
+`;
+const EnterSubmit = styled.div`
+  align-items: center;
+  input {
+    padding: 8px 15px;
+    background-color: #bbf294;
+    cursor: pointer;
+    color: white;
+    font-weight: 900;
+    border-radius: 15px;
+    height: 34px;
+  }
+`;
 function SearchPw({
   searchPwModal,
   closeSearchModal,
@@ -112,13 +223,13 @@ function SearchPw({
           target={target}
         ></BackAndClose>
         {!result ? (
-          <div className='search-box'>
+          <SearchBox>
             <h4>비밀번호 찾기</h4>
-            <div>
+            <div className='input-info id'>
               <h5>아이디</h5>
               <input type='text' maxLength='15' name='search-pw-id'></input>
             </div>
-            <div>
+            <div className='input-info email'>
               <h5>이메일</h5>
               <input type='text' maxLength='20' name='search-pw-email'></input>@
               <input
@@ -127,47 +238,53 @@ function SearchPw({
                 name='search-pw-write-email'
               ></input>
             </div>
-            <div>
+            <SearchSubmit>
               <input
                 type='button'
-                value='조회하기'
+                value='SEARCH'
                 name='search-pw-submit'
                 onClick={() => searchPassword()}
               ></input>
-            </div>
-          </div>
+            </SearchSubmit>
+          </SearchBox>
         ) : !change ? (
-          <div className='result-box'>
+          <ResultBox>
             <h4>비밀번호 찾기</h4>
             <div className='search-pw-result'>
               <p>
                 <b>{userData.email}</b>로 전송된 6자리의 숫자코드를 입력하세요
               </p>
-              <input type='text' maxLength='6' name='pw-secret'></input>
-              <input
-                type='button'
-                value='확인'
-                name='pw-secret-submit'
-                onClick={() => checkSecretCode()}
-              ></input>
+              <div className='input-number-div'>
+                <input
+                  className='input-number'
+                  type='text'
+                  maxLength='6'
+                  name='pw-secret'
+                ></input>
+                <EnterSubmit>
+                  <input
+                    type='button'
+                    value='ENTER'
+                    name='pw-secret-submit'
+                    onClick={() => checkSecretCode()}
+                  />
+                </EnterSubmit>
+              </div>
             </div>
-          </div>
+          </ResultBox>
         ) : (
-          <div className='change-box'>
+          <ChangePwBox>
             <h4>비밀번호 변경</h4>
             <div className='change-pw-result'>
               <span>
-                변경할 비밀번호를 입력하세요
-                <p>
-                  비밀번호는 <b>영문자로 시작하며 영문, 숫자를 포함해 6-20자</b>{' '}
-                  입니다
-                </p>
+                변경할 비밀번호를 입력하세요. 비밀번호는{' '}
+                <b>영문자로 시작하며 영문, 숫자를 포함해 6-20자</b> 입니다
               </span>
-              <div>
+              <div className='input-pw'>
                 <h5>비밀번호</h5>
                 <input type='password' name='change-pw' maxLength='20'></input>
               </div>
-              <div>
+              <div className='input-pw'>
                 <h5>비밀번호 확인</h5>
                 <input
                   type='password'
@@ -175,14 +292,16 @@ function SearchPw({
                   maxLength='20'
                 ></input>
               </div>
-              <input
-                type='button'
-                value='비밀번호 변경'
-                name='change-pw-submit'
-                onClick={() => changePassword()}
-              ></input>
+              <SearchSubmit>
+                <input
+                  type='button'
+                  value='CHANGE'
+                  name='change-pw-submit'
+                  onClick={() => changePassword()}
+                ></input>
+              </SearchSubmit>
             </div>
-          </div>
+          </ChangePwBox>
         )}
       </Modal>
     </>

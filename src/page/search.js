@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import '../css/main.css';
 
 const SearchBox = styled.div`
   background-color: white;
@@ -15,11 +14,7 @@ const SearchBox = styled.div`
     justify-content: space-between;
   }
 `;
-const SearchInput = styled.input`
-  :focus {
-    outline: none;
-  }
-`;
+const SearchInput = styled.input``;
 const SearchSubmit = styled.input`
   width: 17px;
   height: 17px;

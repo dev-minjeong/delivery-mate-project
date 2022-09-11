@@ -17,16 +17,32 @@ const GlobalStyle = createGlobalStyle`
   color: black;
   list-style: none;
   border: none;
-}`;
+}
+svg, path {
+  color: inherit;
+}
+svg{
+  cursor: pointer;
+}
+input {
+    border: none;
+  
+  :focus {
+      outline: none;
+    }
+}
+`;
 const AppBox = styled.div`
   display: flex;
   width: 100%;
+  height: 100%;
 `;
 const RightBox = styled.div`
   display: flex;
   flex-direction: column;
-  width: 80vw;
+  width: ${(props) => (props.left ? '80vw' : '100vw')};
   background-color: whitesmoke;
+  box-sizing: border-box;
 `;
 
 function App() {
@@ -47,7 +63,6 @@ function App() {
   const [listSearch, setListSearch] = useState('');
   // category
   const [categoryData, setCategoryData] = useState([]);
-  const [selectCategory, setSelectCategory] = useState('');
   // board
   const [data, setData] = useState('');
   const [date, setDate] = useState('');
@@ -56,8 +71,14 @@ function App() {
   // join
   const [joinExist, setJoinExist] = useState(null);
   const [joinNum, setJoinNum] = useState('');
+  // css
+  const [pageLeft, setPageLeft] = useState(true);
+  const [pageMain, setPageMain] = useState(true);
+  const [pageRight, setPageRight] = useState('');
 
   const locationSearch = useLocation().search;
+
+  console.log(pageRight);
 
   useEffect(() => {
     getListData();
@@ -183,18 +204,6 @@ function App() {
     const getCategoryData = await axios('/get/category');
     setCategoryData(getCategoryData.data);
   };
-  const selectCategoryData = async (board_id) => {
-    let category = document.getElementsByName('select-category')[0].value;
-    if (board_id) {
-      const getBoardData = await axios('/get/board_data', {
-        method: 'POST',
-        headers: new Headers(),
-        data: { id: board_id },
-      });
-      return setSelectCategory(getBoardData.data[0].food_id);
-    }
-    setSelectCategory(category);
-  };
 
   //Join
   const getJoinExist = (result) => {
@@ -224,9 +233,14 @@ function App() {
           userName={userName}
           userEmail={userEmail}
           userNum={userNum}
+          pageLeft={pageLeft}
         ></Side>
-        <RightBox>
-          <Header login={login} listSearch={listSearch}></Header>
+        <RightBox left={pageLeft}>
+          <Header
+            login={login}
+            listSearch={listSearch}
+            pageMain={pageMain}
+          ></Header>
           <Main
             login={login}
             admin={admin}
@@ -242,8 +256,6 @@ function App() {
             joinNum={joinNum}
             getData={getData}
             categoryData={categoryData}
-            selectCategory={selectCategory}
-            selectCategoryData={selectCategoryData}
             userName={userName}
             writerName={writerName}
             writerPay={writerPay}
@@ -251,6 +263,12 @@ function App() {
             joinExist={joinExist}
             getJoinExist={getJoinExist}
             getBoardJoinData={getBoardJoinData}
+            setPageMain={setPageMain}
+            pageMain={pageMain}
+            pageRight={pageRight}
+            setPageRight={setPageRight}
+            pageLeft={pageLeft}
+            setPageLeft={setPageLeft}
           ></Main>
         </RightBox>
       </AppBox>

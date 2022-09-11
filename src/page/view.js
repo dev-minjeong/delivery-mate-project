@@ -22,11 +22,11 @@ function View({
   writerLon,
   writerName,
   getBoardJoinData,
-  resizePage,
   writerPay,
   loginCheck,
   getLocation,
   joinExist,
+  setPageMain,
 }) {
   const params = useParams();
 
@@ -37,9 +37,9 @@ function View({
 
   useEffect(() => {
     const boardId = params.data;
+    setPageMain(false);
     addViewCnt(boardId);
     getWriterMapData(boardId);
-    resizePage('view-left', 'view-main', 'view-right');
     getBoardJoinData(boardId);
     if (!data) {
       getData(boardId);

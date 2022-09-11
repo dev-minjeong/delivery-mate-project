@@ -7,8 +7,19 @@ import styled from 'styled-components';
 import axios from 'axios';
 
 const MainBox = styled.div`
-  width: 100%;
-  flex-basis: 100%;
+  display: flex;
+  flex-direction: ${(props) => (props.main ? 'colum' : 'row')};
+  align-items: ${(props) => (props.main ? 'center' : 'none')};
+
+  .hidden {
+    width: 0;
+  }
+`;
+const PageMain = styled.div`
+  width: ${(props) => (props.main ? '100%' : '60%')};
+`;
+const PageRight = styled.div`
+  width: ${(props) => (props.main ? '0' : '40%')};
 `;
 
 const Main = ({
@@ -35,12 +46,14 @@ const Main = ({
   joinExist,
   getJoinExist,
   getBoardJoinData,
+  setPageMain,
+  pageMain,
+  pageRight,
+  setPageRight,
+  setPageLeft,
 }) => {
   const [contents, setContents] = useState('');
   const [title, setTitle] = useState('');
-  const [viewLeft, setViewLeft] = useState('');
-  const [viewMain, setViewMain] = useState('');
-  const [viewRight, setViewRight] = useState('');
   const [writerLat, setWriterLat] = useState(0);
   const [writerLon, setWriterLon] = useState(0);
   const [mapModal, setMapModal] = useState(false);
@@ -114,13 +127,6 @@ const Main = ({
   const toggleMapModal = (boolean) => {
     setMapModal(boolean);
   };
-
-  // 구역 비율 재설정
-  const resizePage = (main, right) => {
-    setViewMain(main);
-    setViewRight(right);
-  };
-
   const ListWithProps = withProps(List, {
     listData: listData,
     listAllPage: listAllPage,
@@ -133,7 +139,8 @@ const Main = ({
     getTitles: getTitles,
     contents: contents,
     title: title,
-    resizePage: resizePage,
+    setPageLeft: setPageLeft,
+    setPageMain: setPageMain,
   });
   const WriteModifyWithProps = withProps(Write, {
     getContents: getContents,
@@ -141,7 +148,13 @@ const Main = ({
     contents: contents,
     title: title,
     getModifyData: getModifyData,
-    resizePage: resizePage,
+    setPageLeft: setPageLeft,
+    setPageMain: setPageMain,
+  });
+  const SignUpWithProps = withProps(SignUp, {
+    setPageLeft: setPageLeft,
+    setPageMain: setPageMain,
+    setPageRight: setPageRight,
   });
   const ViewWithProps = withProps(View, {
     login: login,
@@ -157,27 +170,24 @@ const Main = ({
     writerLat: writerLat,
     writerLon: writerLon,
     writerName: writerName,
-    resizePage: resizePage,
+
     writerPay: writerPay,
     loginCheck: loginCheck,
     getLocation: getLocation,
     joinExist: joinExist,
     getJoinExist: getJoinExist,
     getBoardJoinData: getBoardJoinData,
+    setPageMain: setPageMain,
   });
   const RightWriteWithProps = withProps(RightWrite, {
     contents: contents,
     categoryData: categoryData,
-    selectCategory: selectCategory,
-    selectCategoryData: selectCategoryData,
     userName: userName,
     getLocation: getLocation,
   });
   const RightWriteModifyWithProps = withProps(RightWrite, {
     contents: contents,
     categoryData: categoryData,
-    selectCategory: selectCategory,
-    selectCategoryData: selectCategoryData,
     userName: userName,
     getLocation: getLocation,
   });
@@ -190,8 +200,8 @@ const Main = ({
   });
 
   return (
-    <MainBox>
-      <div id='main-center' className={viewMain}>
+    <MainBox main={pageMain}>
+      <PageMain main={pageMain}>
         <Routes>
           <Route path='/' element={<ListWithProps />}></Route>
           <Route path='/write' element={<WriteWithProps />}></Route>
@@ -199,11 +209,11 @@ const Main = ({
             path='/write/modify/:data'
             element={<WriteModifyWithProps />}
           ></Route>
-          <Route path='/signup' element={<SignUp />}></Route>
+          <Route path='/signup' element={<SignUpWithProps />}></Route>
           <Route path='/view/:data' element={<ViewWithProps />}></Route>
         </Routes>
-      </div>
-      <div id='main-right' className={viewRight}>
+      </PageMain>
+      <PageRight main={pageMain} className={pageRight}>
         <Routes>
           <Route path='/write' element={<RightWriteWithProps />}></Route>
           <Route
@@ -215,7 +225,7 @@ const Main = ({
             element={<RightReplyWithProps></RightReplyWithProps>}
           ></Route>
         </Routes>
-      </div>
+      </PageRight>
     </MainBox>
   );
 };

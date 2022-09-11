@@ -1,7 +1,49 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import '../../css/main.css';
 import { Link } from 'react-router-dom';
+import styled from 'styled-components';
+import { MdDelete, MdCheck } from 'react-icons/md';
+
+const CategoryBox = styled.div`
+  margin-top: 30px;
+  li {
+    margin-top: 20px;
+  }
+  .pre-food {
+    font-weight: bold;
+    color: #bbf294;
+  }
+  .category-edit {
+    margin-top: 20px;
+    border: 1px solid;
+    color: #bbf294;
+    margin: 10px 0px 0px 15px;
+    padding: 1px 7px;
+    border-radius: 4px;
+    background-color: inherit;
+    cursor: pointer;
+  }
+`;
+const EditCategory = styled.li`
+  display: flex;
+  justify-content: space-around;
+  .category-remove {
+    font-size: 20px;
+    margin: 7px;
+  }
+  .category-input {
+    width: 90px;
+    background-color: whitesmoke;
+    padding: 7px;
+    border-radius: 10px;
+  }
+  .category-modify {
+    font-size: 20px;
+    color: #f27289;
+    font-weight: bolder;
+    margin: 7px;
+  }
+`;
 
 function Category({ changeCategory, login, admin }) {
   const [category, setCategory] = useState([]);
@@ -81,7 +123,7 @@ function Category({ changeCategory, login, admin }) {
   }
 
   return (
-    <div className='category'>
+    <CategoryBox>
       <ul>
         <li>
           <Link
@@ -91,23 +133,7 @@ function Category({ changeCategory, login, admin }) {
           >
             전체보기
           </Link>
-          {login && admin === 'Y' ? (
-            !edit ? (
-              <input
-                type='button'
-                value='Edit'
-                className='category-edit'
-                onClick={() => setEdit(!edit)}
-              ></input>
-            ) : (
-              <input
-                type='button'
-                value='Add'
-                className='category-edit'
-                onClick={() => addCategory()}
-              ></input>
-            )
-          ) : null}
+
           <hr></hr>
         </li>
         {category.length > 0
@@ -126,33 +152,46 @@ function Category({ changeCategory, login, admin }) {
                 );
               } else {
                 return (
-                  <li className='edit-category' key={key}>
-                    <button
-                      className='remove-btn'
-                      onClick={() => removeCategory(el)}
-                    >
-                      ❌
-                    </button>
+                  <EditCategory key={key}>
+                    <MdCheck
+                      className='category-modify'
+                      onClick={() => modifyCategory(el)}
+                    ></MdCheck>
                     <input
                       type='text'
-                      maxLength='20'
-                      className='input-edit'
+                      maxLength='10'
+                      className='category-input'
                       name={'modify_' + el.id}
                       defaultValue={el.name}
                     ></input>
-                    <button
-                      className='modify-btn'
-                      onClick={() => modifyCategory(el)}
-                    >
-                      ⭕
-                    </button>
-                  </li>
+                    <MdDelete
+                      className='category-remove'
+                      onClick={() => removeCategory(el)}
+                    ></MdDelete>
+                  </EditCategory>
                 );
               }
             })
           : null}
+        {login && admin === 'Y' ? (
+          !edit ? (
+            <input
+              type='button'
+              value='카테고리 수정'
+              className='category-edit'
+              onClick={() => setEdit(!edit)}
+            ></input>
+          ) : (
+            <input
+              type='button'
+              value='카테고리 추가'
+              className='category-edit'
+              onClick={() => addCategory()}
+            ></input>
+          )
+        ) : null}
       </ul>
-    </div>
+    </CategoryBox>
   );
 }
 
