@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 import { Side } from './page/left/index.js';
-import { Header, Login } from './inc/index.js';
+import { Header, Login, PickupMap } from './inc/index.js';
 import { Main } from './page/index.js';
 import queryString from 'query-string';
 import axios from 'axios';
@@ -71,14 +71,17 @@ function App() {
   // join
   const [joinExist, setJoinExist] = useState(null);
   const [joinNum, setJoinNum] = useState('');
+  // map
+  const [mapModal, setMapModal] = useState(false);
+  const [writerLat, setWriterLat] = useState(0);
+  const [writerLon, setWriterLon] = useState();
+  const [mateData, setMateData] = useState([]);
   // css
   const [pageLeft, setPageLeft] = useState(true);
   const [pageMain, setPageMain] = useState(true);
   const [pageRight, setPageRight] = useState('');
 
   const locationSearch = useLocation().search;
-
-  console.log(pageRight);
 
   useEffect(() => {
     getListData();
@@ -101,7 +104,6 @@ function App() {
       headers: new Headers(),
       data: { id: board_id },
     });
-    console.log(getBoardData);
     const date =
       getBoardData.data[0].date.slice(5, 10) +
       ' ' +
@@ -220,6 +222,16 @@ function App() {
     sessionStorage.setItem('join', JSON.stringify(getData.data));
   };
 
+  // map
+  const toggleMapModal = (boolean) => {
+    setMapModal(boolean);
+  };
+  const setWriterMapData = (writer_lat, writer_lon, mate_data) => {
+    setWriterLat(writer_lat);
+    setWriterLon(writer_lon);
+    setMateData(mate_data);
+  };
+
   return (
     <>
       <GlobalStyle></GlobalStyle>
@@ -249,7 +261,6 @@ function App() {
             listSearch={listSearch}
             listPage={listPage}
             changePage={changePage}
-            changeCategory={changeCategory}
             userId={userId}
             data={data}
             date={date}
@@ -267,8 +278,9 @@ function App() {
             pageMain={pageMain}
             pageRight={pageRight}
             setPageRight={setPageRight}
-            pageLeft={pageLeft}
             setPageLeft={setPageLeft}
+            toggleMapModal={toggleMapModal}
+            setWriterMapData={setWriterMapData}
           ></Main>
         </RightBox>
       </AppBox>
@@ -277,6 +289,14 @@ function App() {
         loginModal={loginModal}
         toggleLoginModal={toggleLoginModal}
       ></Login>
+      <PickupMap
+        toggleMapModal={toggleMapModal}
+        mapModal={mapModal}
+        writerLat={writerLat}
+        writerLon={writerLon}
+        mateData={mateData}
+        writerPay={writerPay}
+      ></PickupMap>
     </>
   );
 }

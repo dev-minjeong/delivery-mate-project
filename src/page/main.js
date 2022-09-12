@@ -30,15 +30,12 @@ const Main = ({
   listSearch,
   listPage,
   changePage,
-  changeCategory,
   userId,
   data,
   date,
   joinNum,
   getData,
   categoryData,
-  selectCategory,
-  selectCategoryData,
   userName,
   writerName,
   writerPay,
@@ -51,12 +48,13 @@ const Main = ({
   pageRight,
   setPageRight,
   setPageLeft,
+  toggleMapModal,
+  setWriterMapData,
 }) => {
   const [contents, setContents] = useState('');
   const [title, setTitle] = useState('');
   const [writerLat, setWriterLat] = useState(0);
   const [writerLon, setWriterLon] = useState(0);
-  const [mapModal, setMapModal] = useState(false);
 
   const withProps = (Component, props) => {
     return function (matchProps) {
@@ -124,9 +122,6 @@ const Main = ({
     setWriterLat(data.data[0].writer_lat);
     setWriterLon(data.data[0].writer_lon);
   };
-  const toggleMapModal = (boolean) => {
-    setMapModal(boolean);
-  };
   const ListWithProps = withProps(List, {
     listData: listData,
     listAllPage: listAllPage,
@@ -163,21 +158,21 @@ const Main = ({
     date: date,
     joinNum: joinNum,
     getData: getData,
+    getJoinExist: getJoinExist,
     toggleMapModal: toggleMapModal,
-    mapModal: mapModal,
     userName: userName,
     getWriterMapData: getWriterMapData,
     writerLat: writerLat,
     writerLon: writerLon,
     writerName: writerName,
-
+    getBoardJoinData: getBoardJoinData,
     writerPay: writerPay,
     loginCheck: loginCheck,
     getLocation: getLocation,
     joinExist: joinExist,
-    getJoinExist: getJoinExist,
-    getBoardJoinData: getBoardJoinData,
     setPageMain: setPageMain,
+    setPageLeft: setPageLeft,
+    setWriterMapData: setWriterMapData,
   });
   const RightWriteWithProps = withProps(RightWrite, {
     contents: contents,

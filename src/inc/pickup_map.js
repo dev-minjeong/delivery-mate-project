@@ -3,15 +3,20 @@ import { KakaoMap } from './index.js';
 import { useEffect, useRef, useState } from 'react';
 
 import '../css/map.css';
+import styled from 'styled-components';
 /* global kakao */
+
+const PickupMapBox = styled.div`
+  /* width: 100vw; */
+`;
 
 const PickupMap = ({
   toggleMapModal,
   mapModal,
+  writerPay,
   writerLat,
   writerLon,
   mateData,
-  writerPay,
 }) => {
   const [centerLat, setCenterLat] = useState(0);
   const [centerLon, setCenterLon] = useState(0);
@@ -89,14 +94,13 @@ const PickupMap = ({
   }, [
     centerLat,
     centerLon,
+    markers,
     mateData,
     writerLat,
     writerLon,
-    markers,
     writerPay,
   ]);
   const addCenterMarker = () => {
-    console.log(pickupLat, pickupLon);
     const centerImgSrc =
       'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png';
     const imageSize = new kakao.maps.Size(24, 35);
@@ -112,23 +116,23 @@ const PickupMap = ({
       name: '픽업장소',
     });
     const content = `
-    <div class-"center-custom-overlay" style="position: relative; bottom: 70px;
-      border-radius: 6px; border: 1px solid #ccc;border-bottom: 2px solid #ddd;
-      float: left; border: 0;box-shadow: 0px 1px 2px #888;">
-      <a href="https://map.kakao.com/link/to/픽업장소
-      ,${pickupLat} ,${pickupLon}" target="_blank" style="display: block;
-        text-decoration: none;color: #000; text-align: center; border-radius: 6px;
-        font-size: 14px; font-weight: bold; overflow: hidden; background: #fbc02d;
-        background: #fbc02d
-          url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/arrow_white.png)
-          no-repeat right 14px center;">
-        <span class="title" style="display: block; text-align: center;
-          background: #fff; margin-right: 35px; padding: 10px 10px;
-          font-size: 14px; font-weight: bold;">
-        픽업장소</span>
-      </a>
-    </div>
-  `;
+      <div class-"center-custom-overlay" style="position: relative; bottom: 70px;
+        border-radius: 6px; border: 1px solid #ccc;border-bottom: 2px solid #ddd;
+        float: left; border: 0;box-shadow: 0px 1px 2px #888;">
+        <a href="https://map.kakao.com/link/to/픽업장소
+        ,${pickupLat} ,${pickupLon}" target="_blank" style="display: block;
+          text-decoration: none;color: #000; text-align: center; border-radius: 6px;
+          font-size: 14px; font-weight: bold; overflow: hidden; background: #fbc02d;
+          background: #fbc02d
+            url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/arrow_white.png)
+            no-repeat right 14px center;">
+          <span class="title" style="display: block; text-align: center;
+            background: #fff; margin-right: 35px; padding: 10px 10px;
+            font-size: 14px; font-weight: bold;">
+          픽업장소</span>
+        </a>
+      </div>
+    `;
     const customOverlay = new kakao.maps.CustomOverlay({
       map: map,
       position: new kakao.maps.LatLng(pickupLat, pickupLon),
@@ -141,7 +145,7 @@ const PickupMap = ({
   };
 
   return (
-    <>
+    <PickupMapBox>
       <Modal
         visible={mapModal}
         width='400px'
@@ -157,7 +161,7 @@ const PickupMap = ({
           ✖
         </div>
       </Modal>
-    </>
+    </PickupMapBox>
   );
 };
 export default PickupMap;

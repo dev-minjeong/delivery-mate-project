@@ -5,6 +5,15 @@ import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { PickupMap, Calculate, Join, PageMove } from './../inc/index.js';
 import { Loading } from './index.js';
+import styled from 'styled-components';
+
+const ViewBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding: 0 0 35px 60px;
+  position: sticky;
+  top: 135px;
+`;
 
 function View({
   login,
@@ -15,7 +24,6 @@ function View({
   getData,
   getJoinExist,
   toggleMapModal,
-  mapModal,
   userName,
   getWriterMapData,
   writerLat,
@@ -27,6 +35,8 @@ function View({
   getLocation,
   joinExist,
   setPageMain,
+  setPageLeft,
+  setWriterMapData,
 }) {
   const params = useParams();
 
@@ -36,6 +46,8 @@ function View({
   const [mateData, setMateData] = useState([]);
 
   useEffect(() => {
+    setPageMain(false);
+    setPageLeft(false);
     const boardId = params.data;
     setPageMain(false);
     addViewCnt(boardId);
@@ -171,10 +183,11 @@ function View({
 
   // 지도
   const openMapModal = () => {
+    setWriterMapData(writerLat, writerLon, mateData);
     return toggleMapModal(true);
   };
   return (
-    <>
+    <ViewBox>
       {loading ? (
         <Loading></Loading>
       ) : (
@@ -247,20 +260,12 @@ function View({
                   </div>
                 ) : null}
               </div>
-              <PickupMap
-                toggleMapModal={toggleMapModal}
-                mapModal={mapModal}
-                writerLat={writerLat}
-                writerLon={writerLon}
-                mateData={mateData}
-                writerPay={writerPay}
-              ></PickupMap>
               <PageMove></PageMove>
             </div>
           ) : null}
         </div>
       )}
-    </>
+    </ViewBox>
   );
 }
 export default View;
