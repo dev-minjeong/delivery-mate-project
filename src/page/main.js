@@ -10,7 +10,6 @@ const MainBox = styled.div`
   display: flex;
   flex-direction: ${(props) => (props.main ? 'colum' : 'row')};
   align-items: ${(props) => (props.main ? 'center' : 'none')};
-
   .hidden {
     width: 0;
   }
@@ -37,24 +36,27 @@ const Main = ({
   getData,
   categoryData,
   userName,
-  writerName,
-  writerPay,
   loginCheck,
-  joinExist,
-  getJoinExist,
-  getBoardJoinData,
   setPageMain,
   pageMain,
   pageRight,
   setPageRight,
   setPageLeft,
-  toggleMapModal,
-  setWriterMapData,
+  setPageFooter,
+  getLocation,
+  getBoardJoinData,
+  getWriterMapData,
+  mateData,
+  writerLat,
+  writerLon,
+  writerName,
+  joinExist,
+  getJoinExist,
+  setJoinExist,
+  setBoardId,
 }) => {
   const [contents, setContents] = useState('');
   const [title, setTitle] = useState('');
-  const [writerLat, setWriterLat] = useState(0);
-  const [writerLon, setWriterLon] = useState(0);
 
   const withProps = (Component, props) => {
     return function (matchProps) {
@@ -80,48 +82,7 @@ const Main = ({
   };
 
   // 지도
-  const getLocation = () => {
-    if (navigator.geolocation) {
-      return new Promise((resolve) => {
-        navigator.geolocation.getCurrentPosition(
-          function (position) {
-            resolve({
-              latitude: position.coords.latitude,
-              longitude: position.coords.longitude,
-            });
-          },
-          function (error) {
-            console.log(error);
-            resolve({
-              latitude: 33.450701,
-              longitude: 126.570667,
-            });
-          },
-          {
-            enableHighAccuracy: false,
-            maximumAge: 0,
-            timeout: Infinity,
-          }
-        );
-      }).then((coords) => {
-        return coords;
-      });
-    }
-    alert('GPS를 지원하지 않습니다');
-    return {
-      latitude: 33.450701,
-      longitude: 126.570667,
-    };
-  };
-  const getWriterMapData = async (board_id) => {
-    const data = await axios('/get/board_data', {
-      method: 'POST',
-      headers: new Headers(),
-      data: { id: board_id },
-    });
-    setWriterLat(data.data[0].writer_lat);
-    setWriterLon(data.data[0].writer_lon);
-  };
+
   const ListWithProps = withProps(List, {
     listData: listData,
     listAllPage: listAllPage,
@@ -152,27 +113,26 @@ const Main = ({
     setPageRight: setPageRight,
   });
   const ViewWithProps = withProps(View, {
-    login: login,
     admin: admin,
     data: data,
     date: date,
     joinNum: joinNum,
     getData: getData,
-    getJoinExist: getJoinExist,
-    toggleMapModal: toggleMapModal,
     userName: userName,
+    setPageMain: setPageMain,
+    setPageLeft: setPageLeft,
+    setPageFooter: setPageFooter,
+    getBoardJoinData: getBoardJoinData,
     getWriterMapData: getWriterMapData,
+    mateData: mateData,
     writerLat: writerLat,
     writerLon: writerLon,
     writerName: writerName,
-    getBoardJoinData: getBoardJoinData,
-    writerPay: writerPay,
-    loginCheck: loginCheck,
-    getLocation: getLocation,
     joinExist: joinExist,
-    setPageMain: setPageMain,
-    setPageLeft: setPageLeft,
-    setWriterMapData: setWriterMapData,
+    login: login,
+    getJoinExist: getJoinExist,
+    setJoinExist: setJoinExist,
+    setBoardId: setBoardId,
   });
   const RightWriteWithProps = withProps(RightWrite, {
     contents: contents,
