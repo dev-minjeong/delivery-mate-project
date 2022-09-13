@@ -9,7 +9,7 @@ const HeaderBox = styled.div`
   flex-wrap: wrap;
   position: sticky;
   top: 0;
-  height: 100px;
+  height: 15vh;
   justify-content: space-between;
   background-color: whitesmoke;
   padding: 30px 40px;

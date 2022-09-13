@@ -3,7 +3,7 @@ import React from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import { Side } from './page/left/index.js';
 import { Header, Login, PickupMap } from './inc/index.js';
-import { Footer, Main } from './page/index.js';
+import { Main } from './page/index.js';
 import queryString from 'query-string';
 import axios from 'axios';
 import styled, { createGlobalStyle } from 'styled-components';
@@ -40,10 +40,8 @@ const AppBox = styled.div`
 const RightBox = styled.div`
   display: flex;
   flex-direction: column;
-  height: 100%;
   width: ${(props) => (props.left ? '80vw' : '100vw')};
   background-color: whitesmoke;
-  box-sizing: border-box;
 `;
 
 function App() {
@@ -69,20 +67,18 @@ function App() {
   const [date, setDate] = useState('');
   const [writerName, setWriterName] = useState('');
   const [writerPay, setWriterPay] = useState(false);
-  const [boardId, setBoardId] = useState('');
   // join
   const [joinExist, setJoinExist] = useState(null);
   const [joinNum, setJoinNum] = useState('');
   // map
+  const [mateData, setMateData] = useState([]);
   const [mapModal, setMapModal] = useState(false);
   const [writerLat, setWriterLat] = useState(0);
-  const [writerLon, setWriterLon] = useState();
-  const [mateData, setMateData] = useState([]);
+  const [writerLon, setWriterLon] = useState(0);
   // css
   const [pageLeft, setPageLeft] = useState(true);
   const [pageMain, setPageMain] = useState(true);
   const [pageRight, setPageRight] = useState('');
-  const [pageFooter, setPageFooter] = useState(false);
 
   const locationSearch = useLocation().search;
 
@@ -226,39 +222,6 @@ function App() {
   };
 
   // map
-  const getLocation = () => {
-    if (navigator.geolocation) {
-      return new Promise((resolve) => {
-        navigator.geolocation.getCurrentPosition(
-          function (position) {
-            resolve({
-              latitude: position.coords.latitude,
-              longitude: position.coords.longitude,
-            });
-          },
-          function (error) {
-            console.log(error);
-            resolve({
-              latitude: 33.450701,
-              longitude: 126.570667,
-            });
-          },
-          {
-            enableHighAccuracy: false,
-            maximumAge: 0,
-            timeout: Infinity,
-          }
-        );
-      }).then((coords) => {
-        return coords;
-      });
-    }
-    alert('GPS를 지원하지 않습니다');
-    return {
-      latitude: 33.450701,
-      longitude: 126.570667,
-    };
-  };
   const toggleMapModal = (boolean) => {
     setMapModal(boolean);
   };
@@ -267,16 +230,6 @@ function App() {
     setWriterLon(writer_lon);
     setMateData(mate_data);
   };
-  const getWriterMapData = async (board_id) => {
-    const data = await axios('/get/board_data', {
-      method: 'POST',
-      headers: new Headers(),
-      data: { id: board_id },
-    });
-    setWriterLat(data.data[0].writer_lat);
-    setWriterLon(data.data[0].writer_lon);
-  };
-
   return (
     <>
       <GlobalStyle></GlobalStyle>
@@ -292,7 +245,7 @@ function App() {
           userNum={userNum}
           pageLeft={pageLeft}
         ></Side>
-        <RightBox left={pageLeft}>
+        <RightBox left={pageLeft} main={pageMain}>
           <Header
             login={login}
             listSearch={listSearch}
@@ -319,37 +272,16 @@ function App() {
             pageRight={pageRight}
             setPageRight={setPageRight}
             setPageLeft={setPageLeft}
-            setPageFooter={setPageFooter}
-            getLocation={getLocation}
             getBoardJoinData={getBoardJoinData}
-            getWriterMapData={getWriterMapData}
-            mateData={mateData}
-            writerLat={writerLat}
-            writerLon={writerLon}
             writerName={writerName}
             joinExist={joinExist}
             getJoinExist={getJoinExist}
             setJoinExist={setJoinExist}
-            setBoardId={setBoardId}
-          ></Main>
-          <Footer
-            pageFooter={pageFooter}
-            userName={userName}
-            writerName={writerName}
-            joinNum={joinNum}
             writerPay={writerPay}
-            setWriterMapData={setWriterMapData}
-            loginCheck={loginCheck}
-            writerLat={writerLat}
-            writerLon={writerLon}
-            getJoinExist={getJoinExist}
-            getData={getData}
-            login={login}
             toggleMapModal={toggleMapModal}
-            mateData={mateData}
-            joinExist={joinExist}
-            boardId={boardId}
-          ></Footer>
+            setWriterMapData={setWriterMapData}
+            userNum={userNum}
+          ></Main>
         </RightBox>
       </AppBox>
       <Login

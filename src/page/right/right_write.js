@@ -9,7 +9,7 @@ import { BiChevronsDown } from 'react-icons/bi';
 const RightWriteBox = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 35px 60px 35px 0;
+  padding: 6vh 7vw 0 0;
   .select-option {
     display: flex;
     margin: 0 3px 5px 3px;
@@ -134,7 +134,7 @@ const MapSetting = styled.div`
   }
 `;
 const PostSubmitBtn = styled.div`
-  margin-top: 50px;
+  margin-top: 30px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -144,6 +144,7 @@ const PostSubmitBtn = styled.div`
     }
   }
   button {
+    cursor: pointer;
     font-size: 14px;
     font-weight: bolder;
     height: 50px;
@@ -165,7 +166,13 @@ const PostSubmitBtn = styled.div`
     font-weight: bold;
   }
 `;
-function RightWrite({ contents, categoryData, userName, getLocation }) {
+function RightWrite({
+  contents,
+  categoryData,
+  userName,
+  userNum,
+  getLocation,
+}) {
   const params = useParams();
   const [writerLat, setWriterLat] = useState(0);
   const [writerLon, setWriterLon] = useState(0);
@@ -210,6 +217,7 @@ function RightWrite({ contents, categoryData, userName, getLocation }) {
         contents: contents,
         category: category,
         writer_name: userName,
+        writer_id: userNum,
         writer_lat: writerLat,
         writer_lon: writerLon,
         pay: deliveryCost,
@@ -230,6 +238,7 @@ function RightWrite({ contents, categoryData, userName, getLocation }) {
         category: category,
         board_id: params.data,
         writer_name: userName,
+        writer_id: userNum,
         writer_lat: writerLat,
         writer_lon: writerLon,
         pay: deliveryCost,
@@ -382,10 +391,10 @@ function RightWrite({ contents, categoryData, userName, getLocation }) {
         </MapSetting>
       </DetailOptions>
       <PostSubmitBtn handle={submitBtn}>
+        <label>모든 옵션 설정 시 포스팅이 가능합니다.</label>
         <button onClick={() => submitBoard()} disabled={!submitBtn}>
           {!params.data ? '게시글 올리기' : '게시글 수정'}
         </button>
-        <label>모든 옵션 설정 시 포스팅이 가능합니다.</label>
       </PostSubmitBtn>
     </RightWriteBox>
   );

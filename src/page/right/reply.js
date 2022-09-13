@@ -3,6 +3,11 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 
 import '../../css/view.css';
+import styled from 'styled-components';
+
+const ReplyBox = styled.div`
+  /* width: 40vw; */
+`;
 
 function Reply({ data, login, admin, loginCheck, userId }) {
   const params = useParams();
@@ -69,7 +74,7 @@ function Reply({ data, login, admin, loginCheck, userId }) {
     return window.location.reload();
   };
   return (
-    <div className='reply-box'>
+    <ReplyBox className='reply-box'>
       <h5>댓글</h5>
       <div className='reply-write'>
         <div className='reply-value'>
@@ -140,7 +145,7 @@ function Reply({ data, login, admin, loginCheck, userId }) {
           <h5>작성된 댓글이 없습니다.</h5>
         )}
       </div>
-    </div>
+    </ReplyBox>
   );
 }
 export default Reply;

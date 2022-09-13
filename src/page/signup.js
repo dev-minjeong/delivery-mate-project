@@ -8,6 +8,7 @@ const SignUpBox = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding-top: 6vh;
   #signup-title {
     color: #454545;
   }
@@ -35,6 +36,7 @@ const SignUpInfo = styled.div`
       border: 2px solid #bbf294;
       border-radius: 2px;
       height: 35px;
+      background-color: inherit;
     }
   }
   .signup-bday div {
@@ -77,7 +79,7 @@ const SignUpInfo = styled.div`
   }
 `;
 const SignUpSubmit = styled.div`
-  margin-top: 40px;
+  margin-top: 8vh;
   input {
     font-size: 16px;
     font-weight: 900;

@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { LogoImg } from '../img/index.js';
+import { LogoImg, UserImg } from '../img/index.js';
 
 const ListContainer = styled.div`
-  padding-bottom: 40px;
+  /* padding-bottom: 40px; */
 `;
 const ListBox = styled.div`
   display: flex;
   flex-direction: column;
   background-color: white;
   line-height: 40px;
-  margin: 30px;
+  margin: 8vh 8vw;
   padding: 15px 25px 25px 25px;
   border-radius: 10px;
   box-shadow: 2px 1px 10px 0px rgba(0, 0, 0, 0.2);
@@ -23,11 +23,11 @@ const ListBox = styled.div`
     margin-right: 20px;
     color: gray;
     font-size: 15px;
-  }
-  .list-join img {
-    width: 20px;
-    height: 20px;
-    margin: auto;
+    img {
+      width: 20px;
+      height: 20px;
+      margin-right: 3px;
+    }
   }
   .list-title {
     color: black;
@@ -53,16 +53,23 @@ const PageingBox = styled.div`
 `;
 
 function List({ listData, listAllPage, listSearch, listPage, changePage }) {
+  // const [userImgSrc, setUserImgSrc] = useState('');
+  // useEffect(() => {}, [])
   return (
     <ListContainer>
       <div>
         {listData !== '[]' && listData.length > 0 ? (
           JSON.parse(listData).map((el, key) => {
             const view_url = '/view/' + el.board_id;
+            const num = el.writer_id % 10;
+
             return (
               <ListBox key={key}>
                 <div className='list-info'>
-                  <div className='list-writer'>{el.writer_name}</div>
+                  <div className='list-writer'>
+                    <img src={UserImg.images[num]} alt='user-img' />
+                    {el.writer_name}
+                  </div>
                   <div className='list-join'>
                     <img src={LogoImg} alt='logo-img' />
                     {' ' + el.join_cnt}

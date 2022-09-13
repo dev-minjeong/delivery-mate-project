@@ -7,13 +7,12 @@ import { LogoImg } from '../img/index.js';
 const WriteBox = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 0 0 35px 60px;
+  padding: 6vh 0 0 7vw;
   position: sticky;
   top: 135px;
   .write-title {
     margin: 0 3px;
     display: flex;
-
     h2 {
     }
     img {
