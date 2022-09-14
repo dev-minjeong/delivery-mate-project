@@ -1,15 +1,164 @@
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
+import { RiDeleteBinLine } from 'react-icons/ri';
+import { LogoImg, UserImg } from '../../img';
 
-import '../../css/view.css';
 import styled from 'styled-components';
 
+const ReplyContainer = styled.div`
+  height: 71vh;
+  width: 40vw;
+  padding: 2vh auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+const PhoneBox = styled.div`
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  justify-content: space-between;
+  border-radius: 20px;
+  aspect-ratio: 2 / 3;
+  margin-right: 3vh;
+  padding: 5vh 1vh;
+  border: 2px solid black;
+  .reply-title {
+    background-color: whitesmoke;
+    flex-basis: 6%;
+    display: flex;
+    justify-content: center;
+    padding: 3px;
+    border: 2px solid black;
+    div {
+      border-radius: 20px;
+      background-color: #f27289;
+      height: 100%;
+      color: whitesmoke;
+      padding: 0 6px;
+      margin-left: 7px;
+      font-size: 13px;
+    }
+  }
+`;
 const ReplyBox = styled.div`
-  /* width: 40vw; */
+  height: 50vh;
+  overflow-y: auto;
+  flex-basis: 80%;
+  background-color: white;
+  padding: 10px;
+
+  border-right: 2px solid black;
+  border-left: 2px solid black;
+  .reply-list-box {
+    display: flex;
+    flex-direction: column;
+    .reply-lists-box {
+      display: flex;
+      .tail {
+        font-size: 20px;
+        color: whitesmoke;
+        line-height: 20px;
+        display: flex;
+        align-items: center;
+      }
+    }
+  }
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+  ::-webkit-scrollbar-thumb {
+    background-color: gray;
+    border-radius: 10px;
+    background-clip: padding-box;
+    border: 2px solid transparent;
+  }
+  ::-webkit-scrollbar-track {
+    background-color: #dddddd;
+    border-radius: 10px;
+    box-shadow: inset 0px 0px 5px white;
+  }
 `;
 
-function Reply({ data, login, admin, loginCheck, userId }) {
+const ReplyList = styled.div`
+  display: flex;
+  flex-direction: column;
+  background-color: whitesmoke;
+  margin-top: 10px;
+  border-radius: 20px;
+  width: 100%;
+  padding: 7px 10px;
+  div {
+    display: flex;
+    justify-content: space-between;
+
+    p {
+      color: darkgray;
+      font-size: 13px;
+    }
+    span {
+      font-size: 15px;
+    }
+    svg {
+      margin-top: 5px;
+    }
+  }
+`;
+const ReplyNickNameBox = styled.div`
+  img {
+    width: 15px;
+    height: 15px;
+    margin-right: 5px;
+  }
+`;
+const ReplyNickName = styled.h5`
+  color: ${(props) => (props.writerReply ? '#BBF294' : 'black')};
+  font-weight: bold;
+`;
+const ReplyWrite = styled.div`
+  display: flex;
+  justify-content: space-between;
+  padding: 3%;
+  flex-basis: 14%;
+  background-color: whitesmoke;
+  border: 2px solid black;
+  .reply-value {
+    height: 100%;
+    flex-basis: 80%;
+    textarea {
+      resize: none;
+      font-size: 13px;
+      line-height: 13px;
+      /* line-height: 30%; */
+      width: 100%;
+      border-radius: 10px;
+      padding: 5%;
+    }
+    padding-right: 4%;
+  }
+  input {
+    flex-basis: 20%;
+    height: 60%;
+    background-color: #f27289;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    aspect-ratio: 5 / 3;
+    margin-top: 4%;
+  }
+`;
+
+function Reply({
+  data,
+  login,
+  admin,
+  loginCheck,
+  userId,
+  writerName,
+  userName,
+  joinExist,
+}) {
   const params = useParams();
   const [replyData, setReplyData] = useState([]);
   const [replyNum, setReplyNum] = useState(null);
@@ -20,7 +169,6 @@ function Reply({ data, login, admin, loginCheck, userId }) {
       getReplyData(boardId);
     }
   }, []);
-
   const getReplyData = async (board_id) => {
     const data = await axios('/get/reply_data', {
       method: 'POST',
@@ -69,83 +217,113 @@ function Reply({ data, login, admin, loginCheck, userId }) {
         headers: new Headers(),
         data: { reply_id: reply_id },
       });
+
+      alert('댓글이 삭제되었습니다.');
+      return window.location.reload();
     }
-    alert('댓글이 삭제되었습니다.');
-    return window.location.reload();
   };
   return (
-    <ReplyBox className='reply-box'>
-      <h5>댓글</h5>
-      <div className='reply-write'>
-        <div className='reply-value'>
-          <textarea
-            rows='3'
-            placeholder='댓글 작성 시 참여 가능합니다'
-            maxLength='100'
-            name='reply-write'
-            onClick={() => loginCheck()}
-          ></textarea>
-          <input type='file'></input>
+    <ReplyContainer>
+      <PhoneBox>
+        <div className='reply-title'>
+          <h5>"{writerName}"님의 채팅방</h5>
+          <div>{replyNum}</div>
         </div>
+        {joinExist || admin === 'Y' || userName === writerName ? (
+          <ReplyBox id='reply-box-scroll'>
+            {replyData.length > 0 && replyNum > 0 ? (
+              <div className='reply-list-box'>
+                {replyData.map((el, key) => {
+                  let nickname = el.user.name;
+                  el.user.admin === 'Y' && (nickname = '관리자');
+                  let date = el.date.slice(11, 16);
+                  let num = el.user.user_id % 10;
+                  return (
+                    <div className='reply-lists-box' key={key}>
+                      {el.user.name === data.data[0].writer_name ? (
+                        <span className='tail'>◀</span>
+                      ) : null}
 
-        <input
-          type='button'
-          value='등록'
-          id='reply-submit-btn'
-          onClick={() => addReply()}
-        ></input>
-      </div>
-      <div className='reply-list-box'>
-        {replyData.length > 0 && replyNum > 0 ? (
-          <div>
-            <h5>{replyNum}개의 댓글이 있습니다.</h5>
-            {replyData.map((el, key) => {
-              let nickname = el.user.name;
-              if (el.user.admin === 'Y') {
-                nickname = '관리자';
-              }
-              let date = el.date.slice(5, 10) + ' ' + el.date.slice(11, 16);
-              return (
-                <div className='reply-list' key={key}>
-                  <div className='reply-contents'>
-                    <div
-                      style={
-                        el.user.admin === 'Y' ||
-                        el.user.name === data.data[0].writer_name
-                          ? { fontWeight: 'bold', color: 'blue' }
-                          : null
-                      }
-                      className='reply-list-id'
-                    >
-                      {nickname}
+                      <ReplyList>
+                        <div className='reply-info'>
+                          <ReplyNickNameBox>
+                            <img
+                              src={
+                                el.user.admin === 'Y'
+                                  ? LogoImg
+                                  : UserImg.images[num]
+                              }
+                              alt='user-img'
+                            />
+                            <ReplyNickName
+                              writerReply={
+                                el.user.name === data.data[0].writer_name
+                              }
+                              style={
+                                el.user.admin === 'Y'
+                                  ? {
+                                      color: '#f27289',
+                                    }
+                                  : null
+                              }
+                              className='reply-name'
+                            >
+                              {nickname}
+                            </ReplyNickName>
+                          </ReplyNickNameBox>
+
+                          <p className='reply-list-date'>{date}</p>
+                        </div>
+                        <div className='reply-contents'>
+                          <span
+                            dangerouslySetInnerHTML={{ __html: el.contents }}
+                            className='reply-list-contents'
+                          ></span>
+                          {(login && login === el.user.id) || admin === 'Y' ? (
+                            <RiDeleteBinLine
+                              className='reply-delete-btn'
+                              onClick={() => removeReply(el.reply_id)}
+                            ></RiDeleteBinLine>
+                          ) : (
+                            <div></div>
+                          )}
+                        </div>
+                      </ReplyList>
+                      {el.user.name === data.data[0].writer_name ? null : (
+                        <span className='tail'>▶</span>
+                      )}
                     </div>
-                    <div
-                      dangerouslySetInnerHTML={{ __html: el.contents }}
-                      className='reply-list-contents'
-                    ></div>
-                  </div>
-                  <div className='reply-delete-date'>
-                    {(login && login === el.user.id) || admin === 'Y' ? (
-                      <input
-                        type='button'
-                        value='❌'
-                        className='reply-delete-btn'
-                        onClick={() => removeReply(el.reply_id)}
-                      ></input>
-                    ) : (
-                      <div></div>
-                    )}
-                    <div className='reply-list-date'>{date}</div>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
+                  );
+                })}
+              </div>
+            ) : (
+              <h5>작성된 댓글이 없습니다.</h5>
+            )}
+          </ReplyBox>
         ) : (
-          <h5>작성된 댓글이 없습니다.</h5>
+          <h5>참여 후 댓글을 달 수 있습니다</h5>
         )}
-      </div>
-    </ReplyBox>
+
+        <ReplyWrite>
+          <div className='reply-value'>
+            <textarea
+              rows='2'
+              placeholder='댓글을 입력하세요'
+              maxLength='50'
+              name='reply-write'
+              onClick={() => loginCheck()}
+            ></textarea>
+          </div>
+
+          <input
+            type='button'
+            value='등록'
+            id='reply-submit-btn'
+            onClick={() => addReply()}
+          ></input>
+        </ReplyWrite>
+      </PhoneBox>
+    </ReplyContainer>
   );
 }
 export default Reply;

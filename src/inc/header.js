@@ -9,7 +9,7 @@ const HeaderBox = styled.div`
   flex-wrap: wrap;
   position: sticky;
   top: 0;
-  height: 15vh;
+  height: ${(props) => (props.footer ? '14vh' : '16vh')};
   justify-content: space-between;
   background-color: whitesmoke;
   padding: 30px 40px;
@@ -29,14 +29,14 @@ const WriteBtn = styled.div`
   }
 `;
 
-const Header = ({ login, listSearch, pageMain }) => {
+const Header = ({ login, listSearch, pageMain, pageFooter }) => {
   const handleHeader = () => {
     window.location.href = '/';
     sessionStorage.removeItem('page');
     sessionStorage.setItem('category', '');
   };
   return (
-    <HeaderBox main={pageMain}>
+    <HeaderBox main={pageMain} footer={pageFooter}>
       <div className='header-left'>
         <Routes>
           <Route path='/' />

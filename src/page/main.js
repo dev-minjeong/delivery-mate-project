@@ -57,6 +57,7 @@ const Main = ({
   toggleMapModal,
   setWriterMapData,
   userNum,
+  setPageFooter,
 }) => {
   const [contents, setContents] = useState('');
   const [title, setTitle] = useState('');
@@ -172,6 +173,7 @@ const Main = ({
     setPageLeft: setPageLeft,
     joinNum: joinNum,
     userNum: userNum,
+    setPageFooter: setPageFooter,
   });
   const RightWriteWithProps = withProps(RightWrite, {
     contents: contents,
@@ -193,6 +195,9 @@ const Main = ({
     admin: admin,
     loginCheck: loginCheck,
     userId: userId,
+    joinExist: joinExist,
+    userName: userName,
+    writerName: writerName,
   });
   const FooterWithProps = withProps(Footer, {
     userName: userName,

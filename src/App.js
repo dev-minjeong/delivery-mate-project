@@ -79,6 +79,7 @@ function App() {
   const [pageLeft, setPageLeft] = useState(true);
   const [pageMain, setPageMain] = useState(true);
   const [pageRight, setPageRight] = useState('');
+  const [pageFooter, setPageFooter] = useState(false);
 
   const locationSearch = useLocation().search;
 
@@ -250,6 +251,7 @@ function App() {
             login={login}
             listSearch={listSearch}
             pageMain={pageMain}
+            pageFooter={pageFooter}
           ></Header>
           <Main
             login={login}
@@ -281,6 +283,7 @@ function App() {
             toggleMapModal={toggleMapModal}
             setWriterMapData={setWriterMapData}
             userNum={userNum}
+            setPageFooter={setPageFooter}
           ></Main>
         </RightBox>
       </AppBox>

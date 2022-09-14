@@ -8,7 +8,7 @@ const JoinBox = styled.div`
     justify-content: space-between;
     background-color: whitesmoke;
     width: 150px;
-    height: 55px;
+    height: 9vh;
     border-radius: 30px;
     cursor: pointer;
     box-shadow: 2px 1px 10px 0px rgba(0, 0, 0, 0.2);
@@ -29,8 +29,8 @@ const JoinBox = styled.div`
       display: block;
     }
     img {
-      width: 55px;
-      height: 55px;
+      width: 9vh;
+      height: 9vh;
       box-sizing: content-box;
     }
     .join-title-default {
@@ -49,7 +49,7 @@ const JoinBox = styled.div`
   }
 `;
 const JoinTitle = styled.div`
-  line-height: 55px;
+  line-height: 9vh;
   font-size: 14px;
   width: 100px;
   span {

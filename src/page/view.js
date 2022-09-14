@@ -1,6 +1,4 @@
 import axios from 'axios';
-
-import '../css/view.css';
 import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { PageMove } from './../inc/index.js';
@@ -11,7 +9,7 @@ import { LogoImg, UserImg } from '../img';
 const ViewBox = styled.div`
   position: fixed;
   width: 60vw;
-  height: 70vh;
+  height: 72vh;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -56,6 +54,7 @@ const ContentsBox = styled.div`
   #content-txt {
     padding: 20px;
     font-size: 15px;
+    font-weight: bold;
   }
   .contents-info {
     display: flex;
@@ -89,6 +88,7 @@ function View({
   setPageLeft,
   setPageMain,
   joinNum,
+  setPageFooter,
 }) {
   const params = useParams();
 
@@ -99,6 +99,7 @@ function View({
   useEffect(() => {
     setPageLeft(false);
     setPageMain(false);
+    setPageFooter(true);
 
     const boardId = params.data;
     addViewCnt(boardId);

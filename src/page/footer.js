@@ -7,9 +7,9 @@ import { Calculate, Join } from '../inc/index.js';
 const FooterBox = styled.div`
   position: fixed;
   bottom: 0;
-  padding: 3vh 10vw;
+  padding: 2.5vh 10vw;
   width: 100%;
-  height: 15vh;
+  height: 14vh;
   background-color: #2b2b2b;
   display: flex;
   justify-content: space-between;
@@ -19,7 +19,7 @@ const SettingBox = styled.div`
   display: flex;
   input {
     width: 100px;
-    height: 45px;
+    height: 8vh;
     cursor: pointer;
     border: 2px solid #c9f2ac;
     background-color: inherit;
