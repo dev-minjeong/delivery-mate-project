@@ -1,13 +1,16 @@
 import Modal from 'react-awesome-modal';
 import { KakaoMap } from './index.js';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 
-import '../css/map.css';
 import styled from 'styled-components';
 /* global kakao */
 
-const PickupMapBox = styled.div`
-  /* width: 100vw; */
+const MapCloseBtn = styled.div`
+  color: white;
+  text-align: end;
+  font-size: 20px;
+  margin: 5px;
+  cursor: pointer;
 `;
 
 const PickupMap = ({
@@ -145,7 +148,7 @@ const PickupMap = ({
   };
 
   return (
-    <PickupMapBox>
+    <>
       <Modal
         visible={mapModal}
         width='400px'
@@ -157,11 +160,9 @@ const PickupMap = ({
           className='pickupMap'
           addCenterMarker={addCenterMarker}
         ></KakaoMap>
-        <div className='map-close-btn' onClick={() => toggleMapModal(false)}>
-          ✖
-        </div>
+        <MapCloseBtn onClick={() => toggleMapModal(false)}>✖</MapCloseBtn>
       </Modal>
-    </PickupMapBox>
+    </>
   );
 };
 export default PickupMap;
