@@ -7,7 +7,6 @@ import {
   IoArrowForwardCircleOutline,
   IoHomeOutline,
 } from 'react-icons/io5';
-// import { IoMdHome } from 'react-icons/io4';
 const OtherBox = styled.div`
   flex-basis: 20%;
   display: flex;
@@ -38,14 +37,13 @@ const PageMoveBox = styled.div`
   }
 `;
 
-const PageMove = () => {
+const PageMove = ({ changeViewPage }) => {
   const [preUrl, setPreUrl] = useState('');
   const [nextUrl, setNextUrl] = useState('');
   const [preView, setPreView] = useState('');
   const [nextView, setNextView] = useState('');
 
   const params = useParams();
-
   useEffect(() => {
     const boardId = params.data;
     if (preView.length) {
@@ -57,8 +55,7 @@ const PageMove = () => {
     if (preView === '' || nextView === '') {
       getPreNextData(boardId);
     }
-  }, []);
-
+  }, [nextView, preView]);
   const getPreNextData = async (board_id) => {
     const category = sessionStorage.getItem('category');
 
@@ -70,24 +67,14 @@ const PageMove = () => {
     setPreView(res.data.pre);
     setNextView(res.data.next);
   };
-
-  const changeViewPage = (url) => {
-    if (url === 'null_pre') {
-      return alert('첫 게시물 입니다');
-    } else if (url === 'null_next') {
-      return alert('마지막 게시물 입니다');
-    }
-    return (window.location.href = url);
-  };
   return (
     <OtherBox>
-      <PageMoveBox>
-        <IoArrowBackCircleOutline
-          className='pre-btn'
-          onClick={() =>
-            preUrl ? changeViewPage(preUrl) : changeViewPage('null_pre')
-          }
-        ></IoArrowBackCircleOutline>
+      <PageMoveBox
+        onClick={() =>
+          preUrl ? changeViewPage(preUrl) : changeViewPage('null_pre')
+        }
+      >
+        <IoArrowBackCircleOutline className='pre-btn'></IoArrowBackCircleOutline>
         {preView.length > 0 ? (
           preView[0].title.length > 5 ? (
             <p>{`${preView[0].title.slice(0, 5)}..`}</p>
@@ -102,13 +89,12 @@ const PageMove = () => {
         className='home-btn'
         onClick={() => (window.location.href = '/')}
       ></IoHomeOutline>
-      <PageMoveBox>
-        <IoArrowForwardCircleOutline
-          className='next-btn'
-          onClick={() =>
-            nextUrl ? changeViewPage(nextUrl) : changeViewPage('null_next')
-          }
-        ></IoArrowForwardCircleOutline>
+      <PageMoveBox
+        onClick={() =>
+          nextUrl ? changeViewPage(nextUrl) : changeViewPage('null_next')
+        }
+      >
+        <IoArrowForwardCircleOutline className='next-btn'></IoArrowForwardCircleOutline>
 
         {nextView.length > 0 ? (
           nextView[0].title.length > 5 ? (

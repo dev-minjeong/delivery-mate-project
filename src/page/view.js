@@ -137,8 +137,15 @@ function View({
       return (window.location.href = '/');
     }
   };
-  // 참여자
 
+  const changeViewPage = (url) => {
+    if (url === 'null_pre') {
+      return alert('첫 게시물 입니다');
+    } else if (url === 'null_next') {
+      return alert('마지막 게시물 입니다');
+    }
+    return (window.location.href = url);
+  };
   return (
     <>
       {loading ? (
@@ -196,7 +203,7 @@ function View({
                 </div>
               </ContentsBox>
 
-              <PageMove></PageMove>
+              <PageMove changeViewPage={changeViewPage}></PageMove>
             </ViewBox>
           ) : null}
         </div>
