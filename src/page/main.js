@@ -55,6 +55,7 @@ const Main = ({
   setJoinExist,
   writerPay,
   toggleMapModal,
+  toggleCalcModal,
   setWriterMapData,
   userNum,
   setPageFooter,
@@ -218,6 +219,7 @@ const Main = ({
     getBoardJoinData: getBoardJoinData,
     login: login,
     getLocation: getLocation,
+    toggleCalcModal: toggleCalcModal,
   });
 
   return (

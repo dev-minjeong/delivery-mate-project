@@ -52,13 +52,13 @@ const Footer = ({
   setJoinExist,
   setWriterMapData,
   toggleMapModal,
+  toggleCalcModal,
   data,
   getWriterMapData,
   getBoardJoinData,
   login,
   getLocation,
 }) => {
-  const [toggleCalcModal, setToggleCalcModal] = useState(false);
   const [mateData, setMateData] = useState([]);
 
   const params = useParams();
@@ -164,7 +164,7 @@ const Footer = ({
     return toggleMapModal(true);
   };
   const openCalcMaodal = () => {
-    setToggleCalcModal(true);
+    return toggleCalcModal(true);
   };
 
   return (
@@ -186,19 +186,9 @@ const Footer = ({
           {userName === writerName ? null : (
             <input
               type='button'
-              value='송금하기'
+              value='금액계산'
               onClick={() => openCalcMaodal()}
             ></input>
-          )}
-          {toggleCalcModal ? (
-            <Calculate
-              writerPay={writerPay}
-              writerName={writerName}
-              userName={userName}
-              joinNum={joinNum}
-            ></Calculate>
-          ) : (
-            <div></div>
           )}
         </SettingBox>
       ) : null}
