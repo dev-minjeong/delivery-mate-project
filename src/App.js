@@ -1,12 +1,13 @@
-import { useState, useEffect } from 'react';
 import React from 'react';
-import { useLocation, useParams } from 'react-router-dom';
-import { Side } from './page/left/index.js';
-import { Calculate, Header, Login, PickupMap } from './inc/index.js';
-import { Main } from './page/index.js';
+import { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import queryString from 'query-string';
 import axios from 'axios';
 import styled, { createGlobalStyle } from 'styled-components';
+
+import { Side } from './page/left/index.js';
+import { Calculate, Header, Login, PickupMap } from './inc/index.js';
+import { Main } from './page/index.js';
 
 const GlobalStyle = createGlobalStyle`
 *{
@@ -209,7 +210,7 @@ function App() {
     setCategoryData(getCategoryData.data);
   };
 
-  //Join
+  // Join
   const getJoinExist = (result) => {
     setJoinExist(result);
   };
@@ -233,10 +234,12 @@ function App() {
     setWriterLon(writer_lon);
     setMateData(mate_data);
   };
+
   // calc
   const toggleCalcModal = (boolean) => {
     setCalcModal(boolean);
   };
+
   return (
     <>
       <GlobalStyle></GlobalStyle>
@@ -278,14 +281,12 @@ function App() {
             setPageMain={setPageMain}
             pageMain={pageMain}
             pageRight={pageRight}
-            setPageRight={setPageRight}
             setPageLeft={setPageLeft}
             getBoardJoinData={getBoardJoinData}
             writerName={writerName}
             joinExist={joinExist}
             getJoinExist={getJoinExist}
             setJoinExist={setJoinExist}
-            writerPay={writerPay}
             toggleMapModal={toggleMapModal}
             toggleCalcModal={toggleCalcModal}
             setWriterMapData={setWriterMapData}

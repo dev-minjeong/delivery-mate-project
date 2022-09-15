@@ -1,7 +1,8 @@
 import { Route, Routes, Link } from 'react-router-dom';
-import { Search } from '../page/index.js';
 import React from 'react';
 import styled from 'styled-components';
+
+import { Search } from '../page/index.js';
 import { AiFillEdit } from 'react-icons/ai';
 
 const HeaderBox = styled.div`

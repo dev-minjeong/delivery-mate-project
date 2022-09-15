@@ -1,10 +1,26 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+
 import { LogoImg, UserImg } from '../img/index.js';
 
 const ListContainer = styled.div`
-  /* padding-bottom: 40px; */
+  height: 84vh;
+  overflow-y: auto;
+  ::-webkit-scrollbar {
+    width: 13px;
+  }
+  ::-webkit-scrollbar-thumb {
+    background-color: gray;
+    border-radius: 10px;
+    background-clip: padding-box;
+    border: 2px solid transparent;
+  }
+  ::-webkit-scrollbar-track {
+    background-color: whitesmoke;
+    border-radius: 10px;
+    box-shadow: inset 0px 0px 5px white;
+  }
 `;
 const ListBox = styled.div`
   display: flex;
@@ -53,8 +69,6 @@ const PageingBox = styled.div`
 `;
 
 function List({ listData, listAllPage, listSearch, listPage, changePage }) {
-  // const [userImgSrc, setUserImgSrc] = useState('');
-  // useEffect(() => {}, [])
   return (
     <ListContainer>
       <div>

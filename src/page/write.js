@@ -1,14 +1,17 @@
 import { useEffect } from 'react';
 import { useParams } from 'react-router';
-import { Ckeditor } from './../inc/index.js';
 import styled from 'styled-components';
+
+import { Ckeditor } from './../inc/index.js';
 import { LogoImg } from '../img/index.js';
 
 const WriteBox = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 6vh 0 0 7vw;
-  position: sticky;
+  padding: 1vh 0 0 7vw;
+  position: fixed;
+  width: 60vw;
+  height: 84vh;
   top: 135px;
   .write-title {
     margin: 0 3px;
@@ -62,6 +65,7 @@ function Write({
       getModifyData(params.data);
     }
   }, []);
+  
   return (
     <WriteBox>
       <div className='write-title'>

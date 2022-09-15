@@ -2,6 +2,7 @@ import axios from 'axios';
 import { useState } from 'react';
 import Modal from 'react-awesome-modal';
 import styled from 'styled-components';
+
 import { BackAndClose } from './index.js';
 
 const SearchBox = styled.div`
@@ -61,7 +62,6 @@ const SearchIdResult = styled.div`
     }
   }
 `;
-
 const SearchSubmit = styled.div`
   margin-top: 30px;
   align-items: center;
@@ -75,6 +75,7 @@ const SearchSubmit = styled.div`
     height: 34px;
   }
 `;
+
 function SearchId({
   searchIdModal,
   closeSearchModal,

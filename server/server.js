@@ -14,6 +14,7 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 
 sequelize.sync();
+
 // Sequelize 이용해 모든 테이블 초기화 하는 기능 -> 조심히 써야함
 // sequelize.sync({ force: true })
 

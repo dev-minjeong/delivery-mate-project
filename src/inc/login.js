@@ -2,9 +2,9 @@ import Modal from 'react-awesome-modal';
 import axios from 'axios';
 import { useState } from 'react';
 import React from 'react';
-import '../App.css';
-import { SearchId, SearchPw } from './index.js';
 import styled from 'styled-components';
+
+import { SearchId, SearchPw } from './index.js';
 import { IoClose } from 'react-icons/io5';
 
 const LoginContainer = styled.div`
@@ -33,7 +33,7 @@ const LoginBox = styled.div`
       width: 200px;
       height: 30px;
       padding: 8px;
-      background-color: gainsboro;
+      background-color: whitesmoke;
     }
   }
   .login-submit {
@@ -159,11 +159,7 @@ function Login({ handleLogin, loginModal, toggleLoginModal }) {
                 ></input>
               </div>
               <div className='login-submit'>
-                <input
-                  type='submit'
-                  value='LOGIN'
-                  // onClick={() => selectUserData()}
-                ></input>
+                <input type='submit' value='LOGIN'></input>
               </div>
             </LoginBox>
           </form>

@@ -1,14 +1,13 @@
-import { Routes, Route, useParams } from 'react-router-dom';
-import { Write, List, View, SignUp, Footer } from './index.js';
-import { RightWrite, Reply } from './right/index.js';
+import { Routes, Route } from 'react-router-dom';
 import { useState } from 'react';
-
 import styled from 'styled-components';
 import axios from 'axios';
 
+import { Write, List, View, SignUp, Footer } from './index.js';
+import { RightWrite, Reply } from './right/index.js';
+
 const MainBox = styled.div`
   height: 100%;
-
   .hidden {
     width: 0;
   }
@@ -25,7 +24,6 @@ const PageLeft = styled.div`
 const PageRight = styled.div`
   width: ${(props) => (props.main ? '0' : '40%')};
 `;
-const PageFooter = styled.div``;
 
 const Main = ({
   login,
@@ -46,14 +44,12 @@ const Main = ({
   setPageMain,
   pageMain,
   pageRight,
-  setPageRight,
   setPageLeft,
   getBoardJoinData,
   writerName,
   joinExist,
   getJoinExist,
   setJoinExist,
-  writerPay,
   toggleMapModal,
   toggleCalcModal,
   setWriterMapData,
@@ -62,7 +58,6 @@ const Main = ({
 }) => {
   const [contents, setContents] = useState('');
   const [title, setTitle] = useState('');
-
   const [writerLat, setWriterLat] = useState(0);
   const [writerLon, setWriterLon] = useState(0);
 
@@ -133,8 +128,6 @@ const Main = ({
     setWriterLon(data.data[0].writer_lon);
   };
 
-  // 지도
-
   const ListWithProps = withProps(List, {
     listData: listData,
     listAllPage: listAllPage,
@@ -162,7 +155,6 @@ const Main = ({
   const SignUpWithProps = withProps(SignUp, {
     setPageLeft: setPageLeft,
     setPageMain: setPageMain,
-    setPageRight: setPageRight,
   });
   const ViewWithProps = withProps(View, {
     admin: admin,
@@ -173,7 +165,6 @@ const Main = ({
     setPageMain: setPageMain,
     setPageLeft: setPageLeft,
     joinNum: joinNum,
-    userNum: userNum,
     setPageFooter: setPageFooter,
   });
   const RightWriteWithProps = withProps(RightWrite, {
@@ -203,8 +194,6 @@ const Main = ({
   const FooterWithProps = withProps(Footer, {
     userName: userName,
     writerName: writerName,
-    joinNum: joinNum,
-    writerPay: writerPay,
     joinExist: joinExist,
     loginCheck: loginCheck,
     getJoinExist: getJoinExist,
@@ -214,12 +203,12 @@ const Main = ({
     setJoinExist: setJoinExist,
     setWriterMapData: setWriterMapData,
     toggleMapModal: toggleMapModal,
+    toggleCalcModal: toggleCalcModal,
     data: data,
     getWriterMapData: getWriterMapData,
     getBoardJoinData: getBoardJoinData,
     login: login,
     getLocation: getLocation,
-    toggleCalcModal: toggleCalcModal,
   });
 
   return (
@@ -251,14 +240,14 @@ const Main = ({
           </Routes>
         </PageRight>
       </PageMain>
-      <PageFooter>
+      <div>
         <Routes>
           <Route
             path='/view/:data'
             element={<FooterWithProps></FooterWithProps>}
           ></Route>
         </Routes>
-      </PageFooter>
+      </div>
     </MainBox>
   );
 };

@@ -1,8 +1,9 @@
-import { Category } from './index.js';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { LogOutImg, UserImg } from '../../img/index.js';
 import { useEffect, useState } from 'react';
+
+import { Category } from './index.js';
+import { LogOutImg, UserImg } from '../../img/index.js';
 
 const SideBox = styled.div`
   position: sticky;

@@ -6,11 +6,6 @@ const MapContainer = styled.div`
     min-height: 200px;
   }
   .settingMap + #addMarkerBtn {
-    /* width: 10px;
-    height: 10px;
-    position: absolute;
-    top: 8px;
-    left: 8px; */
     visibility: hidden;
   }
   .pickupMap {

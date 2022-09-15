@@ -1,8 +1,9 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { SettingMap } from './../../inc/index.js';
 import styled from 'styled-components';
+
+import { SettingMap } from './../../inc/index.js';
 import { LogoImg } from './../../img/index';
 import { BiChevronsDown } from 'react-icons/bi';
 
@@ -83,7 +84,6 @@ const RadioCategory = styled.div`
     }
   }
 `;
-
 const RadioPay = styled.div`
   width: 100%;
   display: flex;
@@ -134,7 +134,7 @@ const MapSetting = styled.div`
   }
 `;
 const PostSubmitBtn = styled.div`
-  margin-top: 30px;
+  margin: 30px 0;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -166,6 +166,7 @@ const PostSubmitBtn = styled.div`
     font-weight: bold;
   }
 `;
+
 function RightWrite({
   contents,
   categoryData,
@@ -179,7 +180,6 @@ function RightWrite({
   const [paySelect, setPaySelect] = useState('');
   const [submitBtn, setSubmitBtn] = useState(false);
   const [deliveryCost, setDeliveryCost] = useState(0);
-  const [detailBtn, setDetailBtn] = useState('');
   const [selectCategory, setSelectCategory] = useState('');
 
   useEffect(() => {
@@ -188,6 +188,7 @@ function RightWrite({
       selectCategoryData(params.data);
     }
   }, []);
+
   const inputCost = () => {
     if (paySelect === 'pay') {
       setDeliveryCost(0);
@@ -292,6 +293,7 @@ function RightWrite({
       return setSelectCategory(getBoardData.data[0].food_id);
     }
   };
+  
   return (
     <RightWriteBox>
       <div className='select-option'>

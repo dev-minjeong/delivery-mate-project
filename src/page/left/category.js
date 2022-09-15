@@ -2,6 +2,7 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+
 import { MdDelete, MdCheck } from 'react-icons/md';
 
 const CategoryBox = styled.div`

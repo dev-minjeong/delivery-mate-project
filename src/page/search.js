@@ -14,7 +14,6 @@ const SearchBox = styled.div`
     justify-content: space-between;
   }
 `;
-const SearchInput = styled.input``;
 const SearchSubmit = styled.input`
   width: 17px;
   height: 17px;
@@ -29,14 +28,14 @@ const Search = (props) => {
   return (
     <SearchBox>
       <form>
-        <SearchInput
+        <input
           type='text'
           maxLength='20'
           className='search-input'
           name='search'
           placeholder='검색어를 입력하세요'
           defaultValue={props.search}
-        ></SearchInput>
+        ></input>
         <SearchSubmit
           type='submit'
           value=' '

@@ -1,10 +1,11 @@
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { RiDeleteBinLine } from 'react-icons/ri';
-import { LogoImg, UserImg } from '../../img';
-
 import styled from 'styled-components';
+
+import { Loading } from '../index.js';
+import { LogoImg, UserImg } from '../../img';
+import { RiDeleteBinLine } from 'react-icons/ri';
 
 const ReplyContainer = styled.div`
   height: 71vh;
@@ -75,12 +76,11 @@ const ReplyBox = styled.div`
     border: 2px solid transparent;
   }
   ::-webkit-scrollbar-track {
-    background-color: #dddddd;
+    background-color: whitesmoke;
     border-radius: 10px;
     box-shadow: inset 0px 0px 5px white;
   }
 `;
-
 const ReplyList = styled.div`
   display: flex;
   flex-direction: column;
@@ -162,12 +162,14 @@ function Reply({
   const params = useParams();
   const [replyData, setReplyData] = useState([]);
   const [replyNum, setReplyNum] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const boardId = params.data;
     if (replyNum === null) {
       getReplyData(boardId);
     }
+    setLoading(false);
   }, []);
   const getReplyData = async (board_id) => {
     const data = await axios('/get/reply_data', {
@@ -229,79 +231,89 @@ function Reply({
           <h5>"{writerName}"님의 채팅방</h5>
           <div>{replyNum}</div>
         </div>
-        {joinExist || admin === 'Y' || userName === writerName ? (
-          <ReplyBox id='reply-box-scroll'>
-            {replyData.length > 0 && replyNum > 0 ? (
-              <div className='reply-list-box'>
-                {replyData.map((el, key) => {
-                  let nickname = el.user.name;
-                  el.user.admin === 'Y' && (nickname = '관리자');
-                  let date = el.date.slice(11, 16);
-                  let num = el.user.user_id % 10;
-                  return (
-                    <div className='reply-lists-box' key={key}>
-                      {el.user.name === data.data[0].writer_name ? (
-                        <span className='tail'>◀</span>
-                      ) : null}
 
-                      <ReplyList>
-                        <div className='reply-info'>
-                          <ReplyNickNameBox>
-                            <img
-                              src={
-                                el.user.admin === 'Y'
-                                  ? LogoImg
-                                  : UserImg.images[num]
-                              }
-                              alt='user-img'
-                            />
-                            <ReplyNickName
-                              writerReply={
-                                el.user.name === data.data[0].writer_name
-                              }
-                              style={
-                                el.user.admin === 'Y'
-                                  ? {
-                                      color: '#f27289',
-                                    }
-                                  : null
-                              }
-                              className='reply-name'
-                            >
-                              {nickname}
-                            </ReplyNickName>
-                          </ReplyNickNameBox>
+        {loading ? (
+          <Loading></Loading>
+        ) : (
+          <>
+            {joinExist || admin === 'Y' || userName === writerName ? (
+              <ReplyBox id='reply-box-scroll'>
+                {replyData.length > 0 && replyNum > 0 ? (
+                  <div className='reply-list-box'>
+                    {replyData.map((el, key) => {
+                      let nickname = el.user.name;
+                      el.user.admin === 'Y' && (nickname = '관리자');
+                      let date = el.date.slice(11, 16);
+                      let num = el.user.user_id % 10;
+                      return (
+                        <div className='reply-lists-box' key={key}>
+                          {el.user.name === data.data[0].writer_name ? (
+                            <span className='tail'>◀</span>
+                          ) : null}
 
-                          <p className='reply-list-date'>{date}</p>
-                        </div>
-                        <div className='reply-contents'>
-                          <span
-                            dangerouslySetInnerHTML={{ __html: el.contents }}
-                            className='reply-list-contents'
-                          ></span>
-                          {(login && login === el.user.id) || admin === 'Y' ? (
-                            <RiDeleteBinLine
-                              className='reply-delete-btn'
-                              onClick={() => removeReply(el.reply_id)}
-                            ></RiDeleteBinLine>
-                          ) : (
-                            <div></div>
+                          <ReplyList>
+                            <div className='reply-info'>
+                              <ReplyNickNameBox>
+                                <img
+                                  src={
+                                    el.user.admin === 'Y'
+                                      ? LogoImg
+                                      : UserImg.images[num]
+                                  }
+                                  alt='user-img'
+                                />
+                                <ReplyNickName
+                                  writerReply={
+                                    el.user.name === data.data[0].writer_name
+                                  }
+                                  style={
+                                    el.user.admin === 'Y'
+                                      ? {
+                                          color: '#f27289',
+                                        }
+                                      : null
+                                  }
+                                  className='reply-name'
+                                >
+                                  {nickname}
+                                </ReplyNickName>
+                              </ReplyNickNameBox>
+
+                              <p className='reply-list-date'>{date}</p>
+                            </div>
+                            <div className='reply-contents'>
+                              <span
+                                dangerouslySetInnerHTML={{
+                                  __html: el.contents,
+                                }}
+                                className='reply-list-contents'
+                              ></span>
+                              {(login && login === el.user.id) ||
+                              admin === 'Y' ? (
+                                <RiDeleteBinLine
+                                  className='reply-delete-btn'
+                                  onClick={() => removeReply(el.reply_id)}
+                                ></RiDeleteBinLine>
+                              ) : (
+                                <div></div>
+                              )}
+                            </div>
+                          </ReplyList>
+                          {el.user.name === data.data[0].writer_name ? null : (
+                            <span className='tail'>▶</span>
                           )}
                         </div>
-                      </ReplyList>
-                      {el.user.name === data.data[0].writer_name ? null : (
-                        <span className='tail'>▶</span>
-                      )}
-                    </div>
-                  );
-                })}
-              </div>
+                      );
+                    })}
+                  </div>
+                ) : (
+                  <h5>작성된 댓글이 없습니다.</h5>
+                )}
+              </ReplyBox>
             ) : (
-              <h5>작성된 댓글이 없습니다.</h5>
+              <h5>참여 후 댓글을 볼 수 있습니다</h5>
             )}
-          </ReplyBox>
-        ) : (
-          <h5>참여 후 댓글을 달 수 있습니다</h5>
+          </>
         )}
 
         <ReplyWrite>

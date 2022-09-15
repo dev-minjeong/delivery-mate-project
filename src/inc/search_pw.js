@@ -2,6 +2,7 @@ import axios from 'axios';
 import { useState } from 'react';
 import Modal from 'react-awesome-modal';
 import styled from 'styled-components';
+
 import { BackAndClose } from './index.js';
 
 const SearchBox = styled.div`

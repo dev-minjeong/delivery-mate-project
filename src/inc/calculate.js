@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import Modal from 'react-awesome-modal';
 import styled from 'styled-components';
+
 import { IoClose } from 'react-icons/io5';
 
 const CalcBox = styled.div`

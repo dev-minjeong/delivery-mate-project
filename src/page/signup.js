@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
+
 import { IoRemove } from 'react-icons/io5';
 import { FiAtSign } from 'react-icons/fi';
 
@@ -28,7 +29,6 @@ const SignUpInfo = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-
     input {
       width: 220px;
       padding: 10px;
@@ -93,7 +93,7 @@ const SignUpSubmit = styled.div`
   }
 `;
 
-const SignUp = ({ setPageLeft, setPageMain, setPageRight }) => {
+const SignUp = ({ setPageLeft, setPageMain }) => {
   const [emailWriter, setEmailWriter] = useState(false);
   const [input, setInput] = useState(false);
   const [currName, setCurrName] = useState('');
@@ -101,7 +101,6 @@ const SignUp = ({ setPageLeft, setPageMain, setPageRight }) => {
   useEffect(() => {
     setPageLeft(false);
     setPageMain(true);
-    // setPageRight('hidden');
   }, []);
 
   const changeEmailSelect = () => {
@@ -134,7 +133,6 @@ const SignUp = ({ setPageLeft, setPageMain, setPageRight }) => {
     }
     const email = emailId + '@' + emailSelect;
 
-    // 정규표현식
     // 아이디, 비번이 영문자로 시작하고, 6-20글자수인지 확인
     const checkId = /^[a-z]+[a-z0-9]{5,19}$/g;
     if (!checkId.test(id)) {

@@ -2,11 +2,13 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 import styled from 'styled-components';
+
 import {
   IoArrowBackCircleOutline,
   IoArrowForwardCircleOutline,
   IoHomeOutline,
 } from 'react-icons/io5';
+
 const OtherBox = styled.div`
   flex-basis: 20%;
   display: flex;

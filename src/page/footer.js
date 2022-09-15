@@ -2,7 +2,8 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import { Calculate, Join } from '../inc/index.js';
+
+import { Join } from '../inc/index.js';
 
 const FooterBox = styled.div`
   position: fixed;
@@ -41,8 +42,6 @@ const SettingBox = styled.div`
 const Footer = ({
   userName,
   writerName,
-  joinNum,
-  writerPay,
   joinExist,
   loginCheck,
   getJoinExist,

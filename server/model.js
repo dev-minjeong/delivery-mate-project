@@ -1,6 +1,3 @@
-// db에 직접 접근 가능
-
-// sequelize 연동하기
 const sequelize = require('./models').sequelize;
 
 // 테이블을 서버로 가져와 읽을 수 있도록 함
@@ -21,7 +18,6 @@ module.exports = {
         where: { [Op.and]: [{ id: body.id, password: hash }] }, // user_id와 password의 조건문들이 모두 일치 시 실행
       })
         .then((data) => {
-          // 아이디와 비번이 일치 시 실행
           callback(data);
         })
         .catch((err) => {
@@ -67,6 +63,7 @@ module.exports = {
         food_id: body.category,
         join_cnt: 0,
         writer_name: body.writer_name,
+        writer_id: body.writer_id,
         writer_lat: body.writer_lat,
         writer_lon: body.writer_lon,
         pay: body.pay,
@@ -94,7 +91,6 @@ module.exports = {
       });
     },
     user: (body, hash_pw, now_date, callback) => {
-      //   // 아이디 존재 유무 확인
       User.count({
         where: { id: body.id },
       }).then((cnt) => {
@@ -181,10 +177,6 @@ module.exports = {
             name: body.name,
           },
         });
-        // .then(() => callback(true))
-        // .catch((err) => {
-        //   throw err;
-        // });
       }
       callback(true);
     },
@@ -195,6 +187,7 @@ module.exports = {
           contents: body.contents,
           food_id: body.category,
           writer_name: body.writer_name,
+          writer_id: body.writer_id,
           writer_lat: body.writer_lat,
           writer_lon: body.writer_lon,
           pay: body.pay,
