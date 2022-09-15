@@ -17,6 +17,8 @@ const HeaderBox = styled.div`
   .logo-title {
     color: black;
     cursor: pointer;
+    font-size: 23px;
+    font-weight: 900;
   }
   .header-right {
     display: flex;

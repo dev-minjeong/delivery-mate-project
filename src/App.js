@@ -11,6 +11,10 @@ import { Main } from './page/index.js';
 
 const GlobalStyle = createGlobalStyle`
 *{
+@font-face {
+  font-family: 'nanum';
+  src: url('./font/NanumSquareR.ttf');
+}
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -18,6 +22,7 @@ const GlobalStyle = createGlobalStyle`
   color: black;
   list-style: none;
   border: none;
+  font-family: 'nanum';
 }
 svg, path {
   color: inherit;
