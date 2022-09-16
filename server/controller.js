@@ -12,6 +12,9 @@ const now_date = moment().format('YYYY-MM-DD HH:mm:ss');
 
 const user_ip = require('ip');
 
+const dotenv = require('dotenv');
+dotenv.config();
+
 // 이메일 전송
 const nodeMailer = require('nodemailer');
 // 이메일 발송 서비스 환경설정
@@ -21,14 +24,14 @@ const mailPoster = nodeMailer.createTransport({
   port: 465,
   secure: true,
   auth: {
-    user: '',
-    pass: '',
+    user: process.env.REACT_APP_MAILS_EMAIL,
+    pass: process.env.REACT_APP_MAILS_PWD,
   },
 });
 // 이메일 받을 유저설정
 const mailOption = (user_data, title, contents) => {
   const mail_options = {
-    from: '',
+    from: process.env.REACT_APP_MAILS_EMAIL,
     to: user_data.email,
     subject: title,
     text: contents,
@@ -48,8 +51,8 @@ const sendMail = (mailOpt) => {
 
 // const AWS = require('aws-sdk');
 // AWS.config.loadFromPath(
-// loadFromPath로 json파일을 path모듈로 연결
-// path.join(__dirname, 'config', 'awsConfig.json')
+//loadFromPath로 json파일을 path모듈로 연결
+//   path.join(__dirname, 'config', 'awsConfig.json')
 // );
 
 module.exports = {

@@ -133,7 +133,7 @@ const SignUp = ({ setPageLeft, setPageMain }) => {
     }
     const email = emailId + '@' + emailSelect;
 
-    // 아이디, 비번이 영문자로 시작하고, 6-20글자수인지 확인
+    // 아이디, 비번이 영문자로 시작하고, 숫자를 포함, 6-20글자수인지 확인
     const checkId = /^[a-z]+[a-z0-9]{5,19}$/g;
     if (!checkId.test(id)) {
       return alert('아이디를 다시 입력하세요');
@@ -144,15 +144,14 @@ const SignUp = ({ setPageLeft, setPageMain }) => {
     } else if (pw !== pwCheck) {
       return alert('비밀번호가 일치하지 않습니다');
     }
-    // 올바른 형태의 이메일 확인
     if (name.length === 0 || name.length < 2) {
-      return alert('이름을 다시 입력하세요');
+      return alert('이름/닉네임을 다시 입력하세요');
     } else if (bday.length < 6 || sex.length === 0) {
       return alert('생년월일을 모두 입력하세요');
     } else if (isNaN(Number(bday)) || isNaN(Number(sex))) {
       return alert('생년월일은 숫자로만 입력 가능합니다');
     }
-
+    // 올바른 형태의 이메일 확인
     const emailCheck =
       /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
     if (!email.match(emailCheck)) {
@@ -207,7 +206,7 @@ const SignUp = ({ setPageLeft, setPageMain }) => {
             {currName === 'signup-id' ? (
               !input ? (
                 <label className='input-warn'>
-                  아이디는 영문자로 시작하며, 6~20자 입니다
+                  아이디는 영문자로 시작하며, 숫자를 포함해 6~20자 입니다
                 </label>
               ) : null
             ) : null}
@@ -224,7 +223,7 @@ const SignUp = ({ setPageLeft, setPageMain }) => {
             {currName === 'signup-pw' ? (
               !input ? (
                 <label className='input-warn'>
-                  비밀번호는 영문자로 시작하며, 6~20자 입니다
+                  비밀번호는 영문자로 시작하며, 숫자를 포함해 6~20자 입니다
                 </label>
               ) : null
             ) : null}
@@ -246,7 +245,9 @@ const SignUp = ({ setPageLeft, setPageMain }) => {
             ></input>
             {currName === 'signup-name' ? (
               !input ? (
-                <label className='input-warn'>이름은 2자 이상 입니다</label>
+                <label className='input-warn'>
+                  이름/닉네임은 2자 이상 입니다
+                </label>
               ) : null
             ) : null}
           </div>

@@ -13,6 +13,9 @@ const bodyParser = require('body-parser');
 // 쿠키 기능 적용
 const cookieParser = require('cookie-parser');
 
+const dotenv = require('dotenv');
+dotenv.config();
+
 sequelize.sync();
 
 // Sequelize 이용해 모든 테이블 초기화 하는 기능 -> 조심히 써야함
