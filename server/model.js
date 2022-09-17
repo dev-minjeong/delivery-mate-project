@@ -299,10 +299,9 @@ module.exports = {
             },
           },
         },
-        limit: body.page * body.limit,
+        limit: body.limit,
         offset: (body.page - 1) * body.limit,
         order: sequelize.literal('board_id DESC'),
-        // 마지막으로 생성된 데이터부터 차례로 가져올 수 있음
       })
         .then((data) => {
           callback(data);

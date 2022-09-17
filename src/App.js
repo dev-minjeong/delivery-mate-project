@@ -92,6 +92,7 @@ function App() {
 
   useEffect(() => {
     getListData();
+    setPage();
     getAllCategoryData();
     if (sessionStorage.login && sessionStorage.IP) {
       setLogin(JSON.parse(sessionStorage.login).id);
@@ -111,6 +112,37 @@ function App() {
       };
     });
   }, [history]);
+
+  // 로그인
+  const handleLogin = (data) => {
+    sessionStorage.setItem('login', JSON.stringify(data.suc));
+    sessionStorage.setItem('IP', JSON.stringify(data.ip));
+
+    setLogin(JSON.parse(sessionStorage.login).id);
+    setAdmin(JSON.stringify(data.suc).admin);
+    setUserIp(JSON.parse(sessionStorage.IP));
+    setUserId(JSON.parse(sessionStorage.login).user_id);
+
+    return window.location.reload();
+  };
+  const handleLogout = () => {
+    setLogin(false);
+    setAdmin(false);
+    setUserIp('');
+    sessionStorage.removeItem('login');
+    sessionStorage.removeItem('IP');
+  };
+  const loginCheck = () => {
+    if (!login) {
+      alert('로그인후 이용 가능합니다');
+      toggleLoginModal(true);
+      return false;
+    }
+    return true;
+  };
+  const toggleLoginModal = (boolean) => {
+    setLoginModal(boolean);
+  };
 
   // 보드
   const getData = async (board_id) => {
@@ -147,7 +179,7 @@ function App() {
 
   // 리스트
   const getListData = async () => {
-    const listPages = setPage();
+    const pageNum = setPage();
 
     let categorys = '';
     if (sessionStorage.getItem('category')) {
@@ -167,13 +199,12 @@ function App() {
       headers: new Headers(),
       data: {
         limit: listLimit,
-        page: listPages,
+        page: pageNum,
         search: search,
         category: categorys,
       },
     });
     let pageArr = [];
-    console.log(totalCnt.data);
     for (let i = 1; i <= Math.ceil(totalCnt.data.cnt / listLimit); i++) {
       pageArr.push(i);
     }
@@ -182,40 +213,10 @@ function App() {
     setListSearch(search);
   };
 
-  // 로그인
-  const handleLogin = (data) => {
-    sessionStorage.setItem('login', JSON.stringify(data.suc));
-    sessionStorage.setItem('IP', JSON.stringify(data.ip));
-
-    setLogin(JSON.parse(sessionStorage.login).id);
-    setAdmin(JSON.stringify(data.suc).admin);
-    setUserIp(JSON.parse(sessionStorage.IP));
-    setUserId(JSON.parse(sessionStorage.login).user_id);
-
-    return window.location.reload();
-  };
-  const handleLogout = () => {
-    setLogin(false);
-    setAdmin(false);
-    setUserIp('');
-    sessionStorage.removeItem('login');
-    sessionStorage.removeItem('IP');
-  };
-  const loginCheck = () => {
-    if (!login) {
-      alert('로그인후 이용 가능합니다');
-      toggleLoginModal(true);
-      return false;
-    }
-    return true;
-  };
-  const toggleLoginModal = (boolean) => {
-    setLoginModal(boolean);
-  };
-
   // 카테고리
   const changeCategory = (target) => {
     sessionStorage.setItem('category', target);
+    sessionStorage.setItem('page', 1);
     return (window.location.href = '/');
   };
   const getAllCategoryData = async () => {
