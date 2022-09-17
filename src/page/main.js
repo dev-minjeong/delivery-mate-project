@@ -8,9 +8,6 @@ import { RightWrite, Reply } from './right/index.js';
 
 const MainBox = styled.div`
   height: 100%;
-  .hidden {
-    width: 0;
-  }
 `;
 const PageMain = styled.div`
   display: flex;
@@ -54,6 +51,7 @@ const Main = ({
   toggleCalcModal,
   setWriterMapData,
   userNum,
+  setPageRight,
   setPageFooter,
 }) => {
   const [contents, setContents] = useState('');
@@ -166,6 +164,7 @@ const Main = ({
     setPageLeft: setPageLeft,
     joinNum: joinNum,
     setPageFooter: setPageFooter,
+    setPageRight: setPageRight,
   });
   const RightWriteWithProps = withProps(RightWrite, {
     contents: contents,
@@ -226,7 +225,7 @@ const Main = ({
             <Route path='/view/:data' element={<ViewWithProps />}></Route>
           </Routes>
         </PageLeft>
-        <PageRight main={pageMain} className={pageRight}>
+        <PageRight main={pageMain}>
           <Routes>
             <Route path='/write' element={<RightWriteWithProps />}></Route>
             <Route

@@ -9,12 +9,11 @@ import { Side } from './page/left/index.js';
 import { Calculate, Header, Login, PickupMap } from './inc/index.js';
 import { Main } from './page/index.js';
 
+import './App.css';
+import { history } from './history.js';
+
 const GlobalStyle = createGlobalStyle`
 *{
-@font-face {
-  font-family: 'nanum';
-  src: url('./font/NanumSquareR.ttf');
-}
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -86,7 +85,7 @@ function App() {
   // css
   const [pageLeft, setPageLeft] = useState(true);
   const [pageMain, setPageMain] = useState(true);
-  const [pageRight, setPageRight] = useState('');
+  const [pageRight, setPageRight] = useState(false);
   const [pageFooter, setPageFooter] = useState(false);
 
   const locationSearch = useLocation().search;
@@ -103,7 +102,15 @@ function App() {
       setUserEmail(JSON.parse(sessionStorage.login).email);
       setUserNum(JSON.parse(sessionStorage.login).user_id);
     }
-  }, []);
+    let unlisten = history.listen((location) => {
+      if (history.action === 'POP') {
+        return window.location.reload();
+      }
+      return () => {
+        unlisten();
+      };
+    });
+  }, [history]);
 
   // 보드
   const getData = async (board_id) => {
@@ -166,6 +173,7 @@ function App() {
       },
     });
     let pageArr = [];
+    console.log(totalCnt.data);
     for (let i = 1; i <= Math.ceil(totalCnt.data.cnt / listLimit); i++) {
       pageArr.push(i);
     }
@@ -296,6 +304,7 @@ function App() {
             toggleCalcModal={toggleCalcModal}
             setWriterMapData={setWriterMapData}
             userNum={userNum}
+            setPageRight={setPageRight}
             setPageFooter={setPageFooter}
           ></Main>
         </RightBox>

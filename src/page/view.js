@@ -89,6 +89,7 @@ function View({
   setPageMain,
   joinNum,
   setPageFooter,
+  setPageRight,
 }) {
   const params = useParams();
 
@@ -98,6 +99,7 @@ function View({
   useEffect(() => {
     setPageLeft(false);
     setPageMain(false);
+    setPageRight(true);
     setPageFooter(true);
 
     const boardId = params.data;
