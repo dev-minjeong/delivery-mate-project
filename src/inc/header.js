@@ -19,6 +19,8 @@ const HeaderBox = styled.div`
     cursor: pointer;
     font-size: 23px;
     font-weight: 900;
+    font-family: 'nixgon';
+    line-height: 38px;
   }
   .header-right {
     display: flex;

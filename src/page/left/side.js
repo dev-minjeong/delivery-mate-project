@@ -82,7 +82,7 @@ const Side = ({
       handleLogout();
 
       sessionStorage.removeItem('page');
-      sessionStorage.setItem('cagtegory', '');
+      sessionStorage.setItem('category', '');
       return (window.location.href = '/');
     }
   };

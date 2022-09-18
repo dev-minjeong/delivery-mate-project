@@ -19,9 +19,8 @@ const ViewBox = styled.div`
 const TitleBox = styled.div`
   flex-basis: 20%;
   border-bottom: 1px solid #ababab;
-  padding-bottom: 7px;
   h3 {
-    margin-left: 10px;
+    margin: 20px 10px 0 0;
   }
   .board-info-box {
     display: flex;

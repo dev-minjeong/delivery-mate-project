@@ -22,6 +22,10 @@ const GlobalStyle = createGlobalStyle`
   list-style: none;
   border: none;
   font-family: 'nanum';
+  input[type=password]{
+        font-family: Arial, Helvetica, sans-serif;
+    }
+  
 }
 svg, path {
   color: inherit;
@@ -92,13 +96,12 @@ function App() {
 
   useEffect(() => {
     getListData();
-    setPage();
     getAllCategoryData();
     if (sessionStorage.login && sessionStorage.IP) {
       setLogin(JSON.parse(sessionStorage.login).id);
       setAdmin(JSON.parse(sessionStorage.login).admin);
       setUserIp(JSON.parse(sessionStorage.IP));
-      setUserId(JSON.parse(sessionStorage.login).user_id);
+      setUserId(JSON.parse(sessionStorage.login).id);
       setUserName(JSON.parse(sessionStorage.login).name);
       setUserEmail(JSON.parse(sessionStorage.login).email);
       setUserNum(JSON.parse(sessionStorage.login).user_id);

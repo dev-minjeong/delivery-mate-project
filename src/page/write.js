@@ -65,7 +65,7 @@ function Write({
       getModifyData(params.data);
     }
   }, []);
-  
+
   return (
     <WriteBox>
       <div className='write-title'>

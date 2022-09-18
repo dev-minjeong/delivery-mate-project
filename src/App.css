@@ -1,0 +1,12 @@
+@font-face {
+  font-family: 'nanum';
+  src: url('./font/NanumSquareR.ttf');
+}
+@font-face {
+  font-family: 'nanumEb';
+  src: url('./font/NanumSquareEB.ttf');
+}
+@font-face {
+  font-family: 'nixgon';
+  src: url('./font/NIXGONFONTS\ B\ 2.0.ttf');
+}

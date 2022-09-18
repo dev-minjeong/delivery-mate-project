@@ -129,6 +129,9 @@ const PaySetting = styled.div`
   }
 `;
 const MapSetting = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   h4 {
     margin: 10px;
   }
@@ -196,7 +199,6 @@ function RightWrite({
       const cost = document.getElementsByName('delivery-cost')[0].value.trim();
       setDeliveryCost(cost);
     }
-    console.log(deliveryCost);
   };
 
   const submitBoard = async () => {
@@ -260,7 +262,7 @@ function RightWrite({
   };
   const gsLocation = async () => {
     const gettingGsLocation = await getLocation();
-    console.info(`gsLocation: ${JSON.stringify(gettingGsLocation)}`);
+    // console.info(`gsLocation: ${JSON.stringify(gettingGsLocation)}`);
     setWriterLat(gettingGsLocation.latitude);
     setWriterLon(gettingGsLocation.longitude);
   };
@@ -293,7 +295,7 @@ function RightWrite({
       return setSelectCategory(getBoardData.data[0].food_id);
     }
   };
-  
+
   return (
     <RightWriteBox>
       <div className='select-option'>

@@ -51,7 +51,7 @@ const sendMail = (mailOpt) => {
 
 // const AWS = require('aws-sdk');
 // AWS.config.loadFromPath(
-//loadFromPath로 json파일을 path모듈로 연결
+// // loadFromPath로 json파일을 path모듈로 연결
 //   path.join(__dirname, 'config', 'awsConfig.json')
 // );
 

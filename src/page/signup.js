@@ -12,6 +12,8 @@ const SignUpBox = styled.div`
   padding-top: 6vh;
   #signup-title {
     color: #454545;
+    font-family: 'nanumEb';
+    font-weight: 900;
   }
   .signup-info-box {
     display: flex;
@@ -48,7 +50,7 @@ const SignUpInfo = styled.div`
       margin: 0 3px;
     }
     input:last-child {
-      width: 10px;
+      width: 35px;
     }
   }
   .email {

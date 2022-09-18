@@ -2,11 +2,13 @@ import styled from 'styled-components';
 
 const MapContainer = styled.div`
   .settingMap {
-    min-width: 200px;
-    min-height: 200px;
+    width: 30vw;
+    max-width: 300px;
+    aspect-ratio: 1 / 1;
   }
   .settingMap + #addMarkerBtn {
     visibility: hidden;
+    height: 0;
   }
   .pickupMap {
     width: 400px;
