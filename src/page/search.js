@@ -24,7 +24,7 @@ const SearchSubmit = styled.input`
   background-size: 100% 100%;
 `;
 
-const Search = (props) => {
+const Search = ({ search }) => {
   return (
     <SearchBox>
       <form>
@@ -34,11 +34,11 @@ const Search = (props) => {
           className='search-input'
           name='search'
           placeholder='검색어를 입력하세요'
-          defaultValue={props.search}
+          defaultValue={search}
         ></input>
         <SearchSubmit
           type='submit'
-          value=' '
+          value=''
           className='search-submit'
         ></SearchSubmit>
       </form>

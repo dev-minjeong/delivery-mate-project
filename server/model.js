@@ -286,12 +286,19 @@ module.exports = {
 
       Board.findAll({
         where: {
-          title: {
-            [Op.like]: search,
-          },
-          contents: {
-            [Op.like]: search,
-          },
+          [Op.or]: [
+            {
+              title: {
+                [Op.like]: search,
+              },
+            },
+            {
+              contents: {
+                [Op.like]: search,
+              },
+            },
+          ],
+
           food_id: {
             [Op.or]: {
               [Op.eq]: all_category,
