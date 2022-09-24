@@ -5,6 +5,82 @@ import { useEffect, useState } from 'react';
 import { Category } from './index.js';
 import { LogOutImg, UserImg } from '../../img/index.js';
 
+const Side = ({
+  login,
+  handleLogout,
+  changeCategory,
+  admin,
+  userName,
+  userEmail,
+  userNum,
+  pageLeft,
+  onModalOpenBtn,
+}) => {
+  const [userImgSrc, setUserImgSrc] = useState('');
+
+  useEffect(() => {
+    const num = userNum % 10;
+    setUserImgSrc(UserImg.images[num]);
+  }, [userNum]);
+
+  const logout = () => {
+    if (window.confirm('로그아웃 하시겠습니까?')) {
+      handleLogout();
+
+      sessionStorage.removeItem('page');
+      sessionStorage.setItem('category', '');
+      return (window.location.href = '/');
+    }
+  };
+  return (
+    <SideBox visible={pageLeft}>
+      <div>
+        <AdminBox>
+          {login ? (
+            <img src={userImgSrc} alt='user-img'></img>
+          ) : (
+            <img src={LogOutImg} alt='logout'></img>
+          )}
+          <LoginList>
+            {login ? (
+              <div>
+                <li className='user-name'>{userName}</li>
+                <li className='user-email'>{userEmail}</li>
+              </div>
+            ) : (
+              <div className='login-or-signup'>
+                <li
+                  className='btn-cursor'
+                  onClick={() => onModalOpenBtn('login')}
+                >
+                  로그인
+                </li>
+                <b>/</b>
+                <li>
+                  <Link to='signup'> 회원가입</Link>
+                </li>
+              </div>
+            )}
+          </LoginList>
+        </AdminBox>
+        <Category
+          changeCategory={changeCategory}
+          login={login}
+          admin={admin}
+        ></Category>
+      </div>
+
+      <OtherBox>
+        {login ? (
+          <li className='logout-btn' onClick={() => logout()}>
+            로그아웃
+          </li>
+        ) : null}
+      </OtherBox>
+    </SideBox>
+  );
+};
+
 const SideBox = styled.div`
   position: sticky;
   top: 0;
@@ -56,79 +132,4 @@ const OtherBox = styled.div`
   }
 `;
 
-const Side = ({
-  login,
-  handleLogout,
-  toggleLoginModal,
-  changeCategory,
-  admin,
-  userName,
-  userEmail,
-  userNum,
-  pageLeft,
-}) => {
-  const [userImgSrc, setUserImgSrc] = useState('');
-
-  useEffect(() => {
-    const num = userNum % 10;
-    setUserImgSrc(UserImg.images[num]);
-  }, [userNum]);
-
-  const openModal = () => {
-    return toggleLoginModal(true);
-  };
-  const logout = () => {
-    if (window.confirm('로그아웃 하시겠습니까?')) {
-      handleLogout();
-
-      sessionStorage.removeItem('page');
-      sessionStorage.setItem('category', '');
-      return (window.location.href = '/');
-    }
-  };
-  return (
-    <SideBox visible={pageLeft}>
-      <div>
-        <AdminBox>
-          {login ? (
-            <img src={userImgSrc} alt='user-img'></img>
-          ) : (
-            <img src={LogOutImg} alt='logout'></img>
-          )}
-          <LoginList>
-            {login ? (
-              <div>
-                <li className='user-name'>{userName}</li>
-                <li className='user-email'>{userEmail}</li>
-              </div>
-            ) : (
-              <div className='login-or-signup'>
-                <li className='btn-cursor' onClick={() => openModal()}>
-                  로그인
-                </li>
-                <b>/</b>
-                <li>
-                  <Link to='signup'> 회원가입</Link>
-                </li>
-              </div>
-            )}
-          </LoginList>
-        </AdminBox>
-        <Category
-          changeCategory={changeCategory}
-          login={login}
-          admin={admin}
-        ></Category>
-      </div>
-
-      <OtherBox>
-        {login ? (
-          <li className='logout-btn' onClick={() => logout()}>
-            로그아웃
-          </li>
-        ) : null}
-      </OtherBox>
-    </SideBox>
-  );
-};
 export default Side;

@@ -9,36 +9,6 @@ import {
   IoHomeOutline,
 } from 'react-icons/io5';
 
-const OtherBox = styled.div`
-  flex-basis: 20%;
-  display: flex;
-  justify-content: space-between;
-  padding-top: 5%;
-  .home-btn {
-    font-size: 19px;
-    margin-top: 5px;
-    color: #525252;
-  }
-`;
-const PageMoveBox = styled.div`
-  cursor: pointer;
-  font-size: 12px;
-  text-align: center;
-  color: #525252;
-  svg {
-    font-size: 17px;
-  }
-  p {
-    color: #525252;
-  }
-  :hover {
-    color: #2b2b2b;
-    p {
-      color: #2b2b2b;
-    }
-  }
-`;
-
 const PageMove = ({ changeViewPage }) => {
   const [preUrl, setPreUrl] = useState('');
   const [nextUrl, setNextUrl] = useState('');
@@ -61,11 +31,14 @@ const PageMove = ({ changeViewPage }) => {
   const getPreNextData = async (board_id) => {
     const category = sessionStorage.getItem('category');
 
-    const res = await axios('/get/pre_next', {
-      method: 'POST',
-      headers: new Headers(),
-      data: { board_id: board_id, category: category },
-    });
+    const res = await axios(
+      'https://delivery-mate.herokuapp.com/get/pre_next',
+      {
+        method: 'POST',
+        headers: new Headers(),
+        data: { board_id: board_id, category: category },
+      }
+    );
     setPreView(res.data.pre);
     setNextView(res.data.next);
   };
@@ -111,4 +84,35 @@ const PageMove = ({ changeViewPage }) => {
     </OtherBox>
   );
 };
+
+const OtherBox = styled.div`
+  flex-basis: 20%;
+  display: flex;
+  justify-content: space-between;
+  padding-top: 5%;
+  .home-btn {
+    font-size: 19px;
+    margin-top: 5px;
+    color: #525252;
+  }
+`;
+const PageMoveBox = styled.div`
+  cursor: pointer;
+  font-size: 12px;
+  text-align: center;
+  color: #525252;
+  svg {
+    font-size: 17px;
+  }
+  p {
+    color: #525252;
+  }
+  :hover {
+    color: #2b2b2b;
+    p {
+      color: #2b2b2b;
+    }
+  }
+`;
+
 export default PageMove;

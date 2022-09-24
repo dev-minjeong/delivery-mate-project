@@ -3,8 +3,122 @@ import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { PageMove } from './../inc/index.js';
+import { PageMove } from '../inc/index.js';
 import { LogoImg, UserImg } from '../img';
+
+function View({
+  admin,
+  data,
+  date,
+  getData,
+  userName,
+  setPageLeft,
+  setPageMain,
+  joinNum,
+}) {
+  const params = useParams();
+
+  const [modifyUrl, setModifyUrl] = useState('');
+  const [userImgSrc, setUserImgSrc] = useState('');
+
+  useEffect(() => {
+    setPageLeft(false);
+    setPageMain(false);
+
+    const boardId = params.data;
+    addViewCnt(boardId);
+    if (!data) {
+      getData(boardId);
+    }
+    if (data.data) {
+      setModifyUrl(`/write/modify/${data.data[0].board_id}`);
+
+      const num = data.data[0].writer_id % 10;
+      setUserImgSrc(UserImg.images[num]);
+    }
+  }, [data]);
+
+  const addViewCnt = async (boardId) => {
+    await axios('https://delivery-mate.herokuapp.com/update/view_cnt', {
+      method: 'POST',
+      headers: new Headers(),
+      data: { id: boardId },
+    });
+  };
+  const removeView = async () => {
+    if (window.confirm('해당 게시글을 삭제하시겠습니까?')) {
+      const boardId = params.data;
+      await axios('https://delivery-mate.herokuapp.com/delete/board', {
+        method: 'POST',
+        headers: new Headers(),
+        data: { board_id: boardId },
+      });
+      alert('게시글이 삭제되었습니다.');
+      return (window.location.href = '/');
+    }
+  };
+  const changeViewPage = (url) => {
+    if (url === 'null_pre') {
+      return alert('첫 게시물 입니다');
+    } else if (url === 'null_next') {
+      return alert('마지막 게시물 입니다');
+    }
+    return (window.location.href = url);
+  };
+  return (
+    <>
+      <div>
+        {data.data ? (
+          <ViewBox>
+            <TitleBox>
+              <h3>{data.data[0].title}</h3>
+              <div className='board-info-box'>
+                <div className='nick-name'>
+                  <img alt='' src={userImgSrc} className='nick-img'></img>
+                  <p name='title'>{data.data[0].writer_name}</p>
+                </div>
+                <div className='join-cnt'>
+                  {' '}
+                  <img alt='' src={LogoImg} className='logo-img'></img>{' '}
+                  <p>{joinNum} join</p>
+                </div>
+              </div>
+            </TitleBox>
+            <ContentsBox>
+              <div
+                id='content-txt'
+                dangerouslySetInnerHTML={{ __html: data.data[0].contents }}
+              ></div>
+              <div className='contents-info'>
+                {admin === 'Y' || userName === data.data[0].writer_name ? (
+                  <div className='edit-board'>
+                    <Link to={modifyUrl}>
+                      <input type='button' value='수정'></input>
+                    </Link>
+                    <input
+                      type='button'
+                      value='삭제'
+                      onClick={() => removeView()}
+                    ></input>
+                  </div>
+                ) : (
+                  <div></div>
+                )}
+
+                <div>
+                  <span>{date}</span>
+                  <span>조회수: {data.data[0].view_cnt}</span>
+                </div>
+              </div>
+            </ContentsBox>
+
+            <PageMove changeViewPage={changeViewPage}></PageMove>
+          </ViewBox>
+        ) : null}
+      </div>
+    </>
+  );
+}
 
 const ViewBox = styled.div`
   position: fixed;
@@ -77,123 +191,5 @@ const ContentsBox = styled.div`
     }
   }
 `;
-
-function View({
-  admin,
-  data,
-  date,
-  getData,
-  userName,
-  setPageLeft,
-  setPageMain,
-  joinNum,
-  setPageFooter,
-  setPageRight,
-}) {
-  const params = useParams();
-
-  const [modifyUrl, setModifyUrl] = useState('');
-  const [userImgSrc, setUserImgSrc] = useState('');
-
-  useEffect(() => {
-    setPageLeft(false);
-    setPageMain(false);
-    setPageRight(true);
-    setPageFooter(true);
-
-    const boardId = params.data;
-    addViewCnt(boardId);
-    if (!data) {
-      getData(boardId);
-    }
-    if (data.data) {
-      setModifyUrl(`/write/modify/${data.data[0].board_id}`);
-
-      const num = data.data[0].writer_id % 10;
-      setUserImgSrc(UserImg.images[num]);
-    }
-  }, [data]);
-
-  const addViewCnt = async (boardId) => {
-    await axios('/update/view_cnt', {
-      method: 'POST',
-      headers: new Headers(),
-      data: { id: boardId },
-    });
-  };
-  const removeView = async () => {
-    if (window.confirm('해당 게시글을 삭제하시겠습니까?')) {
-      const boardId = params.data;
-      await axios('/delete/board', {
-        method: 'POST',
-        headers: new Headers(),
-        data: { board_id: boardId },
-      });
-      alert('게시글이 삭제되었습니다.');
-      return (window.location.href = '/');
-    }
-  };
-  const changeViewPage = (url) => {
-    if (url === 'null_pre') {
-      return alert('첫 게시물 입니다');
-    } else if (url === 'null_next') {
-      return alert('마지막 게시물 입니다');
-    }
-    return (window.location.href = url);
-  };
-  return (
-    <>
-      <div>
-        {data.data ? (
-          <ViewBox>
-            <TitleBox>
-              <h3>{data.data[0].title}</h3>
-              <div className='board-info-box'>
-                <div className='nick-name'>
-                  <img alt='' src={userImgSrc} className='nick-img'></img>
-                  <p name='title'>{data.data[0].writer_name}</p>
-                </div>
-                <div className='join-cnt'>
-                  {' '}
-                  <img alt='' src={LogoImg} className='logo-img'></img>{' '}
-                  <p>{joinNum} join</p>
-                </div>
-              </div>
-            </TitleBox>
-            <ContentsBox>
-              <div
-                id='content-txt'
-                dangerouslySetInnerHTML={{ __html: data.data[0].contents }}
-              ></div>
-              <div className='contents-info'>
-                {admin === 'Y' || userName === data.data[0].writer_name ? (
-                  <div className='edit-board'>
-                    <Link to={modifyUrl}>
-                      <input type='button' value='수정'></input>
-                    </Link>
-                    <input
-                      type='button'
-                      value='삭제'
-                      onClick={() => removeView()}
-                    ></input>
-                  </div>
-                ) : (
-                  <div></div>
-                )}
-
-                <div>
-                  <span>{date}</span>
-                  <span>조회수: {data.data[0].view_cnt}</span>
-                </div>
-              </div>
-            </ContentsBox>
-
-            <PageMove changeViewPage={changeViewPage}></PageMove>
-          </ViewBox>
-        ) : null}
-      </div>
-    </>
-  );
-}
 
 export default View;

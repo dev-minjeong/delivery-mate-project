@@ -1,5 +1,27 @@
 import styled from 'styled-components';
 
+const Search = ({ search }) => {
+  return (
+    <SearchBox>
+      <form>
+        <input
+          type='text'
+          maxLength='20'
+          className='search-input'
+          name='search'
+          placeholder='검색어를 입력하세요'
+          defaultValue={search}
+        ></input>
+        <SearchSubmit
+          type='submit'
+          value=''
+          className='search-submit'
+        ></SearchSubmit>
+      </form>
+    </SearchBox>
+  );
+};
+
 const SearchBox = styled.div`
   background-color: white;
   padding: 10px;
@@ -23,27 +45,5 @@ const SearchSubmit = styled.input`
   background-repeat: no-repeat;
   background-size: 100% 100%;
 `;
-
-const Search = ({ search }) => {
-  return (
-    <SearchBox>
-      <form>
-        <input
-          type='text'
-          maxLength='20'
-          className='search-input'
-          name='search'
-          placeholder='검색어를 입력하세요'
-          defaultValue={search}
-        ></input>
-        <SearchSubmit
-          type='submit'
-          value=''
-          className='search-submit'
-        ></SearchSubmit>
-      </form>
-    </SearchBox>
-  );
-};
 
 export default Search;

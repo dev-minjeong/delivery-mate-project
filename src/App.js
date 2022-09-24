@@ -6,54 +6,16 @@ import axios from 'axios';
 import styled, { createGlobalStyle } from 'styled-components';
 
 import { Side } from './page/left/index.js';
-import { Calculate, Header, Login, PickupMap } from './inc/index.js';
-import { Main } from './page/index.js';
+import { Main, Header } from './page/index.js';
 
 import './App.css';
 import { history } from './history.js';
-
-const GlobalStyle = createGlobalStyle`
-*{
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  text-decoration: none;
-  color: black;
-  list-style: none;
-  border: none;
-  font-family: 'nanum';
-  input[type=password]{
-        font-family: Arial, Helvetica, sans-serif;
-    }
-  
-}
-svg, path {
-  color: inherit;
-}
-svg{
-  cursor: pointer;
-}
-input {
-    border: none;
-  
-  :focus {
-      outline: none;
-    }
-}
-`;
-const AppBox = styled.div`
-  display: flex;
-  width: 100%;
-  height: 100%;
-`;
-const RightBox = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: ${(props) => (props.left ? '80vw' : '100vw')};
-  background-color: whitesmoke;
-`;
+import { Modal } from './inc/index.js';
 
 function App() {
+  // server
+  const [host, setHost] = useState('');
+  const [db, setDb] = useState('');
   // login
   const [login, setLogin] = useState(false);
   const [admin, setAdmin] = useState(false);
@@ -62,7 +24,6 @@ function App() {
   const [userName, setUserName] = useState('');
   const [userEmail, setUserEmail] = useState('');
   const [userNum, setUserNum] = useState('');
-  const [loginModal, setLoginModal] = useState(false);
   // list
   const [listData, setListData] = useState([]);
   const [listPage, setListPage] = useState(1);
@@ -81,20 +42,17 @@ function App() {
   const [joinNum, setJoinNum] = useState('');
   // map
   const [mateData, setMateData] = useState([]);
-  const [mapModal, setMapModal] = useState(false);
   const [writerLat, setWriterLat] = useState(0);
   const [writerLon, setWriterLon] = useState(0);
-  // calculate
-  const [calcModal, setCalcModal] = useState(false);
-  // css
+  // css-page
   const [pageLeft, setPageLeft] = useState(true);
   const [pageMain, setPageMain] = useState(true);
-  const [pageRight, setPageRight] = useState(false);
-  const [pageFooter, setPageFooter] = useState(false);
+  // const [pageFooter, setPageFooter] = useState(false);
 
   const locationSearch = useLocation().search;
 
   useEffect(() => {
+    getAllState();
     getListData();
     getAllCategoryData();
     if (sessionStorage.login && sessionStorage.IP) {
@@ -115,6 +73,20 @@ function App() {
       };
     });
   }, [history]);
+
+  // 서버 연동 확인
+  const getAllState = async () => {
+    const res = await axios.get(
+      'https://delivery-mate.herokuapp.com/get/allState'
+    );
+    // console.log(res);
+    if (res.data.server_state === true) {
+      setHost('서버 연결 완료');
+    }
+    if (res.data.db_state === true) {
+      setDb('Sequelize 가동중');
+    }
+  };
 
   // 로그인
   const handleLogin = (data) => {
@@ -138,22 +110,22 @@ function App() {
   const loginCheck = () => {
     if (!login) {
       alert('로그인후 이용 가능합니다');
-      toggleLoginModal(true);
+      onModalOpenBtn('login');
       return false;
     }
     return true;
   };
-  const toggleLoginModal = (boolean) => {
-    setLoginModal(boolean);
-  };
 
   // 보드
   const getData = async (board_id) => {
-    const getBoardData = await axios('/get/board_data', {
-      method: 'POST',
-      headers: new Headers(),
-      data: { id: board_id },
-    });
+    const getBoardData = await axios(
+      'https://delivery-mate.herokuapp.com/get/board_data',
+      {
+        method: 'POST',
+        headers: new Headers(),
+        data: { id: board_id },
+      }
+    );
     const date =
       getBoardData.data[0].date.slice(5, 10) +
       ' ' +
@@ -192,21 +164,27 @@ function App() {
     if (queryString.parse(locationSearch)) {
       search = queryString.parse(locationSearch).search;
     }
-    const totalCnt = await axios('/get/board_cnt', {
-      method: 'POST',
-      headers: new Headers(),
-      data: { search: search, category: categorys },
-    });
-    const totalList = await axios('/get/board', {
-      method: 'POST',
-      headers: new Headers(),
-      data: {
-        limit: listLimit,
-        page: pageNum,
-        search: search,
-        category: categorys,
-      },
-    });
+    const totalCnt = await axios(
+      'https://delivery-mate.herokuapp.com/get/board_cnt',
+      {
+        method: 'POST',
+        headers: new Headers(),
+        data: { search: search, category: categorys },
+      }
+    );
+    const totalList = await axios(
+      'https://delivery-mate.herokuapp.com/get/board',
+      {
+        method: 'POST',
+        headers: new Headers(),
+        data: {
+          limit: listLimit,
+          page: pageNum,
+          search: search,
+          category: categorys,
+        },
+      }
+    );
     let pageArr = [];
     for (let i = 1; i <= Math.ceil(totalCnt.data.cnt / listLimit); i++) {
       pageArr.push(i);
@@ -223,7 +201,9 @@ function App() {
     return (window.location.href = '/');
   };
   const getAllCategoryData = async () => {
-    const getCategoryData = await axios('/get/category');
+    const getCategoryData = await axios(
+      'https://delivery-mate.herokuapp.com/get/category'
+    );
     setCategoryData(getCategoryData.data);
   };
 
@@ -234,29 +214,46 @@ function App() {
   const getBoardJoinData = async (board_id) => {
     const data = { board_id: board_id };
 
-    const getData = await axios('/get/join_data', {
-      method: 'POST',
-      headers: new Headers(),
-      data: data,
-    });
+    const getData = await axios(
+      'https://delivery-mate.herokuapp.com/get/join_data',
+      {
+        method: 'POST',
+        headers: new Headers(),
+        data: data,
+      }
+    );
     sessionStorage.setItem('join', JSON.stringify(getData.data));
   };
 
-  // map
-  const toggleMapModal = (boolean) => {
-    setMapModal(boolean);
-  };
+  // Map
   const setWriterMapData = (writer_lat, writer_lon, mate_data) => {
     setWriterLat(writer_lat);
     setWriterLon(writer_lon);
     setMateData(mate_data);
   };
-
-  // calc
-  const toggleCalcModal = (boolean) => {
-    setCalcModal(boolean);
+  const [mateLat, setMateLat] = useState(0);
+  const [mateLon, setMateLon] = useState(0);
+  const [updateMap, setUpdateMap] = useState(false);
+  const setMateMapData = (lat, lon) => {
+    setMateLat(lat);
+    setMateLon(lon);
   };
+  const UpdateMapMarker = (updateLat, updateLon) => {
+    if (updateLat) {
+      setMateLat(updateLat);
+    }
+    if (updateLon) {
+      setMateLon(updateLon);
+    }
+    setUpdateMap(true);
+  };
+  // const [mateMapData, setMateMapData] = useState(false);
 
+  // Modal
+  const [isOpen, setIsOpen] = useState(false);
+  const onModalOpenBtn = (result) => {
+    setIsOpen(result);
+  };
   return (
     <>
       <GlobalStyle></GlobalStyle>
@@ -264,20 +261,20 @@ function App() {
         <Side
           login={login}
           handleLogout={handleLogout}
-          toggleLoginModal={toggleLoginModal}
           changeCategory={changeCategory}
           admin={admin}
           userName={userName}
           userEmail={userEmail}
           userNum={userNum}
           pageLeft={pageLeft}
+          onModalOpenBtn={onModalOpenBtn}
         ></Side>
-        <RightBox left={pageLeft} main={pageMain}>
+        <RightBox left={pageLeft}>
           <Header
             login={login}
             listSearch={listSearch}
-            pageMain={pageMain}
-            pageFooter={pageFooter}
+            pageLeft={pageLeft}
+            loginCheck={loginCheck}
           ></Header>
           <Main
             login={login}
@@ -287,7 +284,6 @@ function App() {
             listSearch={listSearch}
             listPage={listPage}
             changePage={changePage}
-            userId={userId}
             data={data}
             date={date}
             joinNum={joinNum}
@@ -297,45 +293,102 @@ function App() {
             loginCheck={loginCheck}
             setPageMain={setPageMain}
             pageMain={pageMain}
-            pageRight={pageRight}
             setPageLeft={setPageLeft}
             getBoardJoinData={getBoardJoinData}
             writerName={writerName}
             joinExist={joinExist}
             getJoinExist={getJoinExist}
             setJoinExist={setJoinExist}
-            toggleMapModal={toggleMapModal}
-            toggleCalcModal={toggleCalcModal}
             setWriterMapData={setWriterMapData}
+            setMateMapData={setMateMapData}
             userNum={userNum}
-            setPageRight={setPageRight}
-            setPageFooter={setPageFooter}
+            onModalOpenBtn={onModalOpenBtn}
+            mateLat={mateLat}
+            mateLon={mateLon}
+            updateMap={updateMap}
           ></Main>
         </RightBox>
       </AppBox>
-      <Login
-        handleLogin={handleLogin}
-        loginModal={loginModal}
-        toggleLoginModal={toggleLoginModal}
-      ></Login>
-      <PickupMap
-        toggleMapModal={toggleMapModal}
-        mapModal={mapModal}
-        writerLat={writerLat}
-        writerLon={writerLon}
-        mateData={mateData}
-        writerPay={writerPay}
-      ></PickupMap>
-      <Calculate
-        writerPay={writerPay}
-        writerName={writerName}
-        userName={userName}
-        joinNum={joinNum}
-        calcModal={calcModal}
-        toggleCalcModal={toggleCalcModal}
-      ></Calculate>
+      {isOpen ? (
+        <Modal
+          isOpen={isOpen}
+          onClose={() => {
+            setIsOpen(false);
+          }}
+          handleLogin={handleLogin}
+          writerLat={writerLat}
+          writerLon={writerLon}
+          mateLat={mateLat}
+          mateLon={mateLon}
+          UpdateMapMarker={UpdateMapMarker}
+          mateData={mateData}
+          writerPay={writerPay}
+          writerName={writerName}
+          userName={userName}
+          joinNum={joinNum}
+        ></Modal>
+      ) : null}
     </>
   );
 }
 
+const GlobalStyle = createGlobalStyle`
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  text-decoration: none;
+  color: black;
+  list-style: none;
+  border: none;
+  font-family: 'nanum';
+}
+button, input[type=button] {
+  cursor: pointer;    
+  }
+input[type=password], input[type=text]{
+  font-family: Arial, Helvetica, sans-serif;
+}
+svg, path {
+  color: inherit;
+}
+svg{
+  cursor: pointer;
+}
+input {
+    border: none;
+  :focus {
+      outline: none;
+    }
+}
+`;
+const AppBox = styled.div`
+  display: flex;
+  width: 100%;
+  height: 100%;
+`;
+const RightBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: ${(props) => (props.left ? '80vw' : '100vw')};
+  background-color: whitesmoke;
+`;
+
 export default App;
+
+export const errorUtils = {
+  getError: (error) => {
+    let e = error;
+    if (error.response) {
+      e = error.response.data; // data, status, headers
+      if (error.response.data && error.response.data.error) {
+        e = error.response.data.error; // my app specific keys override
+      }
+    } else if (error.message) {
+      e = error.message;
+    } else {
+      e = 'Unknown error occured';
+    }
+    return e;
+  },
+};

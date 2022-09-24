@@ -2,8 +2,50 @@ import { useEffect } from 'react';
 import { useParams } from 'react-router';
 import styled from 'styled-components';
 
-import { Ckeditor } from './../inc/index.js';
+import { Ckeditor } from '../inc/index.js';
 import { LogoImg } from '../img/index.js';
+
+function Write({
+  getContents,
+  getTitles,
+  contents,
+  title,
+  getModifyData,
+  setPageMain,
+  setPageLeft,
+}) {
+  const params = useParams();
+  useEffect(() => {
+    setPageMain(false);
+    setPageLeft(false);
+    if (params.data && title.length === 0) {
+      getModifyData(params.data);
+    }
+  }, []);
+
+  return (
+    <WriteBox>
+      <div className='write-title'>
+        <img src={LogoImg} alt='logo-img' className='logo-img'></img>
+        <h2>Post</h2>
+      </div>
+
+      <div id='title'>
+        <input
+          type='text'
+          autoComplete='off'
+          name='title'
+          placeholder='제목'
+          defaultValue={title}
+          onBlur={() => getTitles()}
+        ></input>
+      </div>
+      <div id='contents'>
+        <Ckeditor getContents={getContents} contents={contents}></Ckeditor>
+      </div>
+    </WriteBox>
+  );
+}
 
 const WriteBox = styled.div`
   display: flex;
@@ -48,45 +90,4 @@ const WriteBox = styled.div`
   }
 `;
 
-function Write({
-  getContents,
-  getTitles,
-  contents,
-  title,
-  getModifyData,
-  setPageMain,
-  setPageLeft,
-}) {
-  const params = useParams();
-  useEffect(() => {
-    setPageMain(false);
-    setPageLeft(false);
-    if (params.data && title.length === 0) {
-      getModifyData(params.data);
-    }
-  }, []);
-
-  return (
-    <WriteBox>
-      <div className='write-title'>
-        <img src={LogoImg} alt='logo-img' className='logo-img'></img>
-        <h2>Post</h2>
-      </div>
-
-      <div id='title'>
-        <input
-          type='text'
-          autoComplete='off'
-          name='title'
-          placeholder='제목'
-          defaultValue={title}
-          onBlur={() => getTitles()}
-        ></input>
-      </div>
-      <div id='contents'>
-        <Ckeditor getContents={getContents} contents={contents}></Ckeditor>
-      </div>
-    </WriteBox>
-  );
-}
 export default Write;

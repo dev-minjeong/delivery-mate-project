@@ -5,96 +5,6 @@ import styled from 'styled-components';
 import { IoRemove } from 'react-icons/io5';
 import { FiAtSign } from 'react-icons/fi';
 
-const SignUpBox = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding-top: 6vh;
-  #signup-title {
-    color: #454545;
-    font-family: 'nanumEb';
-    font-weight: 900;
-  }
-  .signup-info-box {
-    display: flex;
-    flex-wrap: wrap;
-  }
-`;
-const SignUpInfo = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  min-width: 280px;
-  padding-top: 20px;
-  .signup-input {
-    margin-top: 15px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    input {
-      width: 220px;
-      padding: 10px;
-      margin-top: 5px;
-      border: 2px solid #bbf294;
-      border-radius: 2px;
-      height: 35px;
-      background-color: inherit;
-    }
-  }
-  .signup-bday div {
-    font-size: 15px;
-    input:first-child {
-      width: 100px;
-    }
-    svg {
-      margin: 0 3px;
-    }
-    input:last-child {
-      width: 35px;
-    }
-  }
-  .email {
-    input {
-      width: 100px;
-    }
-    div {
-      display: flex;
-      flex-direction: row;
-      svg {
-        margin: 12px 5px 0 5px;
-      }
-      .email-input {
-        display: flex;
-        flex-direction: column;
-      }
-      select {
-        width: 95px;
-        margin-top: 5px;
-        height: 35px;
-        padding: 5px;
-      }
-    }
-  }
-  .input-warn {
-    font-size: 10px;
-    color: red;
-  }
-`;
-const SignUpSubmit = styled.div`
-  margin-top: 8vh;
-  input {
-    font-size: 16px;
-    font-weight: 900;
-    padding: 13px;
-    border-radius: 2px;
-    background-color: #bbf294;
-    color: white;
-    cursor: pointer;
-    width: 180px;
-    height: 50px;
-  }
-`;
-
 const SignUp = ({ setPageLeft, setPageMain }) => {
   const [emailWriter, setEmailWriter] = useState(false);
   const [input, setInput] = useState(false);
@@ -168,11 +78,14 @@ const SignUp = ({ setPageLeft, setPageMain }) => {
       sex: sex,
       email: email,
     };
-    const addUser = await axios('/add/user', {
-      method: 'POST',
-      headers: new Headers(),
-      data: data,
-    });
+    const addUser = await axios(
+      'https://delivery-mate.herokuapp.com/add/user',
+      {
+        method: 'POST',
+        headers: new Headers(),
+        data: data,
+      }
+    );
     if (!addUser.data) {
       return alert('이미 존재하는 아이디 입니다');
     } else {
@@ -264,7 +177,7 @@ const SignUp = ({ setPageLeft, setPageMain }) => {
           <div className='email signup-input'>
             <h5>이메일</h5>
             <div>
-              <input type='text' maxLength='15' name='signup-email' />
+              <input type='text' maxLength='20' name='signup-email' />
               <FiAtSign></FiAtSign>
               <div className='email-input'>
                 {emailWriter ? (
@@ -298,4 +211,95 @@ const SignUp = ({ setPageLeft, setPageMain }) => {
     </SignUpBox>
   );
 };
+
+const SignUpBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 6vh;
+  #signup-title {
+    color: #454545;
+    font-family: 'nanumEb';
+    font-weight: 900;
+  }
+  .signup-info-box {
+    display: flex;
+    flex-wrap: wrap;
+  }
+`;
+const SignUpInfo = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 280px;
+  padding-top: 20px;
+  .signup-input {
+    margin-top: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    input {
+      width: 220px;
+      padding: 10px;
+      margin-top: 5px;
+      border: 2px solid #bbf294;
+      border-radius: 2px;
+      height: 35px;
+      background-color: inherit;
+    }
+  }
+  .signup-bday div {
+    font-size: 15px;
+    input:first-child {
+      width: 100px;
+    }
+    svg {
+      margin: 0 3px;
+    }
+    input:last-child {
+      width: 35px;
+    }
+  }
+  .email {
+    input {
+      width: 100px;
+    }
+    div {
+      display: flex;
+      flex-direction: row;
+      svg {
+        margin: 12px 5px 0 5px;
+      }
+      .email-input {
+        display: flex;
+        flex-direction: column;
+      }
+      select {
+        width: 95px;
+        margin-top: 5px;
+        height: 35px;
+        padding: 5px;
+      }
+    }
+  }
+  .input-warn {
+    font-size: 10px;
+    color: red;
+  }
+`;
+const SignUpSubmit = styled.div`
+  margin-top: 8vh;
+  input {
+    font-size: 16px;
+    font-weight: 900;
+    padding: 13px;
+    border-radius: 2px;
+    background-color: #bbf294;
+    color: white;
+    cursor: pointer;
+    width: 180px;
+    height: 50px;
+  }
+`;
+
 export default SignUp;

@@ -1,5 +1,34 @@
 import styled from 'styled-components';
-import { LogoImg, LogOutImg } from '../img';
+import { LogoImg, LogOutImg } from '../../img';
+
+const Join = ({ userName, writerName, joinExist, gsLocation }) => {
+  return (
+    <JoinBox join={joinExist}>
+      {userName !== writerName ? (
+        <button onClick={() => gsLocation()}>
+          <img
+            className='join-img-default'
+            src={!joinExist ? LogOutImg : LogoImg}
+            alt='nonejoin'
+          ></img>
+          <img
+            className='join-img-hover'
+            src={joinExist ? LogOutImg : LogoImg}
+            alt='join'
+          ></img>
+          <JoinTitle join={joinExist}>
+            <span className='join-title-default'>
+              {joinExist ? '참여중' : '참여하기'}
+            </span>
+            <span className='join-title-hover'>
+              {joinExist ? '취소하기' : '참여하기'}
+            </span>
+          </JoinTitle>
+        </button>
+      ) : null}
+    </JoinBox>
+  );
+};
 
 const JoinBox = styled.div`
   button {
@@ -59,32 +88,4 @@ const JoinTitle = styled.div`
   }
 `;
 
-const Join = ({ userName, writerName, joinExist, gsLocation }) => {
-  return (
-    <JoinBox join={joinExist}>
-      {userName !== writerName ? (
-        <button onClick={() => gsLocation()}>
-          <img
-            className='join-img-default'
-            src={!joinExist ? LogOutImg : LogoImg}
-            alt='nonejoin'
-          ></img>
-          <img
-            className='join-img-hover'
-            src={joinExist ? LogOutImg : LogoImg}
-            alt='join'
-          ></img>
-          <JoinTitle join={joinExist}>
-            <span className='join-title-default'>
-              {joinExist ? '참여중' : '참여하기'}
-            </span>
-            <span className='join-title-hover'>
-              {joinExist ? '취소하기' : '참여하기'}
-            </span>
-          </JoinTitle>
-        </button>
-      ) : null}
-    </JoinBox>
-  );
-};
 export default Join;

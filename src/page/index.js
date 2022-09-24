@@ -6,3 +6,4 @@ export { default as View } from './view';
 export { default as SignUp } from './signup';
 export { default as Loading } from './loading';
 export { default as Footer } from './footer';
+export { default as Header } from './header';

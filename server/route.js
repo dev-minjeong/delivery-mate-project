@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 const controller = require('./controller');
 
+router.get('/get/allState', controller.get.allState);
+
 router.post('/send/pw', controller.api.sendPw);
 
 router.post('/search/id', controller.search.id);

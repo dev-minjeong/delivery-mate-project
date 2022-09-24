@@ -5,6 +5,171 @@ import styled from 'styled-components';
 
 import { Join } from '../inc/index.js';
 
+const Footer = ({
+  userName,
+  writerName,
+  joinExist,
+  loginCheck,
+  getJoinExist,
+  getData,
+  writerLat,
+  writerLon,
+  setJoinExist,
+  setWriterMapData,
+  setMateMapData,
+  data,
+  getWriterMapData,
+  getBoardJoinData,
+  login,
+  getLocation,
+  onModalOpenBtn,
+  mateLat,
+  mateLon,
+  updateMap,
+}) => {
+  const [mateData, setMateData] = useState([]);
+
+  const params = useParams();
+
+  useEffect(() => {
+    const boardId = params.data;
+    getWriterMapData(boardId);
+    getBoardJoinData(boardId);
+    if (joinExist === null) {
+      getJoinInfo();
+    }
+    if (updateMap === true) {
+      toggleJoin();
+    }
+    if (sessionStorage.join) {
+      const storageJoinList = JSON.parse(sessionStorage.join);
+      if (storageJoinList.length > 0) {
+        mateData.push(
+          {
+            mate_lat: writerLat,
+            mate_lon: writerLon,
+            name: writerName,
+          },
+          ...storageJoinList
+        );
+        storageJoinList.forEach((el) => {
+          if (el.name === userName) {
+            setJoinExist(true);
+          }
+        });
+      } else {
+        mateData.push({
+          mate_lat: writerLat,
+          mate_lon: writerLon,
+          name: writerName,
+        });
+      }
+    }
+  }, [data, updateMap]);
+
+  const getJoinInfo = async () => {
+    if (login) {
+      const boardId = params.data;
+      const obj = {
+        board_id: boardId,
+        name: userName,
+      };
+      const getData = await axios(
+        'https://delivery-mate.herokuapp.com/check/join',
+        {
+          method: 'POST',
+          headers: new Headers(),
+          data: obj,
+        }
+      );
+      if (getData.data[0]) {
+        return getJoinExist(true);
+      }
+      getJoinExist(false);
+    }
+  };
+
+  const gsLocation = async () => {
+    if (joinExist) {
+      toggleJoin();
+    } else {
+      const gettingGsLocation = await getLocation();
+      setMateMapData(gettingGsLocation.latitude, gettingGsLocation.longitude);
+      onModalOpenBtn('settingMap');
+    }
+  };
+  const toggleJoin = async () => {
+    const boardId = params.data;
+    if (!loginCheck()) {
+      return;
+    }
+    const obj = {
+      type: 'add',
+      board_id: boardId,
+      name: userName,
+      mate_lat: mateLat,
+      mate_lon: mateLon,
+    };
+    const res = await axios('https://delivery-mate.herokuapp.com/update/join', {
+      method: 'POST',
+      headers: new Headers(),
+      data: obj,
+    });
+    if (!res.data) {
+      if (window.confirm('참여를 취소하시겠습니까?')) {
+        const cancel = {
+          type: 'remove',
+          board_id: boardId,
+          name: userName,
+        };
+        await axios('https://delivery-mate.herokuapp.com/update/join', {
+          method: 'POST',
+          headers: new Headers(),
+          data: cancel,
+        });
+        getJoinExist(false);
+        getData(boardId);
+        alert('취소되었습니다');
+      }
+    } else {
+      getJoinExist(true);
+      getData(boardId);
+      alert('해당 게시물에 참여하실 수 있습니다');
+    }
+    return window.location.reload();
+  };
+  return (
+    <FooterBox>
+      <Join
+        userName={userName}
+        writerName={writerName}
+        gsLocation={gsLocation}
+        joinExist={joinExist}
+      ></Join>
+      {joinExist || userName === writerName ? (
+        <SettingBox>
+          <input
+            type='button'
+            value='픽업장소'
+            className='pickup-map'
+            onClick={() => {
+              setWriterMapData(writerLat, writerLon, mateData);
+              onModalOpenBtn('pickupMap');
+            }}
+          ></input>
+          {userName === writerName ? null : (
+            <input
+              type='button'
+              value='금액계산'
+              onClick={() => onModalOpenBtn('calculate')}
+            ></input>
+          )}
+        </SettingBox>
+      ) : null}
+    </FooterBox>
+  );
+};
+
 const FooterBox = styled.div`
   position: fixed;
   bottom: 0;
@@ -39,159 +204,4 @@ const SettingBox = styled.div`
   }
 `;
 
-const Footer = ({
-  userName,
-  writerName,
-  joinExist,
-  loginCheck,
-  getJoinExist,
-  getData,
-  writerLat,
-  writerLon,
-  setJoinExist,
-  setWriterMapData,
-  toggleMapModal,
-  toggleCalcModal,
-  data,
-  getWriterMapData,
-  getBoardJoinData,
-  login,
-  getLocation,
-}) => {
-  const [mateData, setMateData] = useState([]);
-
-  const params = useParams();
-
-  useEffect(() => {
-    const boardId = params.data;
-    getWriterMapData(boardId);
-    getBoardJoinData(boardId);
-    if (joinExist === null) {
-      getJoinInfo();
-    }
-    if (sessionStorage.join) {
-      const storageJoinList = JSON.parse(sessionStorage.join);
-      if (storageJoinList.length > 0) {
-        mateData.push(
-          {
-            mate_lat: writerLat,
-            mate_lon: writerLon,
-            name: writerName,
-          },
-          ...storageJoinList
-        );
-        storageJoinList.forEach((el) => {
-          if (el.name === userName) {
-            setJoinExist(true);
-          }
-        });
-      } else {
-        mateData.push({
-          mate_lat: writerLat,
-          mate_lon: writerLon,
-          name: writerName,
-        });
-      }
-    }
-  }, [data]);
-
-  const getJoinInfo = async () => {
-    if (login) {
-      const boardId = params.data;
-      const obj = {
-        board_id: boardId,
-        name: userName,
-      };
-      const getData = await axios('/check/join', {
-        method: 'POST',
-        headers: new Headers(),
-        data: obj,
-      });
-      if (getData.data[0]) {
-        return getJoinExist(true);
-      }
-      getJoinExist(false);
-    }
-  };
-
-  const gsLocation = async () => {
-    const gettingGsLocation = await getLocation();
-    toggleJoin(gettingGsLocation.latitude, gettingGsLocation.longitude);
-  };
-  const toggleJoin = async (mate_lat, mate_lon) => {
-    const boardId = params.data;
-    if (!loginCheck()) {
-      return;
-    }
-    const obj = {
-      type: 'add',
-      board_id: boardId,
-      name: userName,
-      mate_lat: mate_lat,
-      mate_lon: mate_lon,
-    };
-    const res = await axios('/update/join', {
-      method: 'POST',
-      headers: new Headers(),
-      data: obj,
-    });
-    if (!res.data) {
-      if (window.confirm('참여를 취소하시겠습니까?')) {
-        const cancel = {
-          type: 'remove',
-          board_id: boardId,
-          name: userName,
-        };
-        await axios('/update/join', {
-          method: 'POST',
-          headers: new Headers(),
-          data: cancel,
-        });
-        getJoinExist(false);
-        getData(boardId);
-        alert('취소되었습니다');
-      }
-    } else {
-      getJoinExist(true);
-      getData(boardId);
-      alert('해당 게시물에 참여하실 수 있습니다');
-    }
-    return window.location.reload();
-  };
-  const openMapModal = () => {
-    setWriterMapData(writerLat, writerLon, mateData);
-    return toggleMapModal(true);
-  };
-  const openCalcMaodal = () => {
-    return toggleCalcModal(true);
-  };
-
-  return (
-    <FooterBox>
-      <Join
-        userName={userName}
-        writerName={writerName}
-        gsLocation={gsLocation}
-        joinExist={joinExist}
-      ></Join>
-      {joinExist || userName === writerName ? (
-        <SettingBox>
-          <input
-            type='button'
-            value='픽업장소'
-            className='pickup-map'
-            onClick={() => openMapModal()}
-          ></input>
-          {userName === writerName ? null : (
-            <input
-              type='button'
-              value='금액계산'
-              onClick={() => openCalcMaodal()}
-            ></input>
-          )}
-        </SettingBox>
-      ) : null}
-    </FooterBox>
-  );
-};
 export default Footer;

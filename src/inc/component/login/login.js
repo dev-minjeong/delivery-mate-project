@@ -1,65 +1,12 @@
-import Modal from 'react-awesome-modal';
 import axios from 'axios';
 import { useState } from 'react';
 import React from 'react';
 import styled from 'styled-components';
 
-import { SearchId, SearchPw } from './index.js';
+import { SearchId, SearchPw } from '../../index.js';
 import { IoClose } from 'react-icons/io5';
 
-const LoginContainer = styled.div`
-  padding: 25px;
-  height: 100%;
-`;
-const LoginTitle = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  h3 {
-    color: #f27289;
-  }
-  .close-login-modal {
-    font-size: 24px;
-  }
-`;
-const LoginBox = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-top: 20px;
-  .login-input {
-    display: flex;
-    margin: 20px 20px 0 20px;
-    input {
-      width: 200px;
-      height: 30px;
-      padding: 8px;
-      background-color: whitesmoke;
-    }
-  }
-  .login-submit {
-    margin-top: 30px;
-    input {
-      padding: 8px 15px;
-      background-color: #bbf294;
-      cursor: pointer;
-      color: white;
-      font-weight: 900;
-      border-radius: 15px;
-    }
-  }
-`;
-const UserSearch = styled.div`
-  margin-top: 30px;
-  display: flex;
-  justify-content: space-around;
-  b {
-    color: #ababab;
-    font-size: 13px;
-    cursor: pointer;
-  }
-`;
-
-function Login({ handleLogin, loginModal, toggleLoginModal }) {
+function Login({ handleLogin, handleClose }) {
   const [id, setId] = useState('');
   const [passWord, setPassWord] = useState('');
   const [searchIdModal, setSearchIdModal] = useState(false);
@@ -85,7 +32,7 @@ function Login({ handleLogin, loginModal, toggleLoginModal }) {
     }
 
     const obj = { id: idTrim, password: pwTrim };
-    const res = await axios('/send/pw', {
+    const res = await axios('https://delivery-mate.herokuapp.com/send/pw', {
       method: 'POST',
       data: obj,
       headers: new Headers(),
@@ -94,7 +41,6 @@ function Login({ handleLogin, loginModal, toggleLoginModal }) {
     if (res.data) {
       if (res.data.suc) {
         handleLogin(res.data);
-        toggleLoginModal(false);
         return alert(`안녕하세요 ${idTrim}님!`);
       } else {
         return alert(
@@ -109,7 +55,6 @@ function Login({ handleLogin, loginModal, toggleLoginModal }) {
     } else if (target === 'pw') {
       setSearchPwModal(true);
     }
-    return toggleLoginModal(false);
   };
   const closeSearchModal = (target) => {
     if (target === 'id') {
@@ -120,23 +65,28 @@ function Login({ handleLogin, loginModal, toggleLoginModal }) {
   };
   const backSearchModal = (target) => {
     closeSearchModal(target);
-    return toggleLoginModal(true);
   };
 
   return (
     <>
-      <Modal
-        visible={loginModal}
-        width='400'
-        height='350'
-        effect='fadeInDown'
-        onClickAway={() => toggleLoginModal(false)}
-      >
+      {searchIdModal ? (
+        <SearchId
+          backSearchModal={backSearchModal}
+          target='id'
+          handleClose={handleClose}
+        ></SearchId>
+      ) : searchPwModal ? (
+        <SearchPw
+          backSearchModal={backSearchModal}
+          target='pw'
+          handleClose={handleClose}
+        ></SearchPw>
+      ) : (
         <LoginContainer>
           <LoginTitle>
             <IoClose
               className='close-login-modal'
-              onClick={() => toggleLoginModal(false)}
+              onClick={() => handleClose()}
             ></IoClose>
           </LoginTitle>
           <form onSubmit={selectUserData}>
@@ -172,20 +122,62 @@ function Login({ handleLogin, loginModal, toggleLoginModal }) {
             </div>
           </UserSearch>
         </LoginContainer>
-      </Modal>
-      <SearchId
-        searchIdModal={searchIdModal}
-        closeSearchModal={closeSearchModal}
-        backSearchModal={backSearchModal}
-        target='id'
-      ></SearchId>
-      <SearchPw
-        searchPwModal={searchPwModal}
-        closeSearchModal={closeSearchModal}
-        backSearchModal={backSearchModal}
-        target='pw'
-      ></SearchPw>
+      )}
     </>
   );
 }
+
+const LoginContainer = styled.div`
+  padding: 25px;
+  height: 100%;
+`;
+const LoginTitle = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  font-size: 24px;
+  h3 {
+    color: #f27289;
+  }
+  .close-login-modal {
+  }
+`;
+const LoginBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+  .login-input {
+    display: flex;
+    margin: 20px 20px 0 20px;
+    input {
+      width: 200px;
+      height: 30px;
+      padding: 8px;
+      background-color: whitesmoke;
+    }
+  }
+  .login-submit {
+    margin-top: 30px;
+    input {
+      padding: 8px 15px;
+      background-color: #bbf294;
+      cursor: pointer;
+      color: white;
+      font-weight: 900;
+      border-radius: 15px;
+      line-height: 19px;
+    }
+  }
+`;
+const UserSearch = styled.div`
+  margin-top: 30px;
+  display: flex;
+  justify-content: space-around;
+  b {
+    color: #ababab;
+    font-size: 13px;
+    cursor: pointer;
+  }
+`;
+
 export default Login;

@@ -1,13 +1,6 @@
 import { IoArrowBack, IoClose } from 'react-icons/io5';
 import styled from 'styled-components';
 
-const BackCloseBox = styled.div`
-  display: flex;
-  justify-content: space-between;
-  padding: 25px 25px 0 25px;
-  font-size: 24px;
-`;
-
 function BackAndClose(props) {
   const controller = (target, type) => {
     if (target === 'id') {
@@ -34,4 +27,14 @@ function BackAndClose(props) {
     </BackCloseBox>
   );
 }
+
+const BackCloseBox = styled.div`
+  display: flex;
+  justify-content: space-between;
+  padding: 22px 25px 0 25px;
+  div {
+    font-size: 24px;
+  }
+`;
+
 export default BackAndClose;

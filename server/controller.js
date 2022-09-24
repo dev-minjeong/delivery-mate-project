@@ -49,11 +49,9 @@ const sendMail = (mailOpt) => {
   });
 };
 
-// const AWS = require('aws-sdk');
-// AWS.config.loadFromPath(
-// // loadFromPath로 json파일을 path모듈로 연결
-//   path.join(__dirname, 'config', 'awsConfig.json')
-// );
+const AWS = require('aws-sdk');
+// loadFromPath로 json파일을 path모듈로 연결
+AWS.config.loadFromPath(path.join(__dirname, 'config', 'awsConfig.json'));
 
 module.exports = {
   api: {
@@ -154,6 +152,17 @@ module.exports = {
     },
   },
   get: {
+    allState: (req, res) => {
+      let result = {};
+      result.server_state = true;
+      result.db_state = false;
+      model.get.db_data((data) => {
+        if (data[0] !== false) {
+          result.db_state = true;
+        }
+        return res.send(result);
+      });
+    },
     board: (req, res) => {
       const body = req.body;
 

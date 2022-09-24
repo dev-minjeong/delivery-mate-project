@@ -1,25 +1,15 @@
-import Modal from 'react-awesome-modal';
-import { KakaoMap } from './index.js';
+import { KakaoMap } from '../../index.js';
 import { useEffect, useState } from 'react';
 
 import styled from 'styled-components';
 /* global kakao */
 
-const MapCloseBtn = styled.div`
-  color: white;
-  text-align: end;
-  font-size: 20px;
-  margin: 5px;
-  cursor: pointer;
-`;
-
 const PickupMap = ({
-  toggleMapModal,
-  mapModal,
   writerPay,
   writerLat,
   writerLon,
   mateData,
+  handleClose,
 }) => {
   const [centerLat, setCenterLat] = useState(0);
   const [centerLon, setCenterLon] = useState(0);
@@ -39,7 +29,6 @@ const PickupMap = ({
     };
     const map = new kakao.maps.Map(container, options);
     setMap(map);
-
     const setMapData = mateData?.map((data) => {
       return {
         name: data.name,
@@ -149,20 +138,21 @@ const PickupMap = ({
 
   return (
     <>
-      <Modal
-        visible={mapModal}
-        width='400px'
-        height='400px'
-        effect='fadeInDown'
-        onClickAway={() => toggleMapModal(false)}
-      >
-        <KakaoMap
-          className='pickupMap'
-          addCenterMarker={addCenterMarker}
-        ></KakaoMap>
-        <MapCloseBtn onClick={() => toggleMapModal(false)}>✖</MapCloseBtn>
-      </Modal>
+      <KakaoMap
+        className='pickupMap'
+        addCenterMarker={addCenterMarker}
+      ></KakaoMap>
+      <MapCloseBtn onClick={() => handleClose()}>✖</MapCloseBtn>
     </>
   );
 };
+
+const MapCloseBtn = styled.div`
+  color: white;
+  text-align: end;
+  font-size: 20px;
+  margin: 5px;
+  cursor: pointer;
+`;
+
 export default PickupMap;

@@ -7,6 +7,7 @@ const {
   User,
   Join,
   Reply,
+  Connection,
   Sequelize: { Op },
 } = require('./models');
 sequelize.query('SET NAMES utf8;');
@@ -269,6 +270,15 @@ module.exports = {
     },
   },
   get: {
+    db_data: (callback) => {
+      Connection.findAll()
+        .then((result) => {
+          callback(result);
+        })
+        .catch((err) => {
+          throw err;
+        });
+    },
     board: (body, callback) => {
       let search = '%%';
 

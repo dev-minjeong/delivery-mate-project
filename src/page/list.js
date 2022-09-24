@@ -1,8 +1,98 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { LogoImg, UserImg } from '../img/index.js';
+import Loading from './loading.js';
+
+function List({ listData, listAllPage, listSearch, listPage, changePage }) {
+  const [loading, setLoading] = useState(true);
+  const [dataNull, setDataNull] = useState(false);
+
+  useEffect(() => {
+    listData !== '[]' && listData.length > 0
+      ? setLoading(false)
+      : listDataNull();
+  }, [loading, listData]);
+  const listDataNull = () => {
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+      setDataNull(true);
+    }, 4000);
+  };
+  return (
+    <>
+      {loading ? (
+        <Loading></Loading>
+      ) : (
+        <ListContainer>
+          <div>
+            {!dataNull ? (
+              JSON.parse(listData).map((el, key) => {
+                const view_url = '/view/' + el.board_id;
+                const num = el.writer_id % 10;
+
+                return (
+                  <ListBox key={key}>
+                    <div className='list-info'>
+                      <div className='list-writer'>
+                        <img src={UserImg.images[num]} alt='user-img' />
+                        {el.writer_name}
+                      </div>
+                      <div className='list-join'>
+                        <img src={LogoImg} alt='logo-img' />
+                        {' ' + el.join_cnt}
+                      </div>
+                      <div className='list-date'>
+                        {`${el.date?.slice(0, 4)} ${el.date?.slice(5, 10)}`}
+                      </div>
+                    </div>
+                    <Link to={view_url}>
+                      <h3 className='list-title'>{el.title}</h3>
+                    </Link>
+                  </ListBox>
+                );
+              })
+            ) : (
+              <ListNotData>
+                {listSearch && listSearch !== '' ? (
+                  <div>{`'${listSearch}'에 대한 `}검색 결과가 없습니다</div>
+                ) : (
+                  <div>게시글이 없습니다</div>
+                )}
+              </ListNotData>
+            )}
+          </div>
+
+          <PageingBox>
+            <div>
+              <ul>
+                {listAllPage
+                  ? listAllPage.map((el, key) => {
+                      return el === listPage ? (
+                        <li key={key} className='page-num'>
+                          <b>{el}</b>
+                        </li>
+                      ) : (
+                        <li
+                          key={key}
+                          className='page-num'
+                          onClick={() => changePage(el)}
+                        >
+                          {el}
+                        </li>
+                      );
+                    })
+                  : null}
+              </ul>
+            </div>
+          </PageingBox>
+        </ListContainer>
+      )}
+    </>
+  );
+}
 
 const ListContainer = styled.div`
   height: 84vh;
@@ -67,73 +157,5 @@ const PageingBox = styled.div`
     margin-right: 20px;
   }
 `;
-
-function List({ listData, listAllPage, listSearch, listPage, changePage }) {
-  return (
-    <ListContainer>
-      <div>
-        {listData !== '[]' && listData.length > 0 ? (
-          JSON.parse(listData).map((el, key) => {
-            const view_url = '/view/' + el.board_id;
-            const num = el.writer_id % 10;
-
-            return (
-              <ListBox key={key}>
-                <div className='list-info'>
-                  <div className='list-writer'>
-                    <img src={UserImg.images[num]} alt='user-img' />
-                    {el.writer_name}
-                  </div>
-                  <div className='list-join'>
-                    <img src={LogoImg} alt='logo-img' />
-                    {' ' + el.join_cnt}
-                  </div>
-                  <div className='list-date'>
-                    {`${el.date?.slice(0, 4)} ${el.date?.slice(5, 10)}`}
-                  </div>
-                </div>
-                <Link to={view_url}>
-                  <h3 className='list-title'>{el.title}</h3>
-                </Link>
-              </ListBox>
-            );
-          })
-        ) : (
-          <ListNotData>
-            {listSearch && listSearch !== '' ? (
-              <div>{`'${listSearch}'에 대한 `}검색 결과가 없습니다</div>
-            ) : (
-              <div>게시글이 없습니다</div>
-            )}
-          </ListNotData>
-        )}
-      </div>
-
-      <PageingBox>
-        <div>
-          <ul>
-            {listAllPage
-              ? listAllPage.map((el, key) => {
-                  return el === listPage ? (
-                    <li key={key} className='page-num'>
-                      <b>{el}</b>
-                    </li>
-                  ) : (
-                    <li
-                      key={key}
-                      className='page-num'
-                      onClick={() => changePage(el)}
-                    >
-                      {el}
-                    </li>
-                  );
-                })
-              : null}
-          </ul>
-        </div>
-      </PageingBox>
-    </ListContainer>
-  );
-}
 
 export default List;

@@ -1,21 +1,38 @@
 import styled from 'styled-components';
 
+const KakaoMap = ({ className, addCenterMarker }) => {
+  return (
+    <MapContainer id='mapContainer'>
+      <div id='map' className={className}></div>
+      <input
+        id='addMarkerBtn'
+        className={className}
+        type='button'
+        value='픽업위치 찾기'
+        onClick={() => addCenterMarker()}
+      ></input>
+    </MapContainer>
+  );
+};
+
 const MapContainer = styled.div`
   .settingMap {
     width: 30vw;
     max-width: 300px;
     aspect-ratio: 1 / 1;
   }
-  .settingMap + #addMarkerBtn {
+  .settingMap + #addMarkerBtn,
+  .mateSettingMap + #addMarkerBtn {
     visibility: hidden;
     height: 0;
   }
-  .pickupMap {
+  .pickupMap,
+  .mateSettingMap {
     width: 400px;
     height: 400px;
   }
   .pickupMap + #addMarkerBtn {
-    width: 110px;
+    width: 117px;
     height: 35px;
     position: absolute;
     top: 410px;
@@ -32,18 +49,4 @@ const MapContainer = styled.div`
   }
 `;
 
-const KakaoMap = ({ className, addCenterMarker }) => {
-  return (
-    <MapContainer id='mapContainer'>
-      <div id='map' className={className}></div>
-      <input
-        id='addMarkerBtn'
-        className={className}
-        type='button'
-        value='픽업위치 찾기'
-        onClick={() => addCenterMarker()}
-      ></input>
-    </MapContainer>
-  );
-};
 export default KakaoMap;

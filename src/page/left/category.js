@@ -5,47 +5,6 @@ import styled from 'styled-components';
 
 import { MdDelete, MdCheck } from 'react-icons/md';
 
-const CategoryBox = styled.div`
-  margin-top: 30px;
-  li {
-    margin-top: 20px;
-  }
-  .pre-food {
-    font-weight: bold;
-    color: #bbf294;
-  }
-  .category-edit {
-    margin-top: 20px;
-    border: 1px solid;
-    color: #bbf294;
-    margin: 10px 0px 0px 15px;
-    padding: 1px 7px;
-    border-radius: 4px;
-    background-color: inherit;
-    cursor: pointer;
-  }
-`;
-const EditCategory = styled.li`
-  display: flex;
-  justify-content: space-around;
-  .category-remove {
-    font-size: 20px;
-    margin: 7px;
-  }
-  .category-input {
-    width: 90px;
-    background-color: whitesmoke;
-    padding: 7px;
-    border-radius: 10px;
-  }
-  .category-modify {
-    font-size: 20px;
-    color: #f27289;
-    font-weight: bolder;
-    margin: 7px;
-  }
-`;
-
 function Category({ changeCategory, login, admin }) {
   const [category, setCategory] = useState([]);
   const [edit, setEdit] = useState(false);
@@ -55,7 +14,9 @@ function Category({ changeCategory, login, admin }) {
   }, []);
 
   const getCategoryData = async () => {
-    const getData = await axios('/get/category');
+    const getData = await axios(
+      'https://delivery-mate.herokuapp.com/get/category'
+    );
     setCategory(getData.data);
   };
   const addCategory = async () => {
@@ -64,11 +25,14 @@ function Category({ changeCategory, login, admin }) {
       categoryName = categoryName.trim();
 
       if (categoryName !== '' && categoryName.length > 0) {
-        const add = await axios('/add/category', {
-          method: 'POST',
-          data: { name: categoryName },
-          headers: new Headers(),
-        });
+        const add = await axios(
+          'https://delivery-mate.herokuapp.com/add/category',
+          {
+            method: 'POST',
+            data: { name: categoryName },
+            headers: new Headers(),
+          }
+        );
         alert(add.data.msg);
         console.log(add);
         getCategoryData();
@@ -79,11 +43,14 @@ function Category({ changeCategory, login, admin }) {
   };
   const removeCategory = async (category) => {
     if (window.confirm(`"${category.name}" 카테고리를 삭제하시겠습니까?`)) {
-      const remove = await axios('/delete/category', {
-        method: 'POST',
-        data: category,
-        headers: new Headers(),
-      });
+      const remove = await axios(
+        'https://delivery-mate.herokuapp.com/delete/category',
+        {
+          method: 'POST',
+          data: category,
+          headers: new Headers(),
+        }
+      );
       if (remove) {
         alert(`"${category.name}" 카테고리가 삭제되었습니다`);
         getCategoryData();
@@ -105,11 +72,14 @@ function Category({ changeCategory, login, admin }) {
         )
       ) {
         const data = { id: category.id, name: modifyName };
-        const modify = await axios('/modify/category', {
-          method: 'POST',
-          data: data,
-          headers: new Headers(),
-        });
+        const modify = await axios(
+          'https://delivery-mate.herokuapp.com/modify/category',
+          {
+            method: 'POST',
+            data: data,
+            headers: new Headers(),
+          }
+        );
         alert(modify.data.msg);
         getCategoryData();
       }
@@ -195,5 +165,46 @@ function Category({ changeCategory, login, admin }) {
     </CategoryBox>
   );
 }
+
+const CategoryBox = styled.div`
+  margin-top: 30px;
+  li {
+    margin-top: 20px;
+  }
+  .pre-food {
+    font-weight: bold;
+    color: #bbf294;
+  }
+  .category-edit {
+    margin-top: 20px;
+    border: 1px solid;
+    color: #bbf294;
+    margin: 10px 0px 0px 15px;
+    padding: 1px 7px;
+    border-radius: 4px;
+    background-color: inherit;
+    cursor: pointer;
+  }
+`;
+const EditCategory = styled.li`
+  display: flex;
+  justify-content: space-around;
+  .category-remove {
+    font-size: 20px;
+    margin: 7px;
+  }
+  .category-input {
+    width: 90px;
+    background-color: whitesmoke;
+    padding: 7px;
+    border-radius: 10px;
+  }
+  .category-modify {
+    font-size: 20px;
+    color: #f27289;
+    font-weight: bolder;
+    margin: 7px;
+  }
+`;
 
 export default Category;

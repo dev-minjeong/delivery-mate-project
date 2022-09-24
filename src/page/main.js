@@ -6,22 +6,6 @@ import axios from 'axios';
 import { Write, List, View, SignUp, Footer } from './index.js';
 import { RightWrite, Reply } from './right/index.js';
 
-const MainBox = styled.div`
-  height: 100%;
-`;
-const PageMain = styled.div`
-  display: flex;
-  top: 0;
-  align-items: ${(props) => (props.main ? 'center' : 'none')};
-`;
-const PageLeft = styled.div`
-  width: ${(props) => (props.main ? '100%' : '60%')};
-  height: 100%;
-`;
-const PageRight = styled.div`
-  width: ${(props) => (props.main ? '0' : '40%')};
-`;
-
 const Main = ({
   login,
   admin,
@@ -30,7 +14,6 @@ const Main = ({
   listSearch,
   listPage,
   changePage,
-  userId,
   data,
   date,
   joinNum,
@@ -40,19 +23,19 @@ const Main = ({
   loginCheck,
   setPageMain,
   pageMain,
-  pageRight,
   setPageLeft,
   getBoardJoinData,
   writerName,
   joinExist,
   getJoinExist,
   setJoinExist,
-  toggleMapModal,
-  toggleCalcModal,
   setWriterMapData,
+  setMateMapData,
   userNum,
-  setPageRight,
-  setPageFooter,
+  onModalOpenBtn,
+  mateLat,
+  mateLon,
+  updateMap,
 }) => {
   const [contents, setContents] = useState('');
   const [title, setTitle] = useState('');
@@ -73,11 +56,14 @@ const Main = ({
     setTitle(title);
   };
   const getModifyData = async (board_id) => {
-    const getBoardData = await axios('/get/board_data', {
-      method: 'POST',
-      headers: new Headers(),
-      data: { id: board_id },
-    });
+    const getBoardData = await axios(
+      'https://delivery-mate.herokuapp.com/get/board_data',
+      {
+        method: 'POST',
+        headers: new Headers(),
+        data: { id: board_id },
+      }
+    );
     setTitle(getBoardData.data[0].title);
     setContents(getBoardData.data[0].contents);
   };
@@ -94,10 +80,9 @@ const Main = ({
             });
           },
           function (error) {
-            console.log(error);
             resolve({
-              latitude: 33.450701,
-              longitude: 126.570667,
+              latitude: 37.56669805813602,
+              longitude: 126.978623997228,
             });
           },
           {
@@ -112,16 +97,19 @@ const Main = ({
     }
     alert('GPS를 지원하지 않습니다');
     return {
-      latitude: 33.450701,
-      longitude: 126.570667,
+      latitude: 37.56669805813602,
+      longitude: 126.978623997228,
     };
   };
   const getWriterMapData = async (board_id) => {
-    const data = await axios('/get/board_data', {
-      method: 'POST',
-      headers: new Headers(),
-      data: { id: board_id },
-    });
+    const data = await axios(
+      'https://delivery-mate.herokuapp.com/get/board_data',
+      {
+        method: 'POST',
+        headers: new Headers(),
+        data: { id: board_id },
+      }
+    );
     setWriterLat(data.data[0].writer_lat);
     setWriterLon(data.data[0].writer_lon);
   };
@@ -138,8 +126,8 @@ const Main = ({
     getTitles: getTitles,
     contents: contents,
     title: title,
-    setPageLeft: setPageLeft,
     setPageMain: setPageMain,
+    setPageLeft: setPageLeft,
   });
   const WriteModifyWithProps = withProps(Write, {
     getContents: getContents,
@@ -147,8 +135,8 @@ const Main = ({
     contents: contents,
     title: title,
     getModifyData: getModifyData,
-    setPageLeft: setPageLeft,
     setPageMain: setPageMain,
+    setPageLeft: setPageLeft,
   });
   const SignUpWithProps = withProps(SignUp, {
     setPageLeft: setPageLeft,
@@ -160,35 +148,33 @@ const Main = ({
     date: date,
     getData: getData,
     userName: userName,
-    setPageMain: setPageMain,
     setPageLeft: setPageLeft,
+    setPageMain: setPageMain,
     joinNum: joinNum,
-    setPageFooter: setPageFooter,
-    setPageRight: setPageRight,
   });
   const RightWriteWithProps = withProps(RightWrite, {
     contents: contents,
     categoryData: categoryData,
     userName: userName,
-    getLocation: getLocation,
     userNum: userNum,
+    getLocation: getLocation,
   });
   const RightWriteModifyWithProps = withProps(RightWrite, {
     contents: contents,
     categoryData: categoryData,
     userName: userName,
-    getLocation: getLocation,
     userNum: userNum,
+    getLocation: getLocation,
   });
   const RightReplyWithProps = withProps(Reply, {
     data: data,
     login: login,
     admin: admin,
     loginCheck: loginCheck,
-    userId: userId,
-    joinExist: joinExist,
-    userName: userName,
     writerName: writerName,
+    userName: userName,
+    joinExist: joinExist,
+    userNum: userNum,
   });
   const FooterWithProps = withProps(Footer, {
     userName: userName,
@@ -201,13 +187,16 @@ const Main = ({
     writerLon: writerLon,
     setJoinExist: setJoinExist,
     setWriterMapData: setWriterMapData,
-    toggleMapModal: toggleMapModal,
-    toggleCalcModal: toggleCalcModal,
+    setMateMapData: setMateMapData,
     data: data,
     getWriterMapData: getWriterMapData,
     getBoardJoinData: getBoardJoinData,
     login: login,
     getLocation: getLocation,
+    onModalOpenBtn: onModalOpenBtn,
+    mateLat: mateLat,
+    mateLon: mateLon,
+    updateMap: updateMap,
   });
 
   return (
@@ -250,4 +239,21 @@ const Main = ({
     </MainBox>
   );
 };
+
+const MainBox = styled.div`
+  height: 100%;
+`;
+const PageMain = styled.div`
+  display: flex;
+  top: 0;
+  align-items: ${(props) => (props.main ? 'center' : 'none')};
+`;
+const PageLeft = styled.div`
+  width: ${(props) => (props.main ? '100%' : '60%')};
+  height: 100%;
+`;
+const PageRight = styled.div`
+  width: ${(props) => (props.main ? '0' : '40%')};
+`;
+
 export default Main;
