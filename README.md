@@ -15,7 +15,7 @@ link : http://delivery-mate-deploy-bucket.s3-website.ap-northeast-2.amazonaws.co
   <img src="https://img.shields.io/badge/MySQL-4479A1?style=flat-square&logo=MySQL&logoColor=white"/> 
 </div>
 <div style="disply: flex;">
-  <img src="https://img.shields.io/badge/deploy-000000?style=flat-square&logo=deploy&logoColor=white"/> -
+  <img src="https://img.shields.io/badge/cloud-000000?style=flat-square&logo=cloud&logoColor=white"/> -
   <img src="https://img.shields.io/badge/Amazon S3-569A31?style=flat-square&logo=Amazon S3&logoColor=white"/>
   <img src="https://img.shields.io/badge/Amazon RDS-527FFF?style=flat-square&logo=Amazon RDS&logoColor=white"/>
   <img src="https://img.shields.io/badge/Heroku-430098?style=flat-square&logo=Heroku&logoColor=white"/>
@@ -28,7 +28,7 @@ link : http://delivery-mate-deploy-bucket.s3-website.ap-northeast-2.amazonaws.co
 * 카테고리 : 관리자는 카테고리 편집 가능, 카테고리별 게시글 필터링
 * 댓글 : 관리자, 게시글 주인, 참여 메이트들만 게시물의 댓글 추가 및 삭제 가능
 * 참여하기 : 위치 업데이트시 참여 완료, 댓글 가능, 지도에 메이트 위치 추가
-* db(sequlize) : 유저, 게시글, 참여 메이트, 댓글, 카테고리 정보 담기, 비밀번호 해싱
+* db(sequelize) : 유저, 게시글, 참여 메이트, 댓글, 카테고리 정보 담기, 비밀번호 해싱
 * kakao map api : 위치 업데이트 및 저장, 메이트들 중간지점(픽업위치) 찾기
 * 송금 금액 계산 : 배달팁, 음식 값 더한 금액 계산
 * styled-components : props 기반 컴포넌트 스타일
